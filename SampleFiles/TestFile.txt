@@ -1,0 +1,68 @@
+LightShowFormat_1 : Seconds,
+//The symbols in the first line are used to denote which is the "Splitter" and which is the "Closer"
+
+/* 
+	However in early versions this may not be the case, it's just an idea for something to implement later
+	Regardless, it looks pretty and is consistent at first.
+	Also, the Number following the underscore is the version number, which will be a single integer (no decimals). 
+	This probably is something that'll become relavent later but for now its just insurance.
+*/
+Groups { 		//Curly brackets group data
+	1:House Group, 
+	2:Living Room, 
+	Kitchen,
+	Lamp,
+	10:Other Lamp, //Having a "closer" on the last line of a group wont be necessary
+}
+//At reading time, each phrase on the left is replaced with the value on the right
+Replacements {
+	Red:FF0000,
+	Green:00FF00,
+	Yellow:0000FF,
+	Pause:1000MS,
+}
+ReplaceLine
+{
+//IF LHS appears in a line, replace with RHS
+}
+
+//If the LHS appears in a line, replace with RHS, but only in this version
+ReplaceLine_V1-V2
+{
+
+}
+//If you're using V1 V5 or something in between, these replacements will occur
+Replacements_V1-V5
+{
+
+}
+
+//This Group holds the Light show itself
+Play_V1-V2
+{
+	LoadSong:directory,
+	PlaySong,
+	SetGroup:1, //Setgroup will reset current groups and set to ONLY the given group
+	AddGroup:2, //Add group will add the group to groups the commands are sent to
+	50MS:FFFFFF,
+	10:F00000, //MS isn't neccessary as it is already defined
+	1Minutes:00FF00, //Minutes could be added to denote that it's used instead of the set seconds
+	SetGroup:Kitchen,   
+	60MS:F0F0F0, 
+	20MS:F00F00,
+	10MS:Macro1, //When a Macro is called like this, think of it like a "GOTO" function 
+	Pause:Red,
+	Print:ApproachingEnd, //A print function that outputs to console isn't a bad idea, a bit specific though
+}
+Macro1
+{
+	0:Red, //This code Should be valid, even if it's not pretty.  
+	0:Blue,
+	60MS:Yellow,	
+	Group_1:orange, //Group_ is necessary to ensure that 
+	ColorAdd:FF0000,
+	ColorRemove:00FF00, /*Powerful enough to manipulate colors */
+	0MS:SendColor,  //Resend is necessary perhaps	
+}
+
+/* Groups can't be simply denoted with numbers like 1, 2, 3, 4
