@@ -7,6 +7,7 @@
 #include "ProgrammableLight.h"
 #include "LightShowFileReader.h"
 #include "Milight.h"
+#include "ConsoleLight.h"
 
 int main()
 {
@@ -27,8 +28,15 @@ int main()
         FunctionsToPlay.insert(std::pair<std::string, vector<Command>>(it->first,Commands));
     }
     std::vector<int> groups;
-    groups.push_back(1); 
+    groups.push_back(3); 
     Milight item; 
+    
+    item.SetGroup(groups,CommandOperation::add);
+    groups.push_back(1);
+    item.SetGroup(groups,CommandOperation::add);
+    groups.push_back(5);
+    item.SetGroup(groups,CommandOperation::add);
+    groups.push_back(3);
     item.SetGroup(groups,CommandOperation::add);
     int num;
     std::cin >> num;

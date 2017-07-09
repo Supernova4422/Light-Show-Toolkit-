@@ -5,36 +5,61 @@
 #include <map>
 #include <iostream>
 
-void ProgrammableLight::SetGroup(std::vector<int> Groups, CommandOperation Operation)
+#include <algorithm>
+#include <string>
+#include <iostream>
+#include <cctype>
+void ProgrammableLight::SetGroup(const std::vector<int> Groups, CommandOperation Operation)
 {
-    int group = Groups[0];
+   
     Colour empty;
     std::pair<std::map<int,Colour>::iterator,bool> ret;
-
-    const int* Pointer;
+    std::pair<const int,Colour>* Entry;
+    const int* PointerToGroupID;
+    
     switch (Operation) {
         case set :
+            CurrentlySelectedGroups.clear();
+            AddToCurrentGroups(Groups);
         break;
         case add :
-            for (int group : Groups) {
-
-                ret = AllGroups.insert(std::pair<int,Colour>(group, empty));
-                
-                Pointer = &( (*(ret.first)).first);
-                CurrentlySelectedGroups.push_back(Pointer);
-
-                std::cout << Pointer << std::endl;
-                std::cout << &*ret.first << std::endl;
-            }
-             //}
+            AddToCurrentGroups(Groups);
         break; 
         case Remove :
-            //for (int group : Groups) {
-            // } 
+        //This hasn't been done now as this function will not likely see usage
+            for (int group : Groups) {
+               
+                std::pair<const int,Colour>* Entry = GetGroupByID(group);
+                
+                //A pointer is used to ensure that the group is kept track of
+                PointerToGroupID = &Entry->first;
+
+                CurrentlySelectedGroups.erase(std::remove(CurrentlySelectedGroups.begin(),
+                                                        CurrentlySelectedGroups.end(),
+                                                        PointerToGroupID),CurrentlySelectedGroups.end());
+            } 
         break;
         default :
         break;
     }
     
 }
+void ProgrammableLight::AddToCurrentGroups(const std::vector<int> GroupsToAdd) {
+    Colour empty;
+    
+    for (int group : GroupsToAdd) {
+                std::pair<const int,Colour>* Entry = GetGroupByID(group);
+                //A pointer is used to ensure that the group is kept track of
+                const int* PointerToGroupID = &Entry->first;
+                CurrentlySelectedGroups.push_back(PointerToGroupID);
+    }
 
+}
+
+std::pair<const int,Colour>* ProgrammableLight::GetGroupByID (int ID) {
+    Colour empty;
+    std::pair<const int,Colour>* Entry;
+    //If ID already exists, that one is returned instead
+    Entry = &*( AllGroups.insert  (std::pair<int,Colour> (ID, empty)).first);
+    return Entry;
+}

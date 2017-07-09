@@ -19,13 +19,13 @@ class ProgrammableLight
         virtual void SetColourForCurrentGroups(const Colour OutputColour) = 0;
         virtual void EmitColour(const Colour OutputColour) = 0;
         void SetGroup(std::vector<int> Groups, CommandOperation Operation);
+        void AddToCurrentGroups(std::vector<int> GroupsToAdd);
     private:
         std::map<int, Colour> AllGroups;
         std::vector<const int*> CurrentlySelectedGroups;
         Colour CurrentSelectedColour;
+        std::pair<const int,Colour>* GetGroupByID (int ID);
 
-    
- 
 };
 
 
