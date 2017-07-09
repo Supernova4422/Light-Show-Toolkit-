@@ -1,8 +1,12 @@
 // my first program in C++
 #include <iostream>
 #include <string>
+#include "CommandDataTypes.cpp"
 #include "FileReader.h"
 #include "CommandFactory.h"
+#include "ProgrammableLight.h"
+#include "LightShowFileReader.h"
+#include "Milight.h"
 
 int main()
 {
@@ -22,9 +26,12 @@ int main()
         }        
         FunctionsToPlay.insert(std::pair<std::string, vector<Command>>(it->first,Commands));
     }
-        CommandFactory Factory.ConvertFunctionNamesToFunctionPointer(FunctionsToPlay);
-    
-
+    std::vector<int> groups;
+    groups.push_back(1); 
+    Milight item; 
+    item.SetGroup(groups,CommandOperation::add);
+    int num;
+    std::cin >> num;
 
 
 }

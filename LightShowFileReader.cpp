@@ -6,10 +6,8 @@
 #include <map>
 #include <utility> 
 #include <cctype>
+#include "LightShowFileReader.h"
 using namespace std;
-
-
-
 
 std::map<std::string, std::vector<std::string>>  LightShowFileReader::ProcessFile(const string& FilePath) {
    ifstream myfile (FilePath);
