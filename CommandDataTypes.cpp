@@ -7,6 +7,7 @@
 #include <string>
 
 enum CommandType {ColourChange, Wait, Group, FunctionName, FunctionPointer};
+
 enum CommandOperation { set, add, Remove };
 
 struct Command {

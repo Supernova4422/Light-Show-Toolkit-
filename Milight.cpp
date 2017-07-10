@@ -14,8 +14,8 @@ void Milight::OnCurrentGroupsUpdate() {
 }
 
 void Milight::AddColour(const Colour OutputColour) {
-
 }
+
 void Milight::SetColour(const Colour OutputColour) {
 } 
 

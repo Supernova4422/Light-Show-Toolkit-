@@ -8,6 +8,10 @@ void ConsoleLight::SetColourForCurrentGroups(const Colour OutputColour) {
 
 bool PostedNewGroups = false;
 
+void ConsoleLight::OnCurrentGroupsUpdate() {
+    PostedNewGroups = false;
+}
+
 void ConsoleLight::EmitColour(const Colour OutputColour) {
     
     if (PostedNewGroups == false) {
@@ -57,6 +61,3 @@ void ConsoleLight::RemoveColour(const Colour OutputColour) {
 }
 
 
-void ConsoleLight::OnCurrentGroupsUpdate() {
-    PostedNewGroups = false;
-}

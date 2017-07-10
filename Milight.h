@@ -1,6 +1,7 @@
 #include "CommandDataTypes.cpp"
 #include "ProgrammableLight.h"
 
+
 class Milight: public ProgrammableLight
 {
     public: 

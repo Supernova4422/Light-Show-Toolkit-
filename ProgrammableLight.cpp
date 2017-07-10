@@ -4,11 +4,11 @@
 #include <utility> 
 #include <map>
 #include <iostream>
-
 #include <algorithm>
 #include <string>
 #include <iostream>
 #include <cctype>
+
 void ProgrammableLight::SetGroups(const int Group, CommandOperation Operation)
 {
    

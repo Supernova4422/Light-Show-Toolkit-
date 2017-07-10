@@ -8,6 +8,27 @@ using namespace std;
 
 std::map <string, string> Dictionary;
 
+
+
+std::map<std::string, std::vector<Command>> CommandFactory::CreateFunctionHolder (std::map<std::string, std::vector<std::string>> IntermediateFile) {
+    
+    std::map<std::string, std::vector<Command>> FunctionsToPlay;
+
+    for (std::map<string, vector<std::string>>::iterator it = IntermediateFile.begin(); it != IntermediateFile.end(); ++it) {
+            vector<string> CleanedCommands = CleanupCommands(it->second); //TODO do this at a more appropriate time
+            
+            vector<Command> Commands;
+            
+            for (string Entry : CleanedCommands) {
+                
+                Commands.push_back(ParseCommand(Entry));
+            }        
+
+            FunctionsToPlay.insert(std::pair<std::string, vector<Command>>(RemoveTrailingWhiteSpace(it->first),Commands));
+        }
+    return FunctionsToPlay;
+}
+
 Command CommandFactory::ParseCommand(string CommandInput) {
         pair <CommandType,string> ReturningObject;
         string GroupIdentifier = "Group";
@@ -47,51 +68,7 @@ Command CommandFactory::ParseCommand(string CommandInput) {
         }
 
         return Command(CurrentCommandType,value,CurrentOperation);
-    }
-
-
-
-std::map<std::string, std::vector<Command>> CommandFactory::CreateFunctionHolder (std::map<std::string, std::vector<std::string>> IntermediateFile) {
-    
-    std::map<std::string, std::vector<Command>> FunctionsToPlay;
-
-    for (std::map<string, vector<std::string>>::iterator it = IntermediateFile.begin(); it != IntermediateFile.end(); ++it) {
-            vector<string> CleanedCommands = CleanupCommands(it->second); //TODO do this at a more appropriate time
-            vector<Command> Commands;
-            
-            for (string Entry : CleanedCommands) {
-                
-                Commands.push_back(ParseCommand(Entry));
-            }        
-
-            FunctionsToPlay.insert(std::pair<std::string, vector<Command>>(RemoveTrailingWhiteSpace(it->first),Commands));
-        }
-    return FunctionsToPlay;
 }
-
-void ConvertMacrosToPointers (std::map<std::string, std::vector<Command>> *FunctionCollection) {
-    /*
-    for (std::map<string, vector<Command>>::iterator it = FunctionCollection->begin(); it != FunctionCollection->end(); ++it) {
-                
-                vector<Command> Commands;
-                for (Command Entry : it->second) {
-                    if (Entry.type == CommandType.FunctionName) {
-                        Entry.value == &FunctionCollection->find(Entry.value)
-                    }
-                }        
-                FunctionsToPlay.insert(std::pair<std::string, vector<Command>>(it->first,Commands));
-            }
-    */
-}
-void CommandFactory::PrintAll(std::map <string, vector<string>> FunctionsWithCommands ){
-    for (std::map<string, vector<string>>::iterator it = FunctionsWithCommands.begin(); it != FunctionsWithCommands.end(); ++it) {
-            cout << "Function Name:" << it->first << endl;
-            for (string item : it->second) {
-                cout << "Command Name:" << item << endl;
-            }
-    }
-}
-
 
 vector<string> CommandFactory::CleanupCommands(const vector<string>& StringVector)  {
         vector<string> CommandsOnLine;
@@ -142,3 +119,28 @@ bool CommandFactory::IsWhiteSpace(char c) {
     }
 
 }
+
+void ConvertMacrosToPointers (std::map<std::string, std::vector<Command>> *FunctionCollection) {
+    /*
+    for (std::map<string, vector<Command>>::iterator it = FunctionCollection->begin(); it != FunctionCollection->end(); ++it) {
+                
+                vector<Command> Commands;
+                for (Command Entry : it->second) {
+                    if (Entry.type == CommandType.FunctionName) {
+                        Entry.value == &FunctionCollection->find(Entry.value)
+                    }
+                }        
+                FunctionsToPlay.insert(std::pair<std::string, vector<Command>>(it->first,Commands));
+            }
+    */
+}
+
+void CommandFactory::PrintAll(std::map <string, vector<string>> FunctionsWithCommands ){
+    for (std::map<string, vector<string>>::iterator it = FunctionsWithCommands.begin(); it != FunctionsWithCommands.end(); ++it) {
+            cout << "Function Name:" << it->first << endl;
+            for (string item : it->second) {
+                cout << "Command Name:" << item << endl;
+            }
+    }
+}
+
