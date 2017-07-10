@@ -3,6 +3,7 @@
 #include <utility> 
 #include <map>
 #include "CommandFactory.h"
+#include <iostream>
 using namespace std;
 
 Command CommandFactory::ParseCommand(string CommandInput) {
@@ -15,18 +16,22 @@ Command CommandFactory::ParseCommand(string CommandInput) {
         if (CommandInput[0] == '+') {
             CurrentOperation = CommandOperation::add;
             CommandInput = CommandInput.erase(0,1);
-        }
-
+        } 
+        if (CommandInput[0] == '-') {
+            CurrentOperation = CommandOperation::Remove;
+            CommandInput = CommandInput.erase(0,1);
+        } 
+        
         if (CommandInput[0] == '#') { 
             value = CommandInput.erase(0,1); 
             CurrentCommandType = CommandType::ColourChange; 
-        } if (CommandInput.compare(0,1,GroupIdentifier) == 0) {
+        } else if (CommandInput.compare(0,GroupIdentifier.size(),GroupIdentifier) == 0) {
             value = CommandInput.erase(0,GroupIdentifier.size());
             CurrentCommandType = CommandType::Group;
-        } if (isdigit(CommandInput[0])) { 
-            value = CommandInput.erase(0,GroupIdentifier.size());
+        } else if (isdigit(CommandInput[0])) { 
+            value = CommandInput;
             CurrentCommandType = CommandType::Wait;
-        }  else {
+        } else {
             value = CommandInput;
             CurrentCommandType = CommandType::FunctionName;
         }
@@ -39,11 +44,14 @@ std::map<std::string, std::vector<Command>> CommandFactory::CreateFunctionHolder
     std::map<std::string, std::vector<Command>> FunctionsToPlay;
 
     for (std::map<string, vector<std::string>>::iterator it = IntermediateFile.begin(); it != IntermediateFile.end(); ++it) {
-            
+            vector<string> CleanedCommands = RemoveTrailingWhiteSpace(it->second); //TODO do this at a more appropriate time
             vector<Command> Commands;
-            for (string Entry : it->second) {
+            
+            for (string Entry : CleanedCommands) {
+                
                 Commands.push_back(ParseCommand(Entry));
             }        
+
             FunctionsToPlay.insert(std::pair<std::string, vector<Command>>(it->first,Commands));
         }
     return FunctionsToPlay;
@@ -63,6 +71,15 @@ void ConvertMacrosToPointers (std::map<std::string, std::vector<Command>> *Funct
             }
     */
 }
+void CommandFactory::PrintAll(std::map <string, vector<string>> FunctionsWithCommands ){
+    for (std::map<string, vector<string>>::iterator it = FunctionsWithCommands.begin(); it != FunctionsWithCommands.end(); ++it) {
+            cout << "Function Name:" << it->first << endl;
+            for (string item : it->second) {
+                cout << "Command Name:" << item << endl;
+            }
+    }
+}
+
 vector<string> CommandFactory::RemoveTrailingWhiteSpace(const vector<string>& StringVector)  {
         vector<string> CommandsOnLine;
         for(const string& Entry : StringVector) {

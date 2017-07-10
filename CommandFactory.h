@@ -13,4 +13,5 @@ class CommandFactory {
         void ConvertMacrosToPointers (std::map<std::string, std::vector<Command>> *FunctionCollection);
     private: 
         vector<string> RemoveTrailingWhiteSpace(const vector<string>& StringVector);
+        void PrintAll(std::map <string, vector<string>> FunctionsWithCommands );
 };

@@ -39,6 +39,8 @@ void ProgrammableLight::SetGroups(const int Group, CommandOperation Operation)
          
         break;
     }
+
+    OnCurrentGroupsUpdate();
     
 }
 void ProgrammableLight::AddToCurrentGroups(const int GroupToAdd) {

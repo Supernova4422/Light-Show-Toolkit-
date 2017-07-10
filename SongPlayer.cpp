@@ -12,7 +12,6 @@ void SongPlayer::RunFunction(std::string FunctionToPlay) {
     
     auto search = ParsedFile.find(FunctionToPlay);
     if(search != ParsedFile.end()) {
-        std::cout << "Found " << search->first << '\n';
         for (Command item : search->second) {
             RunCommand(item);
         }
@@ -20,6 +19,8 @@ void SongPlayer::RunFunction(std::string FunctionToPlay) {
 } 
 void SongPlayer::RunCommand(Command item) {
     Colour Newcolour(item.value);
+    
+    
     //Make into seperate function to make recursive
     if (item.type == CommandType::Wait) {
         int timetowait = std::stoi(item.value.c_str(), nullptr , 10) * 10;

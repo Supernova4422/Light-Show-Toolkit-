@@ -61,12 +61,14 @@ std::map<std::string, std::vector<std::string>>  LightShowFileReader::ProcessFil
             }
         }
    }
+   /*
    for (std::map<string, vector<string>>::iterator it = FunctionsWithCommands.begin(); it != FunctionsWithCommands.end(); ++it) {
         cout << "Function Name:" << it->first << endl;
         for (string item : it->second) {
             cout << "Command Name:" << item << endl;
         }
    }
+   */
    return FunctionsWithCommands;
 }
 

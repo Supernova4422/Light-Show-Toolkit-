@@ -9,10 +9,11 @@
 
 struct Colour
 {
-    int red;
-    int green;
-    int blue;
-    int Brightness;
+    //TODO Make each a byte only, to limit values between 0-255
+    int red = 0;
+    int green = 0;
+    int blue = 0;
+    int Brightness = 0;
     Colour (std::string HexString) {
         char * pEnd;
         if (HexString.size() == 2) {
