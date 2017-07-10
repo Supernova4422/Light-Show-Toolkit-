@@ -8,3 +8,7 @@ void Milight::SetColourForCurrentGroups(const Colour OutputColour) {
 void Milight::EmitColour(const Colour OutputColour) {
 
 }
+
+void Milight::OnCurrentGroupsUpdate() {
+
+}

@@ -8,36 +8,25 @@
 #include "LightShowFileReader.h"
 #include "Milight.h"
 #include "ConsoleLight.h"
+#include "SongPlayer.h"
 
 int main()
 {
     
     LightShowFileReader Reader;
     CommandFactory Factory; 
-    std::map<std::string, std::vector<Command>> FunctionsToPlay;
+    
     std::map<std::string, std::vector<std::string>> IntermediateFile = Reader.ProcessFile("example.txt");
     
-    for (std::map<string, vector<std::string>>::iterator it = IntermediateFile.begin(); it != IntermediateFile.end(); ++it) {
-        int value = it->second.size();
-        Command CommandsInFunction[5];
-        int i = 0; 
-        vector<Command> Commands;
-        for (string Entry : it->second) {
-            Commands.push_back(Factory.ParseCommand(Entry));
-        }        
-        FunctionsToPlay.insert(std::pair<std::string, vector<Command>>(it->first,Commands));
-    }
-    std::vector<int> groups;
-    groups.push_back(3); 
-    Milight item; 
-    
-    item.SetGroup(groups,CommandOperation::add);
-    groups.push_back(1);
-    item.SetGroup(groups,CommandOperation::add);
-    groups.push_back(5);
-    item.SetGroup(groups,CommandOperation::add);
-    groups.push_back(3);
-    item.SetGroup(groups,CommandOperation::add);
+    std::map<std::string, std::vector<Command>> ParsedFile = Factory.CreateFunctionHolder(IntermediateFile);
+
+
+    ConsoleLight ConsoleView;
+    SongPlayer Player; 
+    Player.ParsedFile = ParsedFile;
+    Player.ListeningLights.push_back(&ConsoleView);
+    Player.RunFunction("Play");
+  
     int num;
     std::cin >> num;
 

@@ -32,9 +32,37 @@ Command CommandFactory::ParseCommand(string CommandInput) {
         }
 
         return Command(CurrentCommandType,value,CurrentOperation);
-
     }
 
+std::map<std::string, std::vector<Command>> CommandFactory::CreateFunctionHolder (std::map<std::string, std::vector<std::string>> IntermediateFile) {
+    
+    std::map<std::string, std::vector<Command>> FunctionsToPlay;
+
+    for (std::map<string, vector<std::string>>::iterator it = IntermediateFile.begin(); it != IntermediateFile.end(); ++it) {
+            
+            vector<Command> Commands;
+            for (string Entry : it->second) {
+                Commands.push_back(ParseCommand(Entry));
+            }        
+            FunctionsToPlay.insert(std::pair<std::string, vector<Command>>(it->first,Commands));
+        }
+    return FunctionsToPlay;
+}
+
+void ConvertMacrosToPointers (std::map<std::string, std::vector<Command>> *FunctionCollection) {
+    /*
+    for (std::map<string, vector<Command>>::iterator it = FunctionCollection->begin(); it != FunctionCollection->end(); ++it) {
+                
+                vector<Command> Commands;
+                for (Command Entry : it->second) {
+                    if (Entry.type == CommandType.FunctionName) {
+                        Entry.value == &FunctionCollection->find(Entry.value)
+                    }
+                }        
+                FunctionsToPlay.insert(std::pair<std::string, vector<Command>>(it->first,Commands));
+            }
+    */
+}
 vector<string> CommandFactory::RemoveTrailingWhiteSpace(const vector<string>& StringVector)  {
         vector<string> CommandsOnLine;
         for(const string& Entry : StringVector) {
