@@ -1,7 +1,12 @@
-Play{
-Group6: #FF0000
-Group4: 40
-#FF0000 : #00FF00
-Group6: +Group7
-#FF
+Play    		{
+	Group6: 	-#FF0000
+	Group4:   40
+	+RED: +#00FF00
+	Group6: +Group7
+	#FF : SIREN
 }
+SIREN {
+#FF0000 : #00FF00
+#FF0000 : #00FF00
+}
+

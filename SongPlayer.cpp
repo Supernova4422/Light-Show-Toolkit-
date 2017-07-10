@@ -37,7 +37,16 @@ void SongPlayer::RunCommand(Command item) {
                 light->SetGroups(atoi(item.value.c_str()), item.Operation);
             break;
             case ColourChange:
-                light->EmitColour(Newcolour);
+                if (item.Operation == add) {
+                    light->AddColour(Newcolour);
+                }
+                if (item.Operation == Remove) {
+                    light->RemoveColour(Newcolour);
+                }
+                if (item.Operation == set) {
+                    light->SetColour(Newcolour);
+                }
+                
             break;
             
             case FunctionName:

@@ -58,3 +58,19 @@ std::pair<const int,Colour>* ProgrammableLight::GetGroupByID (int ID) {
     Entry = &*( AllGroups.insert  (std::pair<int,Colour> (ID, empty)).first);
     return Entry;
 }
+
+void ProgrammableLight::AddColour(const Colour OutputColour) {
+    for (const int* group : CurrentlySelectedGroups) {
+        GetGroupByID(*group)->second += OutputColour;
+    }
+}
+void ProgrammableLight::RemoveColour(const Colour OutputColour) {
+    for (const int* group : CurrentlySelectedGroups) {
+        GetGroupByID(*group)->second -= OutputColour;
+    }
+}
+void ProgrammableLight::SetColour(const Colour OutputColour) {
+    for (const int* group : CurrentlySelectedGroups) {
+        GetGroupByID(*group)->second = OutputColour;
+    }
+}

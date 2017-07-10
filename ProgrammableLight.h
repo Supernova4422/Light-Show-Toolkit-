@@ -28,13 +28,32 @@ struct Colour
         }
     }
     Colour (){ }
+
+    Colour operator+=(const Colour& c) {
+        this->red += c.red;
+        this->green += c.green;
+        this->blue += c.blue;
+        this->Brightness += c.Brightness;
+    }
+    Colour operator-=(const Colour& c) {
+        this->red -= c.red;
+        this->green -= c.green;
+        this->blue -= c.blue;
+        this->Brightness -= c.Brightness;
+    }
+
 };
 
 class ProgrammableLight
 {
     public:  
         virtual void SetColourForCurrentGroups(const Colour OutputColour) = 0;
-        virtual void EmitColour(const Colour OutputColour) = 0;
+        void EmitColour(const Colour OutputColour);
+        
+        virtual void AddColour(const Colour OutputColour) = 0; 
+        virtual void SetColour(const Colour OutputColour) = 0;
+        virtual void RemoveColour(const Colour OutputColour) = 0;
+
         virtual void OnCurrentGroupsUpdate() = 0;
         void SetGroups(const int Group, CommandOperation Operation);
         void AddToCurrentGroups(const int GroupToAdd);
