@@ -14,5 +14,5 @@ class ConsoleLight: public ProgrammableLight
     void SetColour(const Colour OutputColour); 
     void RemoveColour(const Colour OutputColour); 
 
-    void OnCurrentGroupsUpdate();
+    void OnCurrentGroupsUpdate(GroupManager& Manager);
 };

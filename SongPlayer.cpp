@@ -12,11 +12,15 @@
 
 
 GroupManager Manager;
-
+ConsoleLight ConsoleView(Manager);
  SongPlayer::SongPlayer () {
-    ConsoleLight ConsoleView(Manager);
-    ListeningLights.push_back(&Manager);
     
+    
+    
+    GroupChangeEventListiners.push_back(&ConsoleView);
+
+    ListeningLights.push_back(&Manager);
+
     ListeningLights.push_back(&ConsoleView);
     
 }
@@ -47,13 +51,15 @@ void SongPlayer::RunCommand(Command item) {
 
         if (item.type == CommandType::Group) {
             Manager.SetGroups(atoi(item.value.c_str()), item.Operation);
+            for (ProgrammableLight* Listiner : GroupChangeEventListiners) {
+                Listiner->OnCurrentGroupsUpdate(Manager);
+            }
         } 
+
         
         for (ColourListiner* light : ListeningLights) {
         switch (item.type) {
-            case Group:
-                //light->OnCurrentGroupsUpdate();
-            break;
+            
             case ColourChange:
                 if (item.Operation == add) {
                     light->AddColour(Newcolour);

@@ -9,13 +9,15 @@
 #include "Colour.h"
 #include "ColourListiner.h"
 #include "GroupManager.h"
+
+
 class ProgrammableLight: public ColourListiner
 {
   public:
     
     virtual void EmitColour(const Colour OutputColour) = 0;
 
-    virtual void OnCurrentGroupsUpdate() = 0;
+    virtual void OnCurrentGroupsUpdate(GroupManager& Manager) = 0;
     
     void AddColour(const Colour OutputColour);
     void SetColour(const Colour OutputColour);

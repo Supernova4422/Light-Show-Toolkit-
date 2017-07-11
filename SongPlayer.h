@@ -15,4 +15,5 @@ class SongPlayer
     SongPlayer();
     std::vector<ColourListiner*> ListeningLights;
     std::map<std::string, std::vector<Command>> ParsedFile;
+    std::vector<ProgrammableLight*> GroupChangeEventListiners;
 };

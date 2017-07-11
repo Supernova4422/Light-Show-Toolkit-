@@ -12,5 +12,5 @@ class Milight: public ProgrammableLight
     void SetColour(const Colour OutputColour) = 0;
     void RemoveColour(const Colour OutputColour) = 0;
     
-    void OnCurrentGroupsUpdate();
+    void OnCurrentGroupsUpdate(GroupManager& Manager);
 };

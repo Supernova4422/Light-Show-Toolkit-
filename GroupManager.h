@@ -8,7 +8,6 @@
 #include "CommandDataTypes.cpp"
 #include "Colour.h"
 #include "ColourListiner.h"
-
 class GroupManager: public ColourListiner
 {
   public:
@@ -17,6 +16,8 @@ class GroupManager: public ColourListiner
     void AddColour(const Colour OutputColour); 
     void SetColour(const Colour OutputColour); 
     void RemoveColour(const Colour OutputColour); 
+
+    
 
     std::pair<const int, Colour> *GetGroupByID(const int ID);
     std::vector<const int *> CurrentlySelectedGroups;

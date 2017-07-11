@@ -39,6 +39,8 @@ void GroupManager::SetGroups(const int Group, CommandOperation Operation)
                                       CurrentlySelectedGroups.end());
         break;
     }
+
+    
 }
 
 void GroupManager::AddToCurrentGroups(const int GroupToAdd)

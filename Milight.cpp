@@ -9,7 +9,7 @@ void Milight::EmitColour(const Colour OutputColour) {
 
 }
 
-void Milight::OnCurrentGroupsUpdate() {
+void Milight::OnCurrentGroupsUpdate(GroupManager& Manager) {
 
 }
 
