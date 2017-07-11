@@ -29,7 +29,10 @@ void SongPlayer::RunFunction(std::string FunctionToPlay) {
     auto search = ParsedFile.find(FunctionToPlay);
     if(search != ParsedFile.end()) {
         for (Command item : search->second) {
-            RunCommand(item);
+            for (int i = 0; i < item.TimesToExecute; i++) {
+                RunCommand(item);
+            }
+            
         }
     }
 } 

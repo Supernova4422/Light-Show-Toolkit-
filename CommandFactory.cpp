@@ -35,6 +35,7 @@ Command CommandFactory::ParseCommand(string CommandInput) {
         string value = "";
         CommandType CurrentCommandType;
         CommandOperation CurrentOperation = CommandOperation::set;
+        int TimesToExecute = 1;
         
         if (CommandInput[0] == '+') {
             CurrentOperation = CommandOperation::add;
@@ -59,15 +60,32 @@ Command CommandFactory::ParseCommand(string CommandInput) {
         } else if (CommandInput.compare(0,GroupIdentifier.size(),GroupIdentifier) == 0) {
             value = CommandInput.erase(0,GroupIdentifier.size());
             CurrentCommandType = CommandType::Group;
-        } else if (isdigit(CommandInput[0])) { 
-            value = CommandInput;
-            CurrentCommandType = CommandType::Wait;
+        } else if (isdigit(CommandInput[0])) {
+            bool ParsedAmountOfTimesToExecute = false;
+            value = ""; 
+            for (char c : CommandInput) {
+                if (ParsedAmountOfTimesToExecute){
+                    value += c;
+                } else if (isalpha(c)) {
+                    TimesToExecute = stoi(value);
+                    value = c;
+                    ParsedAmountOfTimesToExecute = true;
+                } else if (isdigit(c)) {
+                    value += c;
+                }
+            } 
+            if (ParsedAmountOfTimesToExecute) {
+                CurrentCommandType = CommandType::FunctionName;
+            }
+            else {
+                CurrentCommandType = CommandType::Wait;
+            }
         } else {
             value = CommandInput;
             CurrentCommandType = CommandType::FunctionName;
         }
 
-        return Command(CurrentCommandType,value,CurrentOperation);
+        return Command(CurrentCommandType,value,CurrentOperation, TimesToExecute);
 }
 
 vector<string> CommandFactory::CleanupCommands(const vector<string>& StringVector)  {
