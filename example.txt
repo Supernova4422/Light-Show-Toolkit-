@@ -6,8 +6,9 @@ Play    		{
 	+RED: +#00FF00
 	2SIREN 
 	Group6: +Group7
-	1Minutes :Green
+	Green
 	+2SIREN: #00FF00 
+	[ALLON] : [ALLOFF?
 	
 }
 SIREN {

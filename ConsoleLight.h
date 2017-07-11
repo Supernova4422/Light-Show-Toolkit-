@@ -9,7 +9,7 @@ class ConsoleLight: public ProgrammableLight
 
     void SetColourForCurrentGroups(const Colour OutputColour);
     void EmitColour(const Colour OutputColour);
-
+    void SpecificCommand(const Command command);
     void AddColour(const Colour OutputColour); 
     void SetColour(const Colour OutputColour); 
     void RemoveColour(const Colour OutputColour); 

@@ -55,6 +55,12 @@ void SongPlayer::RunCommand(Command item ) {
     } 
     else {
 
+        if (item.type == CommandType::SpecificCommand) {
+            for (ProgrammableLight* Listiner : GroupChangeEventListiners) {
+                Listiner->SpecificCommand(item);
+            }
+        }
+
         if (item.type == CommandType::Group) {
             Manager.SetGroups(atoi(item.value.c_str()), item.Operation);
             for (ProgrammableLight* Listiner : GroupChangeEventListiners) {

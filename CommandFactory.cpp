@@ -46,15 +46,13 @@ Command CommandFactory::ParseCommand(string CommandInput) {
             CommandInput = CommandInput.erase(0,1);
         } 
         
-        Dictionary.insert(std::pair<string, string>("RED","#FF0000")); //Just an example for now
-        std::map <string, string>::iterator it;
-        it = Dictionary.find(CommandInput);
         
-        if (it != Dictionary.end()) {
-            CommandInput = it->second;
+        if ((CommandInput[0] == '[') && (CommandInput.back() == ']')){
+            value = CommandInput.erase(0,1);
+            value = value.substr(0,value.size() - 1);
+            CurrentCommandType = CommandType::SpecificCommand;
         }
-
-        if (CommandInput[0] == '#') { 
+        else if (CommandInput[0] == '#') { 
             value = CommandInput.erase(0,1); 
             CurrentCommandType = CommandType::ColourChange; 
         } else if (CommandInput.compare(0,GroupIdentifier.size(),GroupIdentifier) == 0) {

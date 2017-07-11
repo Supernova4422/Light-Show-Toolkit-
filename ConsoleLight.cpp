@@ -16,6 +16,10 @@ void ConsoleLight::OnCurrentGroupsUpdate(GroupManager& Manager) {
     CurrentGroupsPTR = &(Manager.CurrentlySelectedGroups);
 }
 
+void ConsoleLight::SpecificCommand(const Command command){
+    std::cout << command.value << std::endl;
+}
+
 void ConsoleLight::EmitColour(const Colour OutputColour) {
     
     if (PostedNewGroups == false) {
