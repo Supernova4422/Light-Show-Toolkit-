@@ -41,7 +41,7 @@ void SongPlayer::RunFunction(std::string FunctionToPlay , CommandOperation Opera
     }
 } 
 void SongPlayer::RunCommand(Command item ) {
-    Colour Newcolour(item.value);
+    
     
     
     //Make into seperate function to make recursive
@@ -73,6 +73,7 @@ void SongPlayer::RunCommand(Command item ) {
         
 
         if (item.type == CommandType::ColourChange) {
+            Colour Newcolour(item.value);
             for (ColourListiner* light : ListeningLights) {
                 if (item.Operation == add) {
                     light->AddColour(Newcolour);

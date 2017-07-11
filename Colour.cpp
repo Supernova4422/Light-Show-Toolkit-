@@ -9,7 +9,6 @@
 
 Colour::Colour (std::string HexString) {
         char * pEnd;
-        
         if (HexString.size() == 2) {
              this->Brightness = std::stoi(HexString.substr(0,2), nullptr , 16);
         } else if (HexString.size() >= 6) {
