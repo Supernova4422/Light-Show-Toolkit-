@@ -19,8 +19,6 @@ void ConsoleLight::OnCurrentGroupsUpdate(GroupManager& Manager) {
 void ConsoleLight::EmitColour(const Colour OutputColour) {
     
     if (PostedNewGroups == false) {
-        
-        
         for (const int* group : *CurrentGroupsPTR) {
             std::cout << *group << ", ";
         }

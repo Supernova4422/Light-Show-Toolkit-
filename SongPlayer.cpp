@@ -29,10 +29,8 @@ void SongPlayer::RunFunction(std::string FunctionToPlay) {
     auto search = ParsedFile.find(FunctionToPlay);
     if(search != ParsedFile.end()) {
         for (Command item : search->second) {
-            for (int i = 0; i < item.TimesToExecute; i++) {
-                RunCommand(item);
-            }
             
+                RunCommand(item);
         }
     }
 } 
@@ -57,12 +55,18 @@ void SongPlayer::RunCommand(Command item) {
                 Listiner->OnCurrentGroupsUpdate(Manager);
             }
         } 
+        if (item.type == CommandType::FunctionName){
+            for (int i = 0; i < item.TimesToExecute; i++) {
+                    RunFunction(item.value);
+                }
+        }
 
+        if (item.type == CommandType::FunctionPointer) {
+
+        }
         
-        for (ColourListiner* light : ListeningLights) {
-        switch (item.type) {
-            
-            case ColourChange:
+        if (item.type == CommandType::ColourChange) {
+            for (ColourListiner* light : ListeningLights) {
                 if (item.Operation == add) {
                     light->AddColour(Newcolour);
                 }
@@ -72,16 +76,6 @@ void SongPlayer::RunCommand(Command item) {
                 if (item.Operation == set) {
                     light->SetColour(Newcolour);
                 }
-                
-            break;
-            
-            case FunctionName:
-                RunFunction(item.value);
-            break;
-            
-            case FunctionPointer:
-                //TODO runfunction via reference
-            break;
             }
         }
     }
