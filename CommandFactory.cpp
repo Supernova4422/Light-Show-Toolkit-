@@ -70,7 +70,7 @@ Command CommandFactory::ParseCommand(string CommandInput) {
                     TimesToExecute = stoi(value);
                     value = c;
                     ParsedAmountOfTimesToExecute = true;
-                } else if (isdigit(c)) {
+                } else  {
                     value += c;
                 }
             } 
