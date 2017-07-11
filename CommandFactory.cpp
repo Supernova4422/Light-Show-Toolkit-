@@ -84,7 +84,6 @@ Command CommandFactory::ParseCommand(string CommandInput) {
             value = CommandInput;
             CurrentCommandType = CommandType::FunctionName;
         }
-
         return Command(CurrentCommandType,value,CurrentOperation, TimesToExecute);
 }
 

@@ -5,6 +5,7 @@
 #include "ColourListiner.h"
 #include <string>
 #include <vector> 
+#include <iostream>
 #include <utility> 
 #include <map>
 #include <chrono>
@@ -24,17 +25,22 @@ ConsoleLight ConsoleView(Manager);
     
 }
 
-void SongPlayer::RunFunction(std::string FunctionToPlay) {
+void SongPlayer::RunFunction(std::string FunctionToPlay , CommandOperation Operation) {
     
     auto search = ParsedFile.find(FunctionToPlay);
     if(search != ParsedFile.end()) {
         for (Command item : search->second) {
-            
+            if (Operation != CommandOperation::set) {
+                Command CommandTempItem = item;
+                CommandTempItem.Operation = Operation;
+                RunCommand(CommandTempItem);
+            } else {
                 RunCommand(item);
+            }
         }
     }
 } 
-void SongPlayer::RunCommand(Command item) {
+void SongPlayer::RunCommand(Command item ) {
     Colour Newcolour(item.value);
     
     
@@ -57,7 +63,7 @@ void SongPlayer::RunCommand(Command item) {
         } 
         if (item.type == CommandType::FunctionName){
             for (int i = 0; i < item.TimesToExecute; i++) {
-                    RunFunction(item.value);
+                    RunFunction(item.value, item.Operation);
                 }
         }
 
@@ -65,6 +71,7 @@ void SongPlayer::RunCommand(Command item) {
 
         }
         
+
         if (item.type == CommandType::ColourChange) {
             for (ColourListiner* light : ListeningLights) {
                 if (item.Operation == add) {

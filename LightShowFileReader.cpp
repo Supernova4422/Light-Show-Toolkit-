@@ -34,6 +34,7 @@ std::map<std::string, std::vector<std::string>>  LightShowFileReader::ProcessFil
                     ReadingForFunction = false;
                 } else if (CurrentChar == '}' && (ReadingForFunction == false)) {
                     CurrentCommandList.push_back(CurrentWord);
+                    //TODO THROW ERROR IF FUNCTIONNAME STARTS WITH NUMBER
                     FunctionsWithCommands.insert(std::pair<string,vector<string>>(CurrentFunctionName , CurrentCommandList));
                     //Lets see if we can change this to be the object that's edited later
                     

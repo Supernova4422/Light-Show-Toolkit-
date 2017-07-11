@@ -6,7 +6,7 @@ Play    		{
 	+RED: +#00FF00
 	2SIREN 
 	Group6: +Group7
-	2SIREN
+	+2SIREN
 }
 SIREN {
 #FF0000 : #00FF00

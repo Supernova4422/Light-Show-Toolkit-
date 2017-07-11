@@ -11,7 +11,7 @@ class SongPlayer
 {
     public: 
     void RunCommand(Command item);
-    void RunFunction(std::string FunctionToPlay);
+    void RunFunction(std::string FunctionToPlay , CommandOperation Operation = CommandOperation::set);
     void WaitMilliseconds(float milliseconds);
     SongPlayer();
     std::vector<ColourListiner*> ListeningLights;
