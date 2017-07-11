@@ -6,13 +6,13 @@ Play    		{
 	+RED: +#00FF00
 	2SIREN 
 	Group6: +Group7
+	1Minutes :Green
 	+2SIREN: #00FF00 
-	2Minutes 
+	
 }
 SIREN {
 #FF0000 : #00FF00
 }
-Minutes {
-#FF0000 : #00FF00
-}
-
+Minutes {60}
+M {60}
+Green {#0000FF}
