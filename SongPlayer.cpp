@@ -1,12 +1,25 @@
 #include "CommandDataTypes.cpp"
 #include "ProgrammableLight.h"
 #include "SongPlayer.h"
+#include "ColourListiner.h"
 #include <string>
 #include <vector> 
 #include <utility> 
 #include <map>
 #include <chrono>
 #include <thread>
+#include "ConsoleLight.h"
+
+
+GroupManager Manager;
+
+ SongPlayer::SongPlayer () {
+    ConsoleLight ConsoleView(Manager);
+    ListeningLights.push_back(&Manager);
+    
+    ListeningLights.push_back(&ConsoleView);
+    
+}
 
 void SongPlayer::RunFunction(std::string FunctionToPlay) {
     
@@ -31,10 +44,15 @@ void SongPlayer::RunCommand(Command item) {
         //std::this_thread::sleep_for(std::chrono::seconds(1));
     } 
     else {
-        for (ProgrammableLight* light : ListeningLights) {
+
+        if (item.type == CommandType::Group) {
+            Manager.SetGroups(atoi(item.value.c_str()), item.Operation);
+        } 
+        
+        for (ColourListiner* light : ListeningLights) {
         switch (item.type) {
             case Group:
-                light->SetGroups(atoi(item.value.c_str()), item.Operation);
+                //light->OnCurrentGroupsUpdate();
             break;
             case ColourChange:
                 if (item.Operation == add) {

@@ -18,10 +18,11 @@ class GroupManager: public ColourListiner
     void SetColour(const Colour OutputColour); 
     void RemoveColour(const Colour OutputColour); 
 
+    std::pair<const int, Colour> *GetGroupByID(const int ID);
     std::vector<const int *> CurrentlySelectedGroups;
   private:
     std::map<int, Colour> AllGroups;
     Colour CurrentSelectedColour;
-    std::pair<const int, Colour> *GetGroupByID(int ID);
+    
 };
 #endif

@@ -44,9 +44,11 @@ void ConsoleLight::AddColour(const Colour OutputColour) {
 
     std::cout << "ADDING R: " << OutputColour.red << " G: " << OutputColour.green <<  " B: " << OutputColour.blue << " A: " << OutputColour.Brightness <<  std::endl;
 }
+
 void ConsoleLight::SetColour(const Colour OutputColour) {
     EmitColour(OutputColour);
 } 
+
 void ConsoleLight::RemoveColour(const Colour OutputColour) {
     if (PostedNewGroups == false) {
         std::cout << "CURRENT GROUPS:" << std::endl;

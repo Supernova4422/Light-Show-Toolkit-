@@ -12,7 +12,7 @@ class SongPlayer
     public: 
     void RunCommand(Command item);
     void RunFunction(std::string FunctionToPlay);
-    
-    std::vector<ProgrammableLight*> ListeningLights;
+    SongPlayer();
+    std::vector<ColourListiner*> ListeningLights;
     std::map<std::string, std::vector<Command>> ParsedFile;
 };

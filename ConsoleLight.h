@@ -5,7 +5,7 @@
 class ConsoleLight: public ProgrammableLight
 {
     public: 
-    ConsoleLight(const GroupManager &Manager) : ProgrammableLight(Manager){};
+    ConsoleLight(GroupManager &Manager) : ProgrammableLight(Manager){};
 
     void SetColourForCurrentGroups(const Colour OutputColour);
     void EmitColour(const Colour OutputColour);

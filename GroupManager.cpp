@@ -49,7 +49,7 @@ void GroupManager::AddToCurrentGroups(const int GroupToAdd)
     const int *PointerToGroupID = &Entry->first;
     CurrentlySelectedGroups.push_back(PointerToGroupID);
 }
-std::pair<const int, Colour> *GroupManager::GetGroupByID(int ID)
+std::pair<const int, Colour> *GroupManager::GetGroupByID(const int ID)
 {
     Colour empty;
     std::pair<const int, Colour> *Entry;
