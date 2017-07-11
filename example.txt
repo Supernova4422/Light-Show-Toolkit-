@@ -1,6 +1,9 @@
 Play    		{
 	Group6: 	-#FF0000
-	Group4:   40
+	Group4:   10
+	1 : 0.5
+	0.01 : 0.00001
+	10000 : 10
 	+RED: +#00FF00
 	Group6: +Group7
 	#FF : SIREN

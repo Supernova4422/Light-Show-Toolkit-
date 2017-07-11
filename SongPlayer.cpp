@@ -1,3 +1,4 @@
+
 #include "CommandDataTypes.cpp"
 #include "ProgrammableLight.h"
 #include "SongPlayer.h"
@@ -9,13 +10,11 @@
 #include <chrono>
 #include <thread>
 #include "ConsoleLight.h"
-
-
+#include <ctime>
+#include <iomanip>
 GroupManager Manager;
 ConsoleLight ConsoleView(Manager);
  SongPlayer::SongPlayer () {
-    
-    
     
     GroupChangeEventListiners.push_back(&ConsoleView);
 
@@ -40,12 +39,12 @@ void SongPlayer::RunCommand(Command item) {
     
     //Make into seperate function to make recursive
     if (item.type == CommandType::Wait) {
-        int timetowait = std::stoi(item.value.c_str(), nullptr , 10) * 10;
+        float timetowait = std::atof(item.value.c_str());
+        std::cout << std::setprecision(5);
         std::cout << "WAIT: " << timetowait << '\n';
         //TODO IMPLEMENT A WAIT FUNCTION
 
-
-        //std::this_thread::sleep_for(std::chrono::seconds(1));
+        WaitMilliseconds(timetowait * 1000);
     } 
     else {
 
@@ -82,5 +81,14 @@ void SongPlayer::RunCommand(Command item) {
             break;
             }
         }
+    }
+}
+
+void SongPlayer::WaitMilliseconds (float milliseconds) {
+
+    clock_t EndTime;
+    EndTime = clock() + (milliseconds);
+    while (clock() < EndTime) { 
+        //Do nothing
     }
 }
