@@ -9,6 +9,7 @@
 #include "Milight.h"
 #include "ConsoleLight.h"
 #include "SongPlayer.h"
+#include "GroupManager.h"
 
 int main()
 {
@@ -20,8 +21,8 @@ int main()
     
     std::map<std::string, std::vector<Command>> ParsedFile = Factory.CreateFunctionHolder(IntermediateFile);
 
-
-    ConsoleLight ConsoleView;
+    GroupManager Manager;
+    ConsoleLight ConsoleView(Manager);
     SongPlayer Player; 
     Player.ParsedFile = ParsedFile;
     Player.ListeningLights.push_back(&ConsoleView);
@@ -29,6 +30,4 @@ int main()
   
     int num;
     std::cin >> num;
-
-
 }

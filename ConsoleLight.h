@@ -1,9 +1,12 @@
 #include "CommandDataTypes.cpp"
 #include "ProgrammableLight.h"
+#include "GroupManager.h"
 
 class ConsoleLight: public ProgrammableLight
 {
     public: 
+    ConsoleLight(const GroupManager &Manager) : ProgrammableLight(Manager){};
+
     void SetColourForCurrentGroups(const Colour OutputColour);
     void EmitColour(const Colour OutputColour);
 

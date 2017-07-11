@@ -1,34 +1,36 @@
 #ifndef PROGRAMMABLELIGHT01
 #define PROGRAMMABLELIGHT01
-#include <iostream>  
-#include <string> 
-#include <vector> 
-#include <utility> 
+#include <iostream>
+#include <string>
+#include <vector>
+#include <utility>
 #include <map>
 #include "CommandDataTypes.cpp"
 #include "Colour.h"
-
-
-class ProgrammableLight
+#include "ColourListiner.h"
+#include "GroupManager.h"
+class ProgrammableLight: public ColourListiner
 {
-    public:  
-        virtual void SetColourForCurrentGroups(const Colour OutputColour) = 0;
-        void EmitColour(const Colour OutputColour);
-        
-        virtual void AddColour(const Colour OutputColour) = 0; 
-        virtual void SetColour(const Colour OutputColour) = 0;
-        virtual void RemoveColour(const Colour OutputColour) = 0;
+  public:
+    
+    virtual void EmitColour(const Colour OutputColour) = 0;
 
-        virtual void OnCurrentGroupsUpdate() = 0;
-        void SetGroups(const int Group, CommandOperation Operation);
-        void AddToCurrentGroups(const int GroupToAdd);
-        std::vector<const int*> CurrentlySelectedGroups;
-        
-    private:
-        std::map<int, Colour> AllGroups;
-        Colour CurrentSelectedColour;
-        std::pair<const int,Colour>* GetGroupByID (int ID);
+    virtual void OnCurrentGroupsUpdate() = 0;
+    
+    void SetGroups(const int Group, CommandOperation Operation);
+    void AddToCurrentGroups(const int GroupToAdd);
+    
+    void AddColour(const Colour OutputColour);
+    void SetColour(const Colour OutputColour);
+    void RemoveColour(const Colour OutputColour);
 
+    ProgrammableLight(const GroupManager& Manager);
+    const GroupManager* Manager;
+
+  private:
+    std::map<int, Colour> AllGroups;
+    Colour CurrentSelectedColour;
+    std::pair<const int, Colour> *GetGroupByID(int ID);
 };
 
 #endif

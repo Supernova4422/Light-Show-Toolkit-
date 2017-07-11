@@ -18,8 +18,17 @@ struct Colour
     
     Colour();
 
-    Colour operator+=(const Colour& c);
-    Colour operator-=(const Colour& c);
-
+    Colour operator+=(const Colour& c){
+        this->red += c.red;
+        this->green += c.green;
+        this->blue += c.blue;
+        this->Brightness += c.Brightness;
+    }
+    Colour operator-=(const Colour& c){
+        this->red -= c.red;
+        this->green -= c.green;
+        this->blue -= c.blue;
+        this->Brightness -= c.Brightness;
+    }   
 };
 #endif

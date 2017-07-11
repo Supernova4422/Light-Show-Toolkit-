@@ -1,6 +1,8 @@
 #include "CommandDataTypes.cpp"
 #include "ConsoleLight.h"
 #include <iostream>
+#include "GroupManager.h"
+
 
 
 void ConsoleLight::SetColourForCurrentGroups(const Colour OutputColour) {
@@ -17,7 +19,7 @@ void ConsoleLight::EmitColour(const Colour OutputColour) {
     if (PostedNewGroups == false) {
         std::cout << "CURRENT GROUPS:" << std::endl;
         
-        for (const int* group : CurrentlySelectedGroups) {
+        for (const int* group : Manager->CurrentlySelectedGroups) {
             std::cout << *group << ", ";
         }
             std::cout << std::endl;
@@ -32,7 +34,7 @@ void ConsoleLight::AddColour(const Colour OutputColour) {
     if (PostedNewGroups == false) {
         std::cout << "CURRENT GROUPS:" << std::endl;
         
-        for (const int* group : CurrentlySelectedGroups) {
+        for (const int* group : Manager->CurrentlySelectedGroups) {
             std::cout << *group << ", ";
         }
             std::cout << std::endl;
@@ -49,7 +51,7 @@ void ConsoleLight::RemoveColour(const Colour OutputColour) {
     if (PostedNewGroups == false) {
         std::cout << "CURRENT GROUPS:" << std::endl;
         
-        for (const int* group : CurrentlySelectedGroups) {
+        for (const int* group : Manager->CurrentlySelectedGroups) {
             std::cout << *group << ", ";
         }
             std::cout << std::endl;
