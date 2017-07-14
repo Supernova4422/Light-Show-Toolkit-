@@ -17,9 +17,9 @@ struct Colour
     uint8_t green = 0;
     uint8_t blue = 0;
     
-    int Hue = 0;
-    int Saturation = 0;
-    int Luminance = 0;
+    uint8_t Hue = 0;
+    uint8_t Saturation = 0;
+    uint8_t Luminance = 0;
     
     Colour operator+=(const Colour& c){
         this->red += c.red;

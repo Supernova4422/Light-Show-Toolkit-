@@ -10,9 +10,11 @@ std::array<float,3> Colour::GetOrderedAndScaledRGB() {
     int flag;
     //Simple Bubble sort To get max/min
     std::array<float,3> Order;
-    Order[0] = (int)red / 255; //&red;
-    Order[1] = (int)green / 255; //&green;
-    Order[2] = (int)blue / 255; //&blue;
+    Order[0] = (float)red;// / 255; //&red;
+    Order[1] = (float)green;// / 255; //&green;
+    Order[2] = (float)blue;// / 255; //&blue;
+
+    std::cout <<  "RED IS: " << Order[0] << std::endl;
 
     for (int i = 1; (i <= 3) && flag; i++) {
         for (int j = 0; i < 2; i++) {
@@ -33,9 +35,9 @@ void Colour::UpdateHSLColours () {
     float Max = ScaledOrderedRGB[0];
     float Min = ScaledOrderedRGB[2];
 
-    Luminance = (Max + Min) / 2;
+    Luminance = (Max + Min) / 2;// * 255 ;
     
-
+   
     if (Luminance < 0.5) {
         Saturation = (Max - Min) / (2 - (Max - Min));
     }
@@ -47,25 +49,28 @@ void Colour::UpdateHSLColours () {
     }
     
     if (red == Max) {
-        Hue =  (green  - blue   ) / (Max - Min);
+        Hue =  ((green  - blue) / (Max - Min) )* 255;
     }
     if (green == Max) {
-        Hue = 2.0 + (blue - red ) / (Max - Min);
+        Hue = (2.0 + ((blue - red )/255) / ((Max - Min)/255)) * 255;
     }
     if (blue == Max) {
-        Hue = 4.0 + (red - green ) / (Max - Min);
+        Hue = (4.0 + ((red - green )/255) / ((Max - Min)/255)) * 255;
     }
-
-    Hue = Hue * 60;
+    
+    Hue = (Hue + 174) % 255;
+    std::cout <<  "HUE IS: " << (int)Hue << std::endl;
     if (Hue < 0) {
-        Hue += 180;
+       // Hue += 180;
     }
+    
 }
 
 Colour::Colour (std::string HexString) {
         red = (uint8_t) std::stoi(HexString.substr(0,2), nullptr , 16);
         green = (uint8_t) std::stoi(HexString.substr(2,2), nullptr , 16);
         blue = (uint8_t) std::stoi(HexString.substr(4,2), nullptr , 16);
+        UpdateHSLColours();
 }
 Colour::Colour (){ }
 

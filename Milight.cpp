@@ -19,7 +19,7 @@ void Milight::OnCurrentGroupsUpdate(GroupManager& Manager) {
     if (Manager.CurrentlySelectedGroups.size() == 1) {
         int GroupNumber = *Manager.CurrentlySelectedGroups[0];
         char byte[1];
-        byte[1] = GetGroupHexByte(GroupNumber);
+        byte[0] = GetGroupHexByte(GroupNumber);
         SendHexPackets(byte);
     } else {
         bool ContainsGroup1 = false;
@@ -42,8 +42,8 @@ void Milight::OnCurrentGroupsUpdate(GroupManager& Manager) {
             }
         }
         if (ContainsGroup1 == ContainsGroup2 == ContainsGroup3 == ContainsGroup4 == true) {
-            char byte[1];
-            byte[1] = 0x42; //ALLGROUPS
+            char byte[0];
+            byte[0] = 0x42; //ALLGROUPS
             SendHexPackets(byte);
         }
     }
@@ -65,6 +65,12 @@ void Milight::AddColour(const Colour OutputColour) {
 }
 
 void Milight::SetColour(const Colour OutputColour) {
+    char bytes[3];
+    bytes[0] = 0x40; 
+    bytes[1] = OutputColour.Hue;
+    bytes[2] = 0x55;
+   
+    SendHexPackets(bytes);SendHexPackets(bytes);SendHexPackets(bytes);
 } 
 
 void Milight::RemoveColour(const Colour OutputColour) {

@@ -1,20 +1,10 @@
 Play    		{
-	Group1: 	-#FF0000
-	Group2
-	Group3
-	Group4
-	1 : 0.5
-	0.01 : 0.00001
-	+RED: +#00FF00
-	2SIREN 
-	Group6: +Group7
-	Green
-	+2SIREN: #00FF00 
-	[ALLON] : [ALLOFF?
+	Group2 : 0.1
+	#FF0000 : 5
 	
 }
 SIREN {
-#FF0000 : #00FF00
+#0F0000 : #00FF00
 }
 Minutes {60}
 M {60}

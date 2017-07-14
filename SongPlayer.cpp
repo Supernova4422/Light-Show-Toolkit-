@@ -25,13 +25,12 @@ Milight TestLight(Manager);
     
     ListeningLights.push_back(&Manager);
     ListeningLights.push_back(&ConsoleView);
-    ListeningLights.push_back(&Manager);
+    ListeningLights.push_back(&TestLight);
 
-    Colour TestColour;
-    TestLight.SetColour(TestColour);
-    TestLight.InitialiseUDPConnection("10.0.0.6",55005);
-    char buffer[3]={0x4E,0x19,0x55};
-    TestLight.SendHexPackets(buffer);
+    
+    TestLight.InitialiseUDPConnection("10.0.0.65",8899);
+    //char buffer[3]={0x4E, 0x19, 0x55};
+   // TestLight.SendHexPackets(buffer);
 
 }
 
