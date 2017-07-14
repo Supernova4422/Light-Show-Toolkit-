@@ -1,6 +1,9 @@
  
 // my first program in C++
+#include <stdint.h>
 #include <iostream>
+#include <vector>
+#include <sstream>      // std::istringstream
 #include <string>
 #include "CommandDataTypes.cpp"
 #include "FileReader.h"
@@ -15,9 +18,9 @@
 int main()
 {
     
-    
-    uint 
-
+    std::string hex_chars("6A");
+    uint8_t d = (uint8_t) std::stoi(hex_chars, nullptr , 16);
+    std::cout <<  d << std::endl;
 
     LightShowFileReader Reader;
     CommandFactory Factory; 

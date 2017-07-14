@@ -13,9 +13,9 @@ struct Colour
     
     void UpdateHSLColours();
      //TODO Make each a byte only, to limit values between 0-255
-    int red = 0;
-    int green = 0;
-    int blue = 0;
+    uint8_t red = 0;
+    uint8_t green = 0;
+    uint8_t blue = 0;
     
     int Hue = 0;
     int Saturation = 0;

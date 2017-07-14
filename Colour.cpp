@@ -64,8 +64,14 @@ void Colour::UpdateHSLColours () {
 
 Colour::Colour (std::string HexString) {
         char * pEnd;
+        
+        std::string hex_chars("6A");
         if (HexString.size() == 6) {
+            red = (uint8_t) std::stoi(HexString.substr(0,2), nullptr , 16);
+            green = (uint8_t) std::stoi(HexString.substr(2,2), nullptr , 16);
+            blue = (uint8_t) std::stoi(HexString.substr(4,2), nullptr , 16);
         }
+        
         
     }
 Colour::Colour (){ }
