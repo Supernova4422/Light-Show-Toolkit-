@@ -11,18 +11,24 @@
 #include <chrono>
 #include <thread>
 #include "ConsoleLight.h"
+#include "Milight.h"
 #include <ctime>
 #include <iomanip>
 GroupManager Manager;
 ConsoleLight ConsoleView(Manager);
+Milight TestLight(Manager);
+
  SongPlayer::SongPlayer () {
     
     GroupChangeEventListiners.push_back(&ConsoleView);
-
+    GroupChangeEventListiners.push_back(&TestLight);
+    
+    ListeningLights.push_back(&Manager);
+    ListeningLights.push_back(&ConsoleView);
     ListeningLights.push_back(&Manager);
 
-    ListeningLights.push_back(&ConsoleView);
-    
+    Colour TestColour;
+    TestLight.SetColour(TestColour);
 }
 
 void SongPlayer::RunFunction(std::string FunctionToPlay , CommandOperation Operation) {

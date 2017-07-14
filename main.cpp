@@ -15,6 +15,10 @@
 int main()
 {
     
+    
+    
+
+
     LightShowFileReader Reader;
     CommandFactory Factory; 
     
@@ -29,4 +33,5 @@ int main()
   
     int num;
     std::cin >> num;
+    
 }
