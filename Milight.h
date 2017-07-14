@@ -19,4 +19,6 @@ class Milight: public ProgrammableLight
 
     void InitialiseUDPConnection (const char * IPAddress , unsigned short Port);
     void SendHexPackets (char buffer[]);
+    char GetGroupHexByte(int GroupNumber);
+
 };

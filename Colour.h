@@ -29,6 +29,9 @@ struct Colour
         this->green -= c.green;
         this->blue -= c.blue;
         this->Brightness -= c.Brightness;
-    }   
+    } 
+
+    
+    //DO HSL IN HERE  
 };
 #endif

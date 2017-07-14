@@ -11,9 +11,57 @@ void Milight::SetColourForCurrentGroups(const Colour OutputColour) {
 void Milight::EmitColour(const Colour OutputColour) {
 
 }
+void Milight::GetHue(GroupManager& Manager) {
+
+
+}
 
 void Milight::OnCurrentGroupsUpdate(GroupManager& Manager) {
+    
 
+    if (Manager.CurrentlySelectedGroups.size() == 1) {
+        int GroupNumber = *Manager.CurrentlySelectedGroups[0];
+        char byte[1];
+        byte[1] = GetGroupHexByte(GroupNumber);
+        SendHexPackets(byte);
+    } else {
+        bool ContainsGroup1 = false;
+        bool ContainsGroup2 = false;
+        bool ContainsGroup3 = false;
+        bool ContainsGroup4 = false;
+
+        for (int* item : Managr.CurrentlySelectedGroups) {
+            if (*item == 1) {
+                ContainsGroup1 = true;
+            }
+            if (*item == 2) {
+                ContainsGroup2 = true;
+            }
+            if (*item == 3) {
+                ContainsGroup3 = true;
+            }
+            if (*item == 4) {
+                ContainsGroup4 = true;
+            }
+        }
+        if (ContainsGroup1 == ContainsGroup2 == ContainsGroup3 == ContainsGroup4 == true) {
+            char byte[1];
+            byte[1] = 0x42; //ALLGROUPS
+            SendHexPackets(byte);
+        }
+    }
+}
+
+char  Milight::GetGroupHexByte(int GroupNumber) {
+    //Group 1 ALL ON is 0x45, Group 2 ALL ON is 0x47, and so on
+
+    char GroupHex = 0x43; //If group is 1, this will increment to 1 on execute
+
+    for (int i = 0; i < GroupNumber ; i++) {
+            GroupHex++;
+            GroupHex++;
+    }
+    return GroupHex;
 }
 
 void Milight::AddColour(const Colour OutputColour) {
