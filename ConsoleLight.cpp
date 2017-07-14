@@ -31,7 +31,7 @@ void ConsoleLight::EmitColour(const Colour OutputColour) {
     
     PostedNewGroups = true;
 
-    std::cout << "SETTING COLOR: R: " << OutputColour.red << " G: " << OutputColour.green <<  " B: " << OutputColour.blue << " A: " << OutputColour.Brightness <<  std::endl;
+    std::cout << "SETTING COLOR: R: " << OutputColour.red << " G: " << OutputColour.green <<  " B: " << OutputColour.blue <<  std::endl;
 }
 
 void ConsoleLight::AddColour(const Colour OutputColour) {
@@ -46,7 +46,7 @@ void ConsoleLight::AddColour(const Colour OutputColour) {
 
     PostedNewGroups = true;
 
-    std::cout << "ADDING R: " << OutputColour.red << " G: " << OutputColour.green <<  " B: " << OutputColour.blue << " A: " << OutputColour.Brightness <<  std::endl;
+    std::cout << "ADDING R: " << OutputColour.red << " G: " << OutputColour.green <<  " B: " << OutputColour.blue << " A: " <<  std::endl;
 }
 void ConsoleLight::SetColour(const Colour OutputColour) {
     EmitColour(OutputColour);
@@ -63,7 +63,7 @@ void ConsoleLight::RemoveColour(const Colour OutputColour) {
     
     PostedNewGroups = true;
 
-    std::cout << "REMOVING R: " << OutputColour.red << " G: " << OutputColour.green <<  " B: " << OutputColour.blue << " A: " << OutputColour.Brightness <<  std::endl;
+    std::cout << "REMOVING R: " << OutputColour.red << " G: " << OutputColour.green <<  " B: " << OutputColour.blue << " A: " <<   std::endl;
 }
 
 

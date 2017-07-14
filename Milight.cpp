@@ -11,10 +11,7 @@ void Milight::SetColourForCurrentGroups(const Colour OutputColour) {
 void Milight::EmitColour(const Colour OutputColour) {
 
 }
-void Milight::GetHue(GroupManager& Manager) {
 
-
-}
 
 void Milight::OnCurrentGroupsUpdate(GroupManager& Manager) {
     
@@ -30,7 +27,7 @@ void Milight::OnCurrentGroupsUpdate(GroupManager& Manager) {
         bool ContainsGroup3 = false;
         bool ContainsGroup4 = false;
 
-        for (int* item : Managr.CurrentlySelectedGroups) {
+        for (const int* item : Manager.CurrentlySelectedGroups) {
             if (*item == 1) {
                 ContainsGroup1 = true;
             }

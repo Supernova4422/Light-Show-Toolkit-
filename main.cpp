@@ -16,7 +16,7 @@ int main()
 {
     
     
-    
+    uint 
 
 
     LightShowFileReader Reader;
