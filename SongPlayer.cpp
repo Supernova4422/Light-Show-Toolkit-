@@ -29,6 +29,10 @@ Milight TestLight(Manager);
 
     Colour TestColour;
     TestLight.SetColour(TestColour);
+    TestLight.InitialiseUDPConnection("10.0.0.6",55005);
+    char buffer[3]={0x4E,0x19,0x55};
+    TestLight.SendHexPackets(buffer);
+
 }
 
 void SongPlayer::RunFunction(std::string FunctionToPlay , CommandOperation Operation) {

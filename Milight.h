@@ -16,4 +16,7 @@ class Milight: public ProgrammableLight
     void RemoveColour(const Colour OutputColour);
     
     void OnCurrentGroupsUpdate(GroupManager& Manager);
+
+    void InitialiseUDPConnection (const char * IPAddress , unsigned short Port);
+    void SendHexPackets (char buffer[]);
 };
