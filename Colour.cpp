@@ -6,31 +6,9 @@
 #include <map>
 #include <algorithm> 
 
-std::array<float,3> Colour::GetOrderedAndScaledRGB() {
-    int flag;
-    //Simple Bubble sort To get max/min
-    std::array<float,3> Order;
-    Order[0] = (float)red;// / 255; //&red;
-    Order[1] = (float)green;// / 255; //&green;
-    Order[2] = (float)blue;// / 255; //&blue;
 
-    std::cout <<  "RED IS: " << Order[0] << std::endl;
-
-    for (int i = 1; (i <= 3) && flag; i++) {
-        for (int j = 0; i < 2; i++) {
-            if (Order[j + 1] > Order[j] ) {
-                float temp = Order[i];
-                Order[j] = Order[j + 1];
-                Order[j + 1] = temp;
-                flag = 1;
-            }
-        }
-    }
-    return Order;
-}
 void Colour::UpdateHSBColours () {
-    std::array<float,3> ScaledOrderedRGB;
-    ScaledOrderedRGB = GetOrderedAndScaledRGB();
+    
     float HighestValue = std::max(std::max(red,green),blue);
     float LowestValue = std::min(std::min(red,green),blue);
 
@@ -62,10 +40,6 @@ void Colour::UpdateHSBColours () {
         }
     }
 
-    std::cout <<  "HUE IS: " << (int)Hue << std::endl;
-    if (Hue < 0) {
-       // Hue += 180;
-    }
     
 }
 

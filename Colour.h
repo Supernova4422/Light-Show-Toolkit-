@@ -35,10 +35,5 @@ struct Colour
     } 
     private: 
 
-   
-
-    std::array<float,3> GetOrderedAndScaledRGB ();
-
-    //DO HSL IN HERE  
 };
 #endif
