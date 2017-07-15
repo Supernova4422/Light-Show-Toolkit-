@@ -1,13 +1,13 @@
 Play    		{
-	Group1 : 0.1
-	#FFFFFF : 2
-	#000000 : 1
-	#FF0000 : Group2
+	Group1: 0.1
+	+Group2: 0.1
+	2OFFANDON 
+	+Group2
 	#FF0000 : 2
+	#00FF00 : 2
+	#FF0000 : 2
+	#FF00FF : 2
 	#000000 : 2
-	+Group1 : #000000
-	
-	
 }
 SIREN {
 #0F0000 : 0.5
@@ -16,3 +16,9 @@ SIREN {
 Minutes {60}
 M {60}
 Green {#0000FF}
+
+OFFANDON {
+	#FFFFFF : 2
+	#000000 : 2
+}
+

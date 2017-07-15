@@ -58,7 +58,7 @@ void SongPlayer::RunCommand(Command item ) {
         float timetowait = std::atof(item.value.c_str());
         std::cout << std::setprecision(5);
         std::cout << "WAIT: " << timetowait << '\n';
-        //TODO IMPLEMENT A WAIT FUNCTION
+        
 
         WaitMilliseconds(timetowait * 1000);
     } 

@@ -4,7 +4,8 @@
 #define WIN32_LEAN_AND_MEAN
 #include <winsock2.h>
 
-
+#include <ctime>
+#include <iomanip>
 
 
 void Milight::EmitColour(const Colour OutputColour) {
@@ -60,6 +61,7 @@ char  Milight::GetGroupHexByte(int GroupNumber) {
             GroupHex++;
             GroupHex++;
     }
+    
     return GroupHex;
 }
 
@@ -71,29 +73,34 @@ void Milight::SetColour(const Colour OutputColour) {
     char bytes[3];
     int WhiteThreshhold = 10;
     int BrightnessThreshhold = 10;
+
     if (OutputColour.Saturation < WhiteThreshhold) {
         SetWhiteForCurrentGroups();
+        std::cout << "SETTING WHITE" << std::endl;
     }
     else {
         bytes[0] = 0x40; 
         bytes[1] = 174 - OutputColour.Hue;
         bytes[2] = 0x55;
         SetColourForCurrentGroups(bytes);
+        std::cout << "SETTING COLOUR" << std::endl;
     }
-
+    
     std::cout << std::endl;
     
+    
+
     if (OutputColour.Brightness < BrightnessThreshhold)
     {
         TurnCurrentGroupsOff();
+        std::cout << "TURNING OFF" << std::endl;
+
     } else {
         char BrightnessBuffer[3];
         BrightnessBuffer[0] = 0x4E;
         BrightnessBuffer[1] = 2 + (( ( (float)OutputColour.Brightness) / 255) * 25);
         BrightnessBuffer[2] = 0x55; 
- 
-    SetColourForCurrentGroups(BrightnessBuffer);
-
+        SetColourForCurrentGroups(BrightnessBuffer);
     }
     
     std::cout << std::endl;
@@ -118,6 +125,7 @@ void Milight::SetColourForCurrentGroups(const char ColourPacket[]) {
     if (CurrentGroupBytes.size() == 1 ) {
             if (UpdatedCurrentGroup == false)
             {
+                std::cout << "SENDING ONE GROUP PACKET" << std::endl;
                 UpdatedCurrentGroup = true;
                 SendHexPackets(CurrentGroupBytes[0]);
             }
@@ -125,6 +133,8 @@ void Milight::SetColourForCurrentGroups(const char ColourPacket[]) {
             SendHexPackets(ColourPacket);
     } else {
         for (char item : CurrentGroupBytes) {
+            std::cout << item << std::endl;
+            
             SendHexPackets(item);
             
             //WAIT 100ms
@@ -141,7 +151,7 @@ void Milight::SetWhiteForCurrentGroups() {
             }
             SendHexPackets(CurrentGroupBytes[0] + 128);
     } else {
-        for (char item : CurrentGroupBytes) {
+        for (unsigned char item : CurrentGroupBytes) {
             SendHexPackets(item);
             //WAIT 100ms
             SendHexPackets(item + 128);
@@ -151,6 +161,7 @@ void Milight::SetWhiteForCurrentGroups() {
 
 void Milight::TurnCurrentGroupsOff() {
     
+    UpdatedCurrentGroup = false; //This ensures that LIGHTON functions are resent too 
 
     if (CurrentGroupBytes[0] == 0x42) {
             SendHexPackets(0x42 - 1);
@@ -185,22 +196,32 @@ void Milight::InitialiseUDPConnection (const char * IPAddress , unsigned short P
     
 }
 void Milight::SendHexPackets (const char buffer) {
-    char BufferArray[1];
+    char BufferArray[0];
     BufferArray[0] = buffer;
     SendHexPackets(BufferArray);
 }
 
 void Milight::SendHexPackets (const char buffer[]) {
+    
+    clock_t EndTime;
+    EndTime = clock() + (2000);
+    while (clock() < EndTime) { 
+        //Do nothing
+    }
+
     int BufLen = sizeof(buffer);
     
     int iResult;
-    for (int i = 0; i < BufLen -1; i++)
+    for (int i = 0; i < BufLen - 1; i++)
     {
         std::cout << (int)buffer[i] << " , " ;
     }
     std::cout << std::endl;
     iResult = sendto(SendSocket, buffer, BufLen, 0, (SOCKADDR *) & RecvAddr, sizeof (RecvAddr));
-
+    iResult = sendto(SendSocket, buffer, BufLen, 0, (SOCKADDR *) & RecvAddr, sizeof (RecvAddr));
+    iResult = sendto(SendSocket, buffer, BufLen, 0, (SOCKADDR *) & RecvAddr, sizeof (RecvAddr));
+    iResult = sendto(SendSocket, buffer, BufLen, 0, (SOCKADDR *) & RecvAddr, sizeof (RecvAddr));
+    
     if (iResult == SOCKET_ERROR) {
         wprintf(L"sendto failed with error: %d\n", WSAGetLastError());
         closesocket(SendSocket);

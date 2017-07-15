@@ -30,8 +30,18 @@ void ConsoleLight::EmitColour(const Colour OutputColour) {
     }
     
     PostedNewGroups = true;
+    std::cout << "SETTING COLOR:";
+    std::cout << " R: " << (int) OutputColour.red;
+    std::cout << " G: " << (int) OutputColour.green; 
+    std::cout << " B: " << (int) OutputColour.blue;
+    std::cout << std::endl;
+    
+    std::cout << "SETTING COLOR:";
+    std::cout << " H: " << (int) OutputColour.Hue;
+    std::cout << " S: " << (int) OutputColour.Saturation; 
+    std::cout << " B: " << (int) OutputColour.Brightness;
+    std::cout << std::endl;
 
-    std::cout << "SETTING COLOR: R: " <<(int) OutputColour.red << " G: " << (int)OutputColour.green <<  " B: " << (int)OutputColour.blue <<  std::endl;
 }
 
 void ConsoleLight::AddColour(const Colour OutputColour) {

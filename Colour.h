@@ -12,7 +12,7 @@ struct Colour
     Colour (std::string HexString);
     
     void UpdateHSBColours();
-     //TODO Make each a byte only, to limit values between 0-255
+   
     uint8_t red = 0;
     uint8_t green = 0;
     uint8_t blue = 0;
