@@ -11,7 +11,7 @@ struct Colour
     Colour();
     Colour (std::string HexString);
     
-    void UpdateHSLColours();
+    void UpdateHSBColours();
      //TODO Make each a byte only, to limit values between 0-255
     uint8_t red = 0;
     uint8_t green = 0;
@@ -19,19 +19,19 @@ struct Colour
     
     uint8_t Hue = 0;
     uint8_t Saturation = 0;
-    uint8_t Luminance = 0;
+    uint8_t Brightness = 0;
     
     Colour operator+=(const Colour& c){
         this->red += c.red;
         this->green += c.green;
         this->blue += c.blue;
-        UpdateHSLColours();
+        UpdateHSBColours();
     }
     Colour operator-=(const Colour& c){
         this->red -= c.red;
         this->green -= c.green;
         this->blue -= c.blue;
-        UpdateHSLColours();
+        UpdateHSBColours();
     } 
     private: 
 

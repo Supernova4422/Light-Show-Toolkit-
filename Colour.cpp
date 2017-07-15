@@ -4,7 +4,7 @@
 #include <vector> 
 #include <utility> 
 #include <map>
-
+#include <algorithm> 
 
 std::array<float,3> Colour::GetOrderedAndScaledRGB() {
     int flag;
@@ -28,37 +28,40 @@ std::array<float,3> Colour::GetOrderedAndScaledRGB() {
     }
     return Order;
 }
-void Colour::UpdateHSLColours () {
+void Colour::UpdateHSBColours () {
     std::array<float,3> ScaledOrderedRGB;
     ScaledOrderedRGB = GetOrderedAndScaledRGB();
+    float HighestValue = std::max(std::max(red,green),blue);
+    float LowestValue = std::min(std::min(red,green),blue);
 
-    float Max = ScaledOrderedRGB[0];
-    float Min = ScaledOrderedRGB[2];
-
-    Luminance = (Max + Min) / 2;// * 255 ;
     
-   
-    if (Luminance < 0.5) {
-        Saturation = (Max - Min) / (2 - (Max - Min));
-    }
-    if (Luminance > 0.5) {
-        Saturation = (Max - Min) / (Max - Min);
-    }
-    if (Luminance ==  0.5) {
+    std::cout <<  (int)blue << std::endl;
+    std::cout <<  (int)HighestValue << std::endl;
+
+    Brightness = HighestValue;
+    if (HighestValue == 0) {
         Saturation = 0;
+    } else {
+        Saturation = (HighestValue - LowestValue) / (HighestValue);
     }
-    
-    if (red == Max) {
-        Hue =  ((green  - blue) / (Max - Min) )* 255;
+    if (Saturation == 0) {
+        Hue = 0;
+    } else {
+        if (red == HighestValue) {
+            Hue =  ((green  - blue) / (HighestValue - LowestValue) ) * 60 / 360 * 255;
+        }
+        if (green == HighestValue) {
+            
+            Hue = ( 2.0 +   ((blue - red ) / 255) / ((HighestValue - LowestValue) / 255))  * 60 / 360 * 255;
+        }
+        if (blue == HighestValue) {
+            float data = (4.0 + (( (red - green ) / 255) / ((HighestValue - LowestValue) / 255))) * 60 / 360 * 255;
+
+            Hue = (4.0 + (( (red - green ) / 255) / ((HighestValue - LowestValue) / 255))) * 60 / 360 * 255;
+           
+        }
     }
-    if (green == Max) {
-        Hue = (2.0 + ((blue - red )/255) / ((Max - Min)/255)) * 255;
-    }
-    if (blue == Max) {
-        Hue = (4.0 + ((red - green )/255) / ((Max - Min)/255)) * 255;
-    }
-    
-    Hue = (Hue + 174) % 255;
+
     std::cout <<  "HUE IS: " << (int)Hue << std::endl;
     if (Hue < 0) {
        // Hue += 180;
@@ -70,7 +73,7 @@ Colour::Colour (std::string HexString) {
         red = (uint8_t) std::stoi(HexString.substr(0,2), nullptr , 16);
         green = (uint8_t) std::stoi(HexString.substr(2,2), nullptr , 16);
         blue = (uint8_t) std::stoi(HexString.substr(4,2), nullptr , 16);
-        UpdateHSLColours();
+        UpdateHSBColours();
 }
 Colour::Colour (){ }
 

@@ -4,56 +4,57 @@
 #define WIN32_LEAN_AND_MEAN
 #include <winsock2.h>
 
-void Milight::SetColourForCurrentGroups(const Colour OutputColour) {
-    
-}
+
+
 
 void Milight::EmitColour(const Colour OutputColour) {
 
 }
 
+bool UpdatedCurrentGroup = false;
 
 void Milight::OnCurrentGroupsUpdate(GroupManager& Manager) {
     
+    CurrentGroupBytes.clear();
+    //These bools allow us to ensure no doubles occur, and question if all are in
+    //We could probably replace this with a list that ensures unique values
+    //And then check for "Four" inputs at the end
+    UpdatedCurrentGroup = false;
 
-    if (Manager.CurrentlySelectedGroups.size() == 1) {
-        int GroupNumber = *Manager.CurrentlySelectedGroups[0];
-        char byte[1];
-        byte[0] = GetGroupHexByte(GroupNumber);
-        SendHexPackets(byte);
-    } else {
-        bool ContainsGroup1 = false;
-        bool ContainsGroup2 = false;
-        bool ContainsGroup3 = false;
-        bool ContainsGroup4 = false;
+    bool ContainsGroup1 = false;
+    bool ContainsGroup2 = false;
+    bool ContainsGroup3 = false;
+    bool ContainsGroup4 = false;
 
-        for (const int* item : Manager.CurrentlySelectedGroups) {
-            if (*item == 1) {
-                ContainsGroup1 = true;
-            }
-            if (*item == 2) {
-                ContainsGroup2 = true;
-            }
-            if (*item == 3) {
-                ContainsGroup3 = true;
-            }
-            if (*item == 4) {
-                ContainsGroup4 = true;
-            }
+    for (const int* item : Manager.CurrentlySelectedGroups) {
+        if ((*item == 1) && (ContainsGroup1 == false))  {
+            ContainsGroup1 = true;
+            CurrentGroupBytes.push_back(GetGroupHexByte(*item));
         }
-        if (ContainsGroup1 == ContainsGroup2 == ContainsGroup3 == ContainsGroup4 == true) {
-            char byte[0];
-            byte[0] = 0x42; //ALLGROUPS
-            SendHexPackets(byte);
+        if ((*item == 2) && (ContainsGroup2 == false))  {
+            ContainsGroup2 = true;
+            CurrentGroupBytes.push_back(GetGroupHexByte(*item));
+        }
+        if ((*item == 3) && (ContainsGroup3 == false))  {
+            ContainsGroup3 = true;
+            CurrentGroupBytes.push_back(GetGroupHexByte(*item));
+        }
+        if ((*item == 4) && (ContainsGroup4 == false))  {
+            ContainsGroup4 = true;
+            CurrentGroupBytes.push_back(GetGroupHexByte(*item));
         }
     }
+    if (ContainsGroup1 == ContainsGroup2 == ContainsGroup3 == ContainsGroup4 == true) {
+        CurrentGroupBytes.clear();
+        CurrentGroupBytes.push_back(0x42);
+    }
 }
+
 
 char  Milight::GetGroupHexByte(int GroupNumber) {
     //Group 1 ALL ON is 0x45, Group 2 ALL ON is 0x47, and so on
 
     char GroupHex = 0x43; //If group is 1, this will increment to 1 on execute
-
     for (int i = 0; i < GroupNumber ; i++) {
             GroupHex++;
             GroupHex++;
@@ -67,10 +68,23 @@ void Milight::AddColour(const Colour OutputColour) {
 void Milight::SetColour(const Colour OutputColour) {
     char bytes[3];
     bytes[0] = 0x40; 
-    bytes[1] = OutputColour.Hue;
+    bytes[1] = 174 - OutputColour.Hue;
     bytes[2] = 0x55;
-   
-    SendHexPackets(bytes);SendHexPackets(bytes);SendHexPackets(bytes);
+    
+    SetColourForCurrentGroups(bytes);
+    SetColourForCurrentGroups(bytes);
+    SetColourForCurrentGroups(bytes);
+    
+    char BrightnessBuffer[3];
+    BrightnessBuffer[0] = 0x4E;
+    BrightnessBuffer[1] = 2 + (( ( (float)OutputColour.Brightness) / 255) * 25);
+    BrightnessBuffer[2] = 0x55; 
+ 
+    SetColourForCurrentGroups(BrightnessBuffer);
+    SetColourForCurrentGroups(BrightnessBuffer);
+    SetColourForCurrentGroups(BrightnessBuffer);
+
+    //Group Byte + 128 gives the inner value for brightness
 } 
 
 void Milight::RemoveColour(const Colour OutputColour) {
@@ -80,10 +94,38 @@ void Milight::SpecificCommand(const Command command){
 }
 
 
+
+   
+void Milight::SetColourForCurrentGroups(const char ColourPacket[]) {
+    if (CurrentGroupBytes.size() == 1 && UpdatedCurrentGroup == false) {
+            UpdatedCurrentGroup = true;
+            SendHexPackets(CurrentGroupBytes[0]);
+            SendHexPackets(ColourPacket);
+    } else {
+        for (char item : CurrentGroupBytes) {
+            SendHexPackets(item);
+            //WAIT 100ms
+            SendHexPackets(ColourPacket);
+        }
+    }
+}
+
+void Milight::SetWhiteForCurrentGroups() {
+    if (CurrentGroupBytes.size() == 1 && UpdatedCurrentGroup == false) {
+            UpdatedCurrentGroup = true;
+            SendHexPackets(CurrentGroupBytes[0]);
+            SendHexPackets(CurrentGroupBytes[0] + 128);
+    } else {
+        for (char item : CurrentGroupBytes) {
+            SendHexPackets(item);
+            //WAIT 100ms
+            SendHexPackets(item + 128);
+        }
+    }
+}
+
 SOCKET SendSocket = INVALID_SOCKET;
 sockaddr_in RecvAddr;
-   
-
 void Milight::InitialiseUDPConnection (const char * IPAddress , unsigned short Port) {
     
     WSADATA wsaData;
@@ -105,8 +147,13 @@ void Milight::InitialiseUDPConnection (const char * IPAddress , unsigned short P
     RecvAddr.sin_addr.s_addr = inet_addr(IPAddress);
     
 }
+void Milight::SendHexPackets (const char buffer) {
+    char BufferArray[1];
+    BufferArray[0] = buffer;
+    SendHexPackets(BufferArray);
+}
 
-void Milight::SendHexPackets (char buffer[]) {
+void Milight::SendHexPackets (const char buffer[]) {
     int BufLen = sizeof(buffer);
     
     int iResult;
@@ -117,5 +164,4 @@ void Milight::SendHexPackets (char buffer[]) {
         closesocket(SendSocket);
         WSACleanup();
     }
-
 }
