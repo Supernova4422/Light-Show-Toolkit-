@@ -14,11 +14,15 @@
 #include "Milight.h"
 #include <ctime>
 #include <iomanip>
+
 GroupManager Manager;
 ConsoleLight ConsoleView(Manager);
 Milight TestLight(Manager);
 
- SongPlayer::SongPlayer () {
+
+std::map <std::string, std::vector<Command>> Dictionary;
+
+SongPlayer::SongPlayer () {
     
     GroupChangeEventListiners.push_back(&ConsoleView);
     GroupChangeEventListiners.push_back(&TestLight);
@@ -33,12 +37,28 @@ Milight TestLight(Manager);
    // TestLight.SendHexPackets(buffer);
 
 }
-
+void SongPlayer::AddFunctionToSupportFile(std::string FunctionName, std::vector<Command> Commands) {
+    SupportFile.insert(std::pair<std::string, std::vector<Command>>(FunctionName,Commands));
+}
+void SongPlayer::AddParsedFileToSupportFile(std::map<std::string, std::vector<Command>> ParsedFile) {
+    for (std::pair<std::string, std::vector<Command>> item : ParsedFile ) {
+        AddFunctionToSupportFile(item.first,item.second);
+    }
+}
 void SongPlayer::RunFunction(std::string FunctionToPlay , CommandOperation Operation) {
     
-    auto search = ParsedFile.find(FunctionToPlay);
-    if(search != ParsedFile.end()) {
-        for (Command item : search->second) {
+    auto search = MainFile.find(FunctionToPlay);
+
+    if (search == MainFile.end()) //Error, didn't find the function
+    {
+        search = SupportFile.find(FunctionToPlay); 
+        if (search == SupportFile.end()) { //Error didn't find the function
+            return; //Return to break the cycle
+        }
+    }
+
+    //Due to the return statement above, this is only reachable if we find a function
+    for (Command item : search->second) {
             if (Operation != CommandOperation::set) {
                 Command CommandTempItem = item;
                 CommandTempItem.Operation = Operation;
@@ -46,8 +66,9 @@ void SongPlayer::RunFunction(std::string FunctionToPlay , CommandOperation Opera
             } else {
                 RunCommand(item);
             }
-        }
     }
+
+  
 } 
 void SongPlayer::RunCommand(Command item ) {
     

@@ -15,6 +15,13 @@ class SongPlayer
     void WaitMilliseconds(float milliseconds);
     SongPlayer();
     std::vector<ColourListiner*> ListeningLights;
-    std::map<std::string, std::vector<Command>> ParsedFile;
+    
+    std::map<std::string, std::vector<Command>> MainFile;
+    
+
     std::vector<ProgrammableLight*> GroupChangeEventListiners;
+    void AddFunctionToSupportFile(std::string, std::vector<Command>);
+    void AddParsedFileToSupportFile(std::map<std::string, std::vector<Command>> ParsedFile);
+    private: 
+    std::map<std::string, std::vector<Command>> SupportFile;
 };

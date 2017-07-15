@@ -6,7 +6,6 @@
 #include <iostream>
 using namespace std;
 
-std::map <string, string> Dictionary;
 
 
 

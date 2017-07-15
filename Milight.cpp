@@ -218,9 +218,6 @@ void Milight::SendHexPackets (const char buffer[]) {
     }
     std::cout << std::endl;
     iResult = sendto(SendSocket, buffer, BufLen, 0, (SOCKADDR *) & RecvAddr, sizeof (RecvAddr));
-    iResult = sendto(SendSocket, buffer, BufLen, 0, (SOCKADDR *) & RecvAddr, sizeof (RecvAddr));
-    iResult = sendto(SendSocket, buffer, BufLen, 0, (SOCKADDR *) & RecvAddr, sizeof (RecvAddr));
-    iResult = sendto(SendSocket, buffer, BufLen, 0, (SOCKADDR *) & RecvAddr, sizeof (RecvAddr));
     
     if (iResult == SOCKET_ERROR) {
         wprintf(L"sendto failed with error: %d\n", WSAGetLastError());

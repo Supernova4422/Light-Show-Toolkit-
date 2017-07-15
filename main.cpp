@@ -29,8 +29,13 @@ int main()
     
     std::map<std::string, std::vector<Command>> ParsedFile = Factory.CreateFunctionHolder(IntermediateFile);
 
+    std::map<std::string, std::vector<std::string>> SupportFileIntermediate = Reader.ProcessFile("SupportFile_V1.txt");
+    
+    std::map<std::string, std::vector<Command>> SupportFileParsed = Factory.CreateFunctionHolder(SupportFileIntermediate);
+    
     SongPlayer Player; 
-    Player.ParsedFile = ParsedFile;
+    Player.MainFile = ParsedFile;
+    Player.AddParsedFileToSupportFile(SupportFileParsed);
     
     Player.RunFunction("Play");
   
