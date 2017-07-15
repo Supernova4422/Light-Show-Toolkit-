@@ -44,7 +44,8 @@ void Milight::OnCurrentGroupsUpdate(GroupManager& Manager) {
             CurrentGroupBytes.push_back(GetGroupHexByte(*item));
         }
     }
-    if (ContainsGroup1 == ContainsGroup2 == ContainsGroup3 == ContainsGroup4 == true) {
+    
+    if ( ((ContainsGroup1 && ContainsGroup2) && (ContainsGroup3 && ContainsGroup4)) == true) {
         CurrentGroupBytes.clear();
         CurrentGroupBytes.push_back(0x42);
     }
@@ -72,8 +73,7 @@ void Milight::SetColour(const Colour OutputColour) {
     bytes[2] = 0x55;
     
     SetColourForCurrentGroups(bytes);
-    SetColourForCurrentGroups(bytes);
-    SetColourForCurrentGroups(bytes);
+    std::cout << std::endl;
     
     char BrightnessBuffer[3];
     BrightnessBuffer[0] = 0x4E;
@@ -81,8 +81,7 @@ void Milight::SetColour(const Colour OutputColour) {
     BrightnessBuffer[2] = 0x55; 
  
     SetColourForCurrentGroups(BrightnessBuffer);
-    SetColourForCurrentGroups(BrightnessBuffer);
-    SetColourForCurrentGroups(BrightnessBuffer);
+    std::cout << std::endl;
 
     //Group Byte + 128 gives the inner value for brightness
 } 
@@ -97,13 +96,22 @@ void Milight::SpecificCommand(const Command command){
 
    
 void Milight::SetColourForCurrentGroups(const char ColourPacket[]) {
-    if (CurrentGroupBytes.size() == 1 && UpdatedCurrentGroup == false) {
-            UpdatedCurrentGroup = true;
-            SendHexPackets(CurrentGroupBytes[0]);
+    //Right now the implementation is not working properly because packets are colliding
+    //This can be fixed by adding a 100ms delay between setting groups, then the command for the group
+
+
+    if (CurrentGroupBytes.size() == 1 ) {
+            if (UpdatedCurrentGroup == false)
+            {
+                UpdatedCurrentGroup = true;
+                SendHexPackets(CurrentGroupBytes[0]);
+            }
+            
             SendHexPackets(ColourPacket);
     } else {
         for (char item : CurrentGroupBytes) {
             SendHexPackets(item);
+            
             //WAIT 100ms
             SendHexPackets(ColourPacket);
         }
@@ -113,11 +121,9 @@ void Milight::SetColourForCurrentGroups(const char ColourPacket[]) {
 void Milight::SetWhiteForCurrentGroups() {
     if (CurrentGroupBytes.size() == 1 && UpdatedCurrentGroup == false) {
             UpdatedCurrentGroup = true;
-            SendHexPackets(CurrentGroupBytes[0]);
             SendHexPackets(CurrentGroupBytes[0] + 128);
     } else {
         for (char item : CurrentGroupBytes) {
-            SendHexPackets(item);
             //WAIT 100ms
             SendHexPackets(item + 128);
         }
@@ -157,6 +163,11 @@ void Milight::SendHexPackets (const char buffer[]) {
     int BufLen = sizeof(buffer);
     
     int iResult;
+    for (int i = 0; i < BufLen -1; i++)
+    {
+        std::cout << (int)buffer[i] << " , " ;
+    }
+    std::cout << std::endl;
     iResult = sendto(SendSocket, buffer, BufLen, 0, (SOCKADDR *) & RecvAddr, sizeof (RecvAddr));
 
     if (iResult == SOCKET_ERROR) {

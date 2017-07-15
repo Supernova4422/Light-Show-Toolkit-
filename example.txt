@@ -1,9 +1,17 @@
 Play    		{
 	Group2 : 0.1
-	#FF0037 : 2
+	#00FF00 : 2
+	+Group3 : #FF0000
+	+Group4 : #0000FF
+	+Group1 : #010000
+	0.5 : #FF0000
+	#00FF00 : #0000FF
+	
+	
 }
 SIREN {
-#0F0000 : #00FF00
+#0F0000 : 0.5
+#00FF00 : 2
 }
 Minutes {60}
 M {60}

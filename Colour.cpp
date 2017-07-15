@@ -13,9 +13,7 @@ void Colour::UpdateHSBColours () {
     float LowestValue = std::min(std::min(red,green),blue);
 
     
-    std::cout <<  (int)blue << std::endl;
-    std::cout <<  (int)HighestValue << std::endl;
-
+    
     Brightness = HighestValue;
     if (HighestValue == 0) {
         Saturation = 0;
