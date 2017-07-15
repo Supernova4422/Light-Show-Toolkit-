@@ -1,11 +1,11 @@
 Play    		{
 	Group1 : 0.1
 	#FFFFFF : 2
-	+Group3 : #FF0000
-	+Group4 : #0000FF
-	+Group1 : #010000
-	0.5 : #FF0000
-	#00FF00 : #0000FF
+	#000000 : 1
+	#FF0000 : Group2
+	#FF0000 : 2
+	#000000 : 2
+	+Group1 : #000000
 	
 	
 }

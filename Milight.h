@@ -25,6 +25,7 @@ class Milight: public ProgrammableLight
 
     void SetColourForCurrentGroups(const char ColourPacket[]);
     void SetWhiteForCurrentGroups();
+    void TurnCurrentGroupsOff();
     std::vector<char> CurrentGroupBytes;
     
     
