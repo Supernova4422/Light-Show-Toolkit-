@@ -67,12 +67,21 @@ void Milight::AddColour(const Colour OutputColour) {
 }
 
 void Milight::SetColour(const Colour OutputColour) {
-    char bytes[3];
-    bytes[0] = 0x40; 
-    bytes[1] = 174 - OutputColour.Hue;
-    bytes[2] = 0x55;
     
+    char bytes[3];
+    int WhiteThreshhold = 10;
+    if (OutputColour.Saturation < WhiteThreshhold) {
+        SetWhiteForCurrentGroups();
+    }
+    else {
+        bytes[0] = 0x40; 
+        bytes[1] = 174 - OutputColour.Hue;
+        bytes[2] = 0x55;
+        
+    }
+
     SetColourForCurrentGroups(bytes);
+    
     std::cout << std::endl;
     
     char BrightnessBuffer[3];
@@ -119,11 +128,15 @@ void Milight::SetColourForCurrentGroups(const char ColourPacket[]) {
 }
 
 void Milight::SetWhiteForCurrentGroups() {
-    if (CurrentGroupBytes.size() == 1 && UpdatedCurrentGroup == false) {
-            UpdatedCurrentGroup = true;
+    if (CurrentGroupBytes.size() == 1 ) {
+            if (UpdatedCurrentGroup == false) {
+                UpdatedCurrentGroup = true;
+                SendHexPackets(CurrentGroupBytes[0]);
+            }
             SendHexPackets(CurrentGroupBytes[0] + 128);
     } else {
         for (char item : CurrentGroupBytes) {
+            SendHexPackets(item);
             //WAIT 100ms
             SendHexPackets(item + 128);
         }

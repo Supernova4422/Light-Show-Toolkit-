@@ -1,6 +1,6 @@
 Play    		{
-	Group2 : 0.1
-	#00FF00 : 2
+	Group1 : 0.1
+	#FFFFFF : 2
 	+Group3 : #FF0000
 	+Group4 : #0000FF
 	+Group1 : #010000
