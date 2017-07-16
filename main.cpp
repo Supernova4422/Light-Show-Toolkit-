@@ -37,7 +37,7 @@ int main()
     Player.MainFile = ParsedFile;
     Player.AddParsedFileToSupportFile(SupportFileParsed);
     
-    Player.RunFunction("Play");
+    Player.StartPlaying("Play" , "SONG");
   
     int num;
     std::cin >> num;

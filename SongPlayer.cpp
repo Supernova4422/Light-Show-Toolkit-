@@ -125,11 +125,24 @@ void SongPlayer::RunCommand(Command item ) {
     }
 }
 
-void SongPlayer::WaitMilliseconds (float milliseconds) {
+clock_t SongStartTime;
+float WaitTimeTotal;
 
-    clock_t EndTime;
-    EndTime = clock() + (milliseconds);
-    while (clock() < EndTime) { 
+void SongPlayer::WaitMilliseconds (float milliseconds) {
+    
+    WaitTimeTotal = WaitTimeTotal + milliseconds;
+    std::cout << "START WAIT" << std::endl;
+    while (clock() < (SongStartTime + WaitTimeTotal) ) { 
         //Do nothing
     }
+    std::cout << "END WAIT" << std::endl;
+}
+
+void SongPlayer::StartPlaying(std::string FunctionToPlay , std::string SongToPlay) {
+    PlaySong(SongToPlay);
+    SongStartTime = clock();
+    RunFunction(FunctionToPlay);
+}
+
+void SongPlayer::PlaySong(std::string SongToPlay) {
 }

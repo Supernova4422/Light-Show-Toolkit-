@@ -1,5 +1,8 @@
 Play {
-	Group1 : SIREN
+	Group1 : SIREN	
+	#FF0000 : 2
+	#00FF00 : 60
+	3OFFANDON 
 }
 
 Minutes {60}

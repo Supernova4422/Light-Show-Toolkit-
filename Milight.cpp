@@ -204,7 +204,7 @@ void Milight::SendHexPackets (const char buffer) {
 void Milight::SendHexPackets (const char buffer[]) {
     
     clock_t EndTime;
-    EndTime = clock() + (2000);
+    EndTime = clock() + (5000);
     while (clock() < EndTime) { 
         //Do nothing
     }
