@@ -2,11 +2,14 @@
 #include "ProgrammableLight.h"
 #include "GroupManager.h"
 #include <vector>
+#include "NetworkPacketSender.h"
 class Milight: public ProgrammableLight
 {
     public: 
-    Milight(GroupManager &Manager) : ProgrammableLight(Manager){};
+    NetworkPacketSender UDPPacketSender;
 
+    Milight(GroupManager &Manager) : ProgrammableLight(Manager){};
+   
     void SetColourForCurrentGroups(const Colour OutputColour);
     void EmitColour(const Colour OutputColour); 
     void SpecificCommand(const Command command);
@@ -16,10 +19,6 @@ class Milight: public ProgrammableLight
     void RemoveColour(const Colour OutputColour);
     
     void OnCurrentGroupsUpdate(GroupManager& Manager);
-
-    void InitialiseUDPConnection (const char * IPAddress , unsigned short Port);
-    void SendHexPackets (const char buffer[]);
-    void SendHexPackets (const char buffer);
 
     char GetGroupHexByte(int GroupNumber);
 

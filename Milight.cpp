@@ -8,6 +8,9 @@
 #include <iomanip>
 
 
+
+
+
 void Milight::EmitColour(const Colour OutputColour) {
 
 }
@@ -15,6 +18,8 @@ void Milight::EmitColour(const Colour OutputColour) {
 bool UpdatedCurrentGroup = false;
 
 void Milight::OnCurrentGroupsUpdate(GroupManager& Manager) {
+    
+    UDPPacketSender.InitialiseConnection("10.0.0.65",8899);
     
     CurrentGroupBytes.clear();
     //These bools allow us to ensure no doubles occur, and question if all are in
@@ -127,18 +132,18 @@ void Milight::SetColourForCurrentGroups(const char ColourPacket[]) {
             {
                 std::cout << "SENDING ONE GROUP PACKET" << std::endl;
                 UpdatedCurrentGroup = true;
-                SendHexPackets(CurrentGroupBytes[0]);
+                UDPPacketSender.SendHexPackets(CurrentGroupBytes[0]);
             }
             
-            SendHexPackets(ColourPacket);
+            UDPPacketSender.SendHexPackets(ColourPacket);
     } else {
         for (char item : CurrentGroupBytes) {
             std::cout << item << std::endl;
             
-            SendHexPackets(item);
+            UDPPacketSender.SendHexPackets(item);
             
             //WAIT 100ms
-            SendHexPackets(ColourPacket);
+            UDPPacketSender.SendHexPackets(ColourPacket);
         }
     }
 }
@@ -147,14 +152,14 @@ void Milight::SetWhiteForCurrentGroups() {
     if (CurrentGroupBytes.size() == 1 ) {
             if (UpdatedCurrentGroup == false) {
                 UpdatedCurrentGroup = true;
-                SendHexPackets(CurrentGroupBytes[0]);
+                UDPPacketSender.SendHexPackets(CurrentGroupBytes[0]);
             }
-            SendHexPackets(CurrentGroupBytes[0] + 128);
+            UDPPacketSender.SendHexPackets(CurrentGroupBytes[0] + 128);
     } else {
         for (unsigned char item : CurrentGroupBytes) {
-            SendHexPackets(item);
+            UDPPacketSender.SendHexPackets(item);
             //WAIT 100ms
-            SendHexPackets(item + 128);
+            UDPPacketSender.SendHexPackets(item + 128);
         }
     }
 }
@@ -164,64 +169,11 @@ void Milight::TurnCurrentGroupsOff() {
     UpdatedCurrentGroup = false; //This ensures that LIGHTON functions are resent too 
 
     if (CurrentGroupBytes[0] == 0x42) {
-            SendHexPackets(0x42 - 1);
+            UDPPacketSender.SendHexPackets(0x42 - 1);
     } else {
         for (char item : CurrentGroupBytes) {
-            SendHexPackets(item + 1);
+            UDPPacketSender.SendHexPackets(item + 1);
     }
     }
 }
 
-SOCKET SendSocket = INVALID_SOCKET;
-sockaddr_in RecvAddr;
-void Milight::InitialiseUDPConnection (const char * IPAddress , unsigned short Port) {
-    
-    WSADATA wsaData;
-    int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
-    if (iResult != NO_ERROR) {
-        wprintf(L"WSAStartup failed with error: %d\n", iResult);
-    }    
-
-    SendSocket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
-   
-    if (SendSocket == INVALID_SOCKET) {
-        wprintf(L"socket failed with error: %ld\n", WSAGetLastError());
-        WSACleanup();
-    }
-    
-    
-    RecvAddr.sin_family = AF_INET;
-    RecvAddr.sin_port = htons(Port);
-    RecvAddr.sin_addr.s_addr = inet_addr(IPAddress);
-    
-}
-void Milight::SendHexPackets (const char buffer) {
-    char BufferArray[0];
-    BufferArray[0] = buffer;
-    SendHexPackets(BufferArray);
-}
-
-void Milight::SendHexPackets (const char buffer[]) {
-    
-    clock_t EndTime;
-    EndTime = clock() + (5000);
-    while (clock() < EndTime) { 
-        //Do nothing
-    }
-
-    int BufLen = sizeof(buffer);
-    
-    int iResult;
-    for (int i = 0; i < BufLen - 1; i++)
-    {
-        std::cout << (int)buffer[i] << " , " ;
-    }
-    std::cout << std::endl;
-    iResult = sendto(SendSocket, buffer, BufLen, 0, (SOCKADDR *) & RecvAddr, sizeof (RecvAddr));
-    
-    if (iResult == SOCKET_ERROR) {
-        wprintf(L"sendto failed with error: %d\n", WSAGetLastError());
-        closesocket(SendSocket);
-        WSACleanup();
-    }
-}

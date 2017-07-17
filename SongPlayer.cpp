@@ -32,7 +32,7 @@ SongPlayer::SongPlayer () {
     ListeningLights.push_back(&TestLight);
 
     
-    TestLight.InitialiseUDPConnection("10.0.0.65",8899);
+    
     //char buffer[3]={0x4E, 0x19, 0x55};
    // TestLight.SendHexPackets(buffer);
 
