@@ -6,7 +6,6 @@
 #include <sstream>      // std::istringstream
 #include <string>
 #include "CommandDataTypes.cpp"
-#include "FileReader.h"
 #include "CommandFactory.h"
 #include "ProgrammableLight.h"
 
@@ -14,17 +13,17 @@
 #include "ConsoleLight.h"
 #include "SongPlayer.h"
 #include "GroupManager.h"
-#include "FileParserHandler.h"
-
+#include "CommandLineInterface.h"
 int main()
 {
-    FileParserHandler Parser;
-    SongPlayer Player; 
-    Player.MainFile = Parser.ParseFile("Example.ls");
-
-    Player.AddParsedFileToSupportFile(Parser.ParseFile("SupportFile_V1.txt"));
     
-    Player.StartPlaying("Play" , "SONG");
+    SongPlayer Player; 
+    CommandLineInterface CLI(Player);
+    
+
+    //Player.AddParsedFileToSupportFile(Parser.ParseFile("SupportFile_V1.txt"));
+    
+    //Player.StartPlaying("Play" , "SONG");
   
     int num;
     std::cin >> num;

@@ -1,7 +1,6 @@
 // in myclass.cpp  
 #include <iostream>
 #include <fstream>
-#include "FileReader.h"
 #include <vector>
 #include <map>
 #include <utility> 

@@ -3,6 +3,8 @@
 #include "ProgrammableLight.h"
 #include "SongPlayer.h"
 #include "ColourListiner.h"
+#include "ConsoleLight.h"
+#include "Milight.h"
 #include <string>
 #include <vector> 
 #include <iostream>
@@ -10,8 +12,6 @@
 #include <map>
 #include <chrono>
 #include <thread>
-#include "ConsoleLight.h"
-#include "Milight.h"
 #include <ctime>
 #include <iomanip>
 
@@ -23,17 +23,21 @@ Milight TestLight(Manager);
 std::map <std::string, std::vector<Command>> Dictionary;
 
 SongPlayer::SongPlayer () {
-    
     GroupChangeEventListiners.push_back(&ConsoleView);
     GroupChangeEventListiners.push_back(&TestLight);
     
     ListeningLights.push_back(&Manager);
     ListeningLights.push_back(&ConsoleView);
     ListeningLights.push_back(&TestLight);
-
-    
-    
 }
+
+void SongPlayer::LoadMainFile(std::string FileName) {
+    MainFile = Parser.ParseFile(FileName);
+}
+void SongPlayer::AddSupportFile(std::string FileName) {
+    AddParsedFileToSupportFile(Parser.ParseFile(FileName));
+}
+
 void SongPlayer::AddFunctionToSupportFile(std::string FunctionName, std::vector<Command> Commands) {
     SupportFile.insert(std::pair<std::string, std::vector<Command>>(FunctionName,Commands));
 }
