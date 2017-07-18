@@ -3,11 +3,12 @@
 #include <iostream>
 
 CommandLineInterface::CommandLineInterface(SongPlayer &Player) {
-    bool Running;
+    bool Running = true;
     this->Player = &Player;
     while (Running) {
+        std::cout << "Waiting on Input" << std::endl;
         std::string Line;
-        std::cin >> Line;
+        std::getline(std::cin, Line);
         ParseLine(Line);
     }
 }
@@ -20,25 +21,26 @@ void CommandLineInterface::ParseLine (std::string Line) {
     std::string PrintMainDataCommand = "PrintMainData";
     std::string PrintSupportDataCommand = "PrintSupportData";
     std::string Help = "Help";
-    
-    std::size_t Pos;
+    int Space;
+    Space = Line.find(" ") + 1; 
 
+    std::size_t Pos;
     Pos = Line.find(LoadMainCommand);
     if (Pos !=  std::string::npos) {
         
-        Player->LoadMainFile(Line.substr(Pos));
+        Player->LoadMainFile(Line.substr(Space));
     } else {  
         Pos = Line.find(LoadSupportCommand);
 
         if (Pos != std::string::npos) {
-            Player->AddSupportFile(Line.substr(Pos));
+            Player->AddSupportFile(Line.substr(Space));
         }
     
         else {
             Pos = Line.find(RunCommand);
             std::string Play = "Play";
             if (Pos != std::string::npos) {
-                    Player->StartPlaying(Play, Line.substr(Pos));
+                    Player->StartPlaying(Play, Line.substr(Space));
             }
         } 
         
