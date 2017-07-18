@@ -9,8 +9,6 @@
 
 
 
-
-
 void Milight::EmitColour(const Colour OutputColour) {
 
 }
@@ -93,8 +91,6 @@ void Milight::SetColour(const Colour OutputColour) {
     
     std::cout << std::endl;
     
-    
-
     if (OutputColour.Brightness < BrightnessThreshhold)
     {
         TurnCurrentGroupsOff();
