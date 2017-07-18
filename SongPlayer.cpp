@@ -33,9 +33,6 @@ SongPlayer::SongPlayer () {
 
     
     
-    //char buffer[3]={0x4E, 0x19, 0x55};
-   // TestLight.SendHexPackets(buffer);
-
 }
 void SongPlayer::AddFunctionToSupportFile(std::string FunctionName, std::vector<Command> Commands) {
     SupportFile.insert(std::pair<std::string, std::vector<Command>>(FunctionName,Commands));

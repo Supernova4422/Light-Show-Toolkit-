@@ -1,3 +1,6 @@
+#ifndef CommandFactoryDef
+#define CommandFactoryDef
+
 #include <string>
 #include <vector> 
 #include <utility> 
@@ -18,3 +21,4 @@ class CommandFactory {
         bool IsWhiteSpace(char c);
         void PrintAll(std::map <string, vector<string>> FunctionsWithCommands );
 };
+#endif
