@@ -21,34 +21,45 @@ void CommandLineInterface::ParseLine (std::string Line) {
     std::string PrintMainDataCommand = "PrintMainData";
     std::string PrintSupportDataCommand = "PrintSupportData";
     std::string Help = "Help";
-    int Space;
-    Space = Line.find(" ") + 1; 
-
-    std::size_t Pos;
-    Pos = Line.find(LoadMainCommand);
-    if (Pos !=  std::string::npos) {
-        
-        Player->LoadMainFile(Line.substr(Space));
-    } else {  
-        Pos = Line.find(LoadSupportCommand);
-
-        if (Pos != std::string::npos) {
-            Player->AddSupportFile(Line.substr(Space));
-        }
     
-        else {
-            Pos = Line.find(RunCommand);
-            std::string Play = "Play";
-            if (Pos != std::string::npos) {
-                    Player->StartPlaying(Play, Line.substr(Space));
+    
+    std::string BeforeSpace = "";
+    std::string AfterSpace = "";
+
+    bool EncounteredFirstSpace = false;
+    
+    for (char c : Line)
+    {
+        if (EncounteredFirstSpace) {
+            AfterSpace = AfterSpace + c;
+        } else {
+            if (c == ' ')
+            {
+                EncounteredFirstSpace = true;
+            } else {
+                BeforeSpace = BeforeSpace + c;
             }
-        } 
-        
-        if (Line.find(PrintMainDataCommand) != std::string::npos) {
-        } 
-        
-        if (Line.find(PrintSupportDataCommand) != std::string::npos) {
         }
     }
+    
+    if (BeforeSpace == LoadMainCommand) {
+        
+        Player->LoadMainFile(AfterSpace);
+    } 
+    if (BeforeSpace == LoadSupportCommand)
+    {
+        Player->AddSupportFile(AfterSpace);
+    }
+    if (BeforeSpace == RunCommand)
+    {
+        std::string Play = "Play";
+        Player->StartPlaying(Play, AfterSpace);
+    }
+    if (BeforeSpace == PrintMainDataCommand) {
+    } 
+    if (BeforeSpace == PrintSupportDataCommand) {
+    }     
+    
+   
 }
 
