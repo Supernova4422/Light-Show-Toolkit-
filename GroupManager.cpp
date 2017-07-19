@@ -79,8 +79,6 @@ void GroupManager::AddColour(const Colour OutputColour , Command item)
     for (ColourListiner* light : ListeningLights) {
         light->EmitColour(item, CurrentlySelectedGroups);
     }
-
-    
 }
 void GroupManager::RemoveColour(const Colour OutputColour , Command item)
 {

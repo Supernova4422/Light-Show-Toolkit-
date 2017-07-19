@@ -1,6 +1,8 @@
 Play {
-	Group1 : SIREN	
-	#FF0000 : 2
+	Group1 : +Group2 
+	+Group3 : +Group4 
+	#FF0000 : #FF0000
+	2
 	#00FF00 : 60
 	3OFFANDON 
 }

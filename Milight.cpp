@@ -10,8 +10,11 @@
 
 
 
+    
 void Milight::EmitColour(const Command CommandItem , const std::vector<std::pair<const int, Colour>*> ExpectedOutput) {
     CanUseByteForALLGROUPS CanSendAllGroupByte = CheckIfCanUseByteForALLGROUPS(ExpectedOutput);
+    UDPPacketSender.InitialiseConnection("10.0.0.65" , 8899);
+
     const char AllGroupByte = 0x42;
 
     //COLOUR MUST ALWAYS BE SENT FIRST
@@ -140,7 +143,7 @@ CanUseByteForALLGROUPS Milight::CheckIfCanUseByteForALLGROUPS (const std::vector
 }
 void Milight::OnCurrentGroupsUpdate(GroupManager& Manager) {
     
-    UDPPacketSender.InitialiseConnection("10.0.0.65",8899);
+    
     
     CurrentGroupBytes.clear();
     //These bools allow us to ensure no doubles occur, and question if all are in
