@@ -17,7 +17,7 @@ class Milight: public ProgrammableLight
     public: 
     NetworkPacketSender UDPPacketSender;
     CanUseByteForALLGROUPS CheckIfCanUseByteForALLGROUPS (const std::vector<std::pair<const int, Colour>*> Collection);
-    Milight() : ProgrammableLight(){};
+    Milight();
    
     void EmitColour(const Command CommandItem , const std::vector<std::pair<const int, Colour>*> ExpectedOutput);
    

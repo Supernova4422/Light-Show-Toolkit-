@@ -2,13 +2,13 @@
 #include "ConsoleLight.h"
 #include <iostream>
 #include "GroupManager.h"
-bool PostedNewGroups = true;
+bool PostedNewGroups = false;
 void ConsoleLight::EmitColour(const Command CommandItem , const std::vector<std::pair<const int, Colour>*> ExpectedOutput) {
 
     
     if (PostedNewGroups == false)
     {
-        std::cout << "CURRENT GROUPS:" << std::endl;
+        std::cout << "Sending to groups: " << std::endl;
         for (const std::pair<const int, Colour>* group : ExpectedOutput) {
             std::cout << group->first << ", ";
         }
@@ -33,8 +33,8 @@ void ConsoleLight::EmitColour(const Command CommandItem , const std::vector<std:
         break;
     }
     
-    std::cout << "R: " << (int) NewColour.red << " G: " << NewColour.green << " B: " << NewColour.blue << std::endl;
-    std::cout << "H: " << (int) NewColour.Hue << " S: " << NewColour.Saturation << " B: " << NewColour.Brightness << std::endl;
+    std::cout << "R: " << (int) NewColour.red << " G: " << (int) NewColour.green << " B: " << (int) NewColour.blue << std::endl;
+    std::cout << "H: " << (int) NewColour.Hue << " S: " << (int) NewColour.Saturation << " B: " << (int) NewColour.Brightness << std::endl;
 }
 
 void ConsoleLight::SetColourForCurrentGroups(const Colour OutputColour) {

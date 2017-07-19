@@ -8,15 +8,13 @@
 #include <iomanip>
 
 
-
-
-    
-void Milight::EmitColour(const Command CommandItem , const std::vector<std::pair<const int, Colour>*> ExpectedOutput) {
-    CanUseByteForALLGROUPS CanSendAllGroupByte = CheckIfCanUseByteForALLGROUPS(ExpectedOutput);
+Milight::Milight() {
     UDPPacketSender.InitialiseConnection("10.0.0.65" , 8899);
 
-    const char AllGroupByte = 0x42;
-
+}
+void Milight::EmitColour(const Command CommandItem , const std::vector<std::pair<const int, Colour>*> ExpectedOutput) {
+    CanUseByteForALLGROUPS CanSendAllGroupByte = CheckIfCanUseByteForALLGROUPS(ExpectedOutput);
+    
     //COLOUR MUST ALWAYS BE SENT FIRST
     Colour FirstEntryColour = ExpectedOutput[0]->second;
     if (CanSendAllGroupByte == ForBoth) {
@@ -206,7 +204,7 @@ void Milight::SendGroup(MilightGroupIDs GroupID)
         ByteToSend = GetGroupHexByte(GroupID);
     }
 
-    if ((GroupID != Invalid) && (LastGroupPacketSent != ByteToSend)) {
+    if ((GroupID != Invalid) /*&& (LastGroupPacketSent != ByteToSend)*/) {
         LastGroupPacketSent = ByteToSend;
         UDPPacketSender.SendHexPackets(ByteToSend);
 
