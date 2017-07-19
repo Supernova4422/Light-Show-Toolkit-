@@ -10,11 +10,6 @@
 #include <cctype>
 #include "Colour.h"
 
-ProgrammableLight::ProgrammableLight(GroupManager &Manager)
-{
-    this->Manager = &Manager;
-}
-
 
 void ProgrammableLight::AddColour(const Colour OutputColour)
 {

@@ -5,10 +5,10 @@
 class ConsoleLight: public ProgrammableLight
 {
     public: 
-    ConsoleLight(GroupManager &Manager) : ProgrammableLight(Manager){};
+    ConsoleLight() : ProgrammableLight(){};
 
     void SetColourForCurrentGroups(const Colour OutputColour);
-    void EmitColour(const Colour OutputColour);
+    void EmitColour(const Command CommandItem , const std::vector<std::pair<const int, Colour>*> ExpectedOutput);
     void SpecificCommand(const Command command);
     void AddColour(const Colour OutputColour); 
     void SetColour(const Colour OutputColour); 

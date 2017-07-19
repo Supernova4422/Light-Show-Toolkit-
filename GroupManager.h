@@ -8,22 +8,24 @@
 #include "CommandDataTypes.cpp"
 #include "Colour.h"
 #include "ColourListiner.h"
-class GroupManager: public ColourListiner
+class GroupManager
 {
   public:
     void SetGroups(const int Group, CommandOperation Operation);
     void AddToCurrentGroups(const int GroupToAdd);
-    void AddColour(const Colour OutputColour); 
-    void SetColour(const Colour OutputColour); 
-    void RemoveColour(const Colour OutputColour); 
-
+    void AddColour(const Colour OutputColour , Command item); 
+    void SetColour(const Colour OutputColour , Command item); 
+    void RemoveColour(const Colour OutputColour , Command item); 
+    
+    GroupManager();
     
 
     std::pair<const int, Colour> *GetGroupByID(const int ID);
-    std::vector<const int *> CurrentlySelectedGroups;
+    std::vector<std::pair<const int, Colour>*> CurrentlySelectedGroups;
   private:
     std::map<int, Colour> AllGroups;
     Colour CurrentSelectedColour;
+    std::vector<ColourListiner*> ListeningLights;
     
 };
 #endif

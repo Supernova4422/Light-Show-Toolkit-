@@ -1,5 +1,8 @@
 
 #include "GroupManager.h"
+#include "ConsoleLight.h"
+#include "Milight.h"
+
 #include <string>
 #include <vector> 
 #include <utility> 
@@ -10,6 +13,14 @@
 #include <iostream>
 #include <cctype>
 
+ConsoleLight ConsoleView;
+Milight TestLight;
+
+GroupManager::GroupManager ()
+{
+    ListeningLights.push_back(&ConsoleView);
+    ListeningLights.push_back(&TestLight);
+}
 void GroupManager::SetGroups(const int Group, CommandOperation Operation)
 {
 
@@ -30,17 +41,12 @@ void GroupManager::SetGroups(const int Group, CommandOperation Operation)
     case Remove:
         std::pair<const int, Colour> *Entry = GetGroupByID(Group);
 
-        //A pointer is used to ensure that the group is kept track of
-        PointerToGroupID = &Entry->first;
-
         CurrentlySelectedGroups.erase(std::remove(CurrentlySelectedGroups.begin(),
                                                   CurrentlySelectedGroups.end(),
-                                                  PointerToGroupID),
-                                      CurrentlySelectedGroups.end());
+                                                  Entry),
+                                                  CurrentlySelectedGroups.end());
         break;
     }
-
-    
 }
 
 void GroupManager::AddToCurrentGroups(const int GroupToAdd)
@@ -48,8 +54,10 @@ void GroupManager::AddToCurrentGroups(const int GroupToAdd)
     Colour empty;
     std::pair<const int, Colour> *Entry = GetGroupByID(GroupToAdd);
     //A pointer is used to ensure that the group is kept track of
-    const int *PointerToGroupID = &Entry->first;
-    CurrentlySelectedGroups.push_back(PointerToGroupID);
+    
+    const int *PointerToGroupID = &Entry->first; //Redundant?
+    
+    CurrentlySelectedGroups.push_back(Entry);
 }
 std::pair<const int, Colour> *GroupManager::GetGroupByID(const int ID)
 {
@@ -60,24 +68,39 @@ std::pair<const int, Colour> *GroupManager::GetGroupByID(const int ID)
     return Entry;
 }
 
-void GroupManager::AddColour(const Colour OutputColour)
+
+void GroupManager::AddColour(const Colour OutputColour , Command item)
 {
-    for (const int *group : CurrentlySelectedGroups)
+    for (std::pair<const int, Colour> *group : CurrentlySelectedGroups)
     {
-        GetGroupByID(*group)->second += OutputColour;
+        group->second += OutputColour;
+    }
+    
+    for (ColourListiner* light : ListeningLights) {
+        light->EmitColour(item, CurrentlySelectedGroups);
+    }
+
+    
+}
+void GroupManager::RemoveColour(const Colour OutputColour , Command item)
+{
+    for (std::pair<const int, Colour> *group : CurrentlySelectedGroups)
+    {
+        group->second -= OutputColour;
+    }
+    for (ColourListiner* light : ListeningLights) {
+        light->EmitColour(item, CurrentlySelectedGroups);
     }
 }
-void GroupManager::RemoveColour(const Colour OutputColour)
+void GroupManager::SetColour(const Colour OutputColour, Command item)
 {
-    for (const int *group : CurrentlySelectedGroups)
+    for (std::pair<const int, Colour> *group : CurrentlySelectedGroups)
     {
-        GetGroupByID(*group)->second -= OutputColour;
+        group->second = OutputColour;
     }
-}
-void GroupManager::SetColour(const Colour OutputColour)
-{
-    for (const int *group : CurrentlySelectedGroups)
-    {
-        GetGroupByID(*group)->second = OutputColour;
+
+    for (ColourListiner* light : ListeningLights) {
+        light->EmitColour(item, CurrentlySelectedGroups);
     }
+
 }

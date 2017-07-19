@@ -16,19 +16,12 @@
 #include <iomanip>
 
 GroupManager Manager;
-ConsoleLight ConsoleView(Manager);
-Milight TestLight(Manager);
 
 
 std::map <std::string, std::vector<Command>> Dictionary;
 
 SongPlayer::SongPlayer () {
-    GroupChangeEventListiners.push_back(&ConsoleView);
-    GroupChangeEventListiners.push_back(&TestLight);
     
-    ListeningLights.push_back(&Manager);
-    ListeningLights.push_back(&ConsoleView);
-    ListeningLights.push_back(&TestLight);
 }
 
 void SongPlayer::LoadMainFile(std::string FileName) {
@@ -87,16 +80,17 @@ void SongPlayer::RunCommand(Command item ) {
     else {
 
         if (item.type == CommandType::SpecificCommand) {
+            std::cout << "SPECIFIC COMMAND NOT IMPLEMENTED IN MANAGER";
+            /*
             for (ProgrammableLight* Listiner : GroupChangeEventListiners) {
                 Listiner->SpecificCommand(item);
             }
+            */
         }
 
         if (item.type == CommandType::Group) {
             Manager.SetGroups(atoi(item.value.c_str()), item.Operation);
-            for (ProgrammableLight* Listiner : GroupChangeEventListiners) {
-                Listiner->OnCurrentGroupsUpdate(Manager);
-            }
+            
         } 
         if (item.type == CommandType::FunctionName){
             for (int i = 0; i < item.TimesToExecute; i++) {
@@ -111,16 +105,14 @@ void SongPlayer::RunCommand(Command item ) {
 
         if (item.type == CommandType::ColourChange) {
             Colour Newcolour(item.value);
-            for (ColourListiner* light : ListeningLights) {
-                if (item.Operation == add) {
-                    light->AddColour(Newcolour);
-                }
-                if (item.Operation == Remove) {
-                    light->RemoveColour(Newcolour);
-                }
-                if (item.Operation == set) {
-                    light->SetColour(Newcolour);
-                }
+            if (item.Operation == add) {
+                Manager.AddColour(Newcolour, item);
+            }
+            if (item.Operation == Remove) {
+                Manager.RemoveColour(Newcolour, item);
+            }
+            if (item.Operation == set) {
+                Manager.SetColour(Newcolour , item);
             }
         }
     }
