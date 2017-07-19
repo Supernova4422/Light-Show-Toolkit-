@@ -63,30 +63,10 @@ void Milight::EmitColour(const Command CommandItem , const std::vector<std::pair
         //Send Brightness
         SendBrightness(FirstEntryColour, AllGroupByte);
     }
-
-    /*
-    if ((CommandItem.Operation == set) && (true)) {
-        //Do Regular Shit
-
-    } else {
-        for (std::pair<const int, Colour>* light : ExpectedOutput) {
-            const char GroupByte = GetGroupHexByte(light->first);
-            //UDPPacketSender.SendHexPackets(buffer);
-            
-            //Set Colour to 
-            //SetColour(light->second); //This method needs to be updated
-        }
-
-    }
-    */
 }
 
 
 bool UpdatedCurrentGroup = false;
-
-
-
-
 
 CanUseByteForALLGROUPS Milight::CheckIfCanUseByteForALLGROUPS (const std::vector<std::pair<const int, Colour>*> Collection) {
     
@@ -143,8 +123,6 @@ CanUseByteForALLGROUPS Milight::CheckIfCanUseByteForALLGROUPS (const std::vector
 }
 void Milight::OnCurrentGroupsUpdate(GroupManager& Manager) {
     
-    
-    
     CurrentGroupBytes.clear();
     //These bools allow us to ensure no doubles occur, and question if all are in
     //We could probably replace this with a list that ensures unique values
@@ -195,49 +173,6 @@ char  Milight::GetGroupHexByte(int GroupNumber) {
     return GroupHex;
 }
 
-void Milight::AddColour(const Colour OutputColour) {
-}
-
-void Milight::SetColour(const Colour OutputColour) {
-    
-    char bytes[3];
-    int WhiteThreshhold = 10;
-    
-
-    if (OutputColour.Saturation < WhiteThreshhold) {
-        SetWhiteForCurrentGroups();
-        std::cout << "SETTING WHITE" << std::endl;
-    }
-    else {
-        bytes[0] = 0x40; 
-        bytes[1] = 174 - OutputColour.Hue;
-        bytes[2] = 0x55;
-        SetColourForCurrentGroups(bytes);
-        std::cout << "SETTING COLOUR" << std::endl;
-    }
-    
-    std::cout << std::endl;
-    
-
-    int BrightnessThreshhold = 10;
-    if (OutputColour.Brightness < BrightnessThreshhold)
-    {
-        TurnCurrentGroupsOff();
-        std::cout << "TURNING OFF" << std::endl;
-
-    } else {
-        char BrightnessBuffer[3];
-        BrightnessBuffer[0] = 0x4E;
-        BrightnessBuffer[1] = 2 + (( ( (float)OutputColour.Brightness) / 255) * 25);
-        BrightnessBuffer[2] = 0x55; 
-        SetColourForCurrentGroups(BrightnessBuffer);
-    }
-    
-    std::cout << std::endl;
-
-    //Group Byte + 128 gives the inner value for brightness
-} 
-
 void Milight::SendHue(const Colour OutputColour, const char CurrentGroupByte)
 {
     char bytes[3];
@@ -272,68 +207,12 @@ void Milight::SendBrightness(const Colour OutputColour, const char CurrentGroupB
     } 
 }
 
-
-void Milight::RemoveColour(const Colour OutputColour) {
-}
-
 void Milight::SpecificCommand(const Command command){
 }
 
 
 
-   
-void Milight::SetColourForCurrentGroups(const char ColourPacket[]) {
-    //Right now the implementation is not working properly because packets are colliding
-    //This can be fixed by adding a 100ms delay between setting groups, then the command for the group
+ 
 
 
-    if (CurrentGroupBytes.size() == 1 ) {
-            if (UpdatedCurrentGroup == false)
-            {
-                std::cout << "SENDING ONE GROUP PACKET" << std::endl;
-                UpdatedCurrentGroup = true;
-                UDPPacketSender.SendHexPackets(CurrentGroupBytes[0]);
-            }
-            
-            UDPPacketSender.SendHexPackets(ColourPacket);
-    } else {
-        for (char item : CurrentGroupBytes) {
-            std::cout << item << std::endl;
-            
-            UDPPacketSender.SendHexPackets(item);
-            
-            //WAIT 100ms
-            UDPPacketSender.SendHexPackets(ColourPacket);
-        }
-    }
-}
-
-void Milight::SetWhiteForCurrentGroups() {
-    if (CurrentGroupBytes.size() == 1 ) {
-            if (UpdatedCurrentGroup == false) {
-                UpdatedCurrentGroup = true;
-                UDPPacketSender.SendHexPackets(CurrentGroupBytes[0]);
-            }
-            UDPPacketSender.SendHexPackets(CurrentGroupBytes[0] + 128);
-    } else {
-        for (unsigned char item : CurrentGroupBytes) {
-            UDPPacketSender.SendHexPackets(item);
-            //WAIT 100ms
-            UDPPacketSender.SendHexPackets(item + 128);
-        }
-    }
-}
-
-void Milight::TurnCurrentGroupsOff() {
-    
-    UpdatedCurrentGroup = false; //This ensures that LIGHTON functions are resent too 
-
-    if (CurrentGroupBytes[0] == 0x42) {
-            UDPPacketSender.SendHexPackets(0x42 - 1);
-    } else {
-        for (char item : CurrentGroupBytes) {
-            UDPPacketSender.SendHexPackets(item + 1);
-    }
-    }
-}
 
