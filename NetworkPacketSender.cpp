@@ -38,14 +38,14 @@ void NetworkPacketSender::InitialiseConnection (const char * IPAddress , unsigne
     
 }
 
-void NetworkPacketSender::SendHexPackets (const char buffer) {
-    char BufferArray[0];
+void NetworkPacketSender::SendHexPackets (const uint8_t buffer) {
+    uint8_t BufferArray[0];
     BufferArray[0] = buffer;
     SendHexPackets(BufferArray);
 }
 
-void NetworkPacketSender::SendHexPackets (const char buffer[]) {
-    
+void NetworkPacketSender::SendHexPackets (const uint8_t buffer[]) {
+    std::cout << " MADE TO SENDING " << std::endl;
     clock_t EndTime;
     EndTime = clock() + (100);
     while (clock() < EndTime) { 
@@ -54,12 +54,14 @@ void NetworkPacketSender::SendHexPackets (const char buffer[]) {
     int BufLen = sizeof(buffer);
     
     int iResult;
-    for (int i = 0; i < BufLen - 1; i++)
+
+    for (int i = 0; i < BufLen; i++)
     {
         std::cout << (int)buffer[i] << " , " ;
     }
     std::cout << std::endl;
-    iResult = sendto(SendSocket, buffer, BufLen, 0, (SOCKADDR *) & RecvAddr, sizeof (RecvAddr));
+    
+    iResult = sendto(SendSocket, (const char*) &buffer[0], BufLen, 0, (SOCKADDR *) & RecvAddr, sizeof (RecvAddr));
     
     if (iResult == SOCKET_ERROR) {
         wprintf(L"sendto failed with error: %d\n", WSAGetLastError());

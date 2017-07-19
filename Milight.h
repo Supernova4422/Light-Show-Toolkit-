@@ -30,16 +30,16 @@ class Milight: public ProgrammableLight
     
     void OnCurrentGroupsUpdate(const Command CommandItem , std::vector<std::pair<const int, Colour>*>  CurrentGroups);
     MilightGroupIDs GetGroupEnum(int GroupNumber);
-    char GetGroupHexByte(int GroupNumber);
+    uint8_t GetGroupHexByte(int GroupNumber);
 
-    void SetColourForCurrentGroups(const char ColourPacket[]);
+    void SetColourForCurrentGroups(const uint8_t ColourPacket[]);
     void SetWhiteForCurrentGroups();
     void TurnCurrentGroupsOff();
-    std::vector<char> CurrentGroupBytes;
+    std::vector<uint8_t> CurrentGroupBytes;
 
     void SendHue (const Colour OutputColour);
     void SendBrightness (const Colour OutputColour);
-    void SendGroup (MilightGroupIDs GroupID);
-
+    void SendGroupOn (MilightGroupIDs GroupID);
+    void SendGroupOFF();
     
 };
