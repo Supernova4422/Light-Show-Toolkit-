@@ -16,7 +16,7 @@ class ProgrammableLight: public ColourListiner
   public:
    
     virtual void EmitColour(const Command CommandItem , const std::vector<std::pair<const int, Colour>*> ExpectedOutput) = 0;
-    virtual void OnCurrentGroupsUpdate(GroupManager& Manager) = 0;
+    virtual void OnCurrentGroupsUpdate(const Command CommandItem , std::vector<std::pair<const int, Colour>*>  CurrentGroups) = 0;
     virtual void SpecificCommand(const Command command) = 0;
     
     void AddColour(const Colour OutputColour);

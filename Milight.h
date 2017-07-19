@@ -11,6 +11,7 @@ enum CanUseByteForALLGROUPS {
     ForBoth = 0x03 //"00000011"
 };
 
+enum MilightGroupIDs {Invalid = 0,  Group1 = 1, Group2 = 2, Group3 = 3, Group4 = 4, ALLGROUPS = 5};
 class Milight: public ProgrammableLight
 {
     public: 
@@ -27,8 +28,8 @@ class Milight: public ProgrammableLight
     void SetColour(const Colour OutputColour);
     void RemoveColour(const Colour OutputColour);
     
-    void OnCurrentGroupsUpdate(GroupManager& Manager);
-
+    void OnCurrentGroupsUpdate(const Command CommandItem , std::vector<std::pair<const int, Colour>*>  CurrentGroups);
+    MilightGroupIDs GetGroupEnum(int GroupNumber);
     char GetGroupHexByte(int GroupNumber);
 
     void SetColourForCurrentGroups(const char ColourPacket[]);
@@ -36,8 +37,9 @@ class Milight: public ProgrammableLight
     void TurnCurrentGroupsOff();
     std::vector<char> CurrentGroupBytes;
 
-    void SendHue(const Colour OutputColour, const char CurrentGroupByte);
-    void SendBrightness(const Colour OutputColour, const char CurrentGroupByte);
+    void SendHue (const Colour OutputColour);
+    void SendBrightness (const Colour OutputColour);
+    void SendGroup (MilightGroupIDs GroupID);
 
     
 };

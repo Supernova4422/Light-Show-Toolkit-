@@ -29,8 +29,7 @@ void GroupManager::SetGroups(const int Group, CommandOperation Operation)
     std::pair<const int, Colour> *Entry;
     const int *PointerToGroupID;
 
-    switch (Operation)
-    {
+    switch (Operation) {
     case set:
         CurrentlySelectedGroups.clear();
         AddToCurrentGroups(Group);
@@ -47,6 +46,8 @@ void GroupManager::SetGroups(const int Group, CommandOperation Operation)
                                                   CurrentlySelectedGroups.end());
         break;
     }
+
+    //Send CUrrently selected groups to each light
 }
 
 void GroupManager::AddToCurrentGroups(const int GroupToAdd)
@@ -59,6 +60,7 @@ void GroupManager::AddToCurrentGroups(const int GroupToAdd)
     
     CurrentlySelectedGroups.push_back(Entry);
 }
+
 std::pair<const int, Colour> *GroupManager::GetGroupByID(const int ID)
 {
     Colour empty;

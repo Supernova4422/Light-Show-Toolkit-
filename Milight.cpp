@@ -22,27 +22,28 @@ void Milight::EmitColour(const Command CommandItem , const std::vector<std::pair
     if (CanSendAllGroupByte == ForBoth) {
         
         //Send Group Byte
-        UDPPacketSender.SendHexPackets(AllGroupByte);
+        SendGroup(MilightGroupIDs::ALLGROUPS);
         
         //Send Hue
-        SendHue( FirstEntryColour, AllGroupByte);
+        SendHue( FirstEntryColour);
         
         //Individually send brightness 
-        SendBrightness( FirstEntryColour, AllGroupByte);
+        SendBrightness( FirstEntryColour);
         
     } else if (CanSendAllGroupByte == ForHue) {
         //Send Group Byte
-        UDPPacketSender.SendHexPackets(AllGroupByte);
+        SendGroup(MilightGroupIDs::ALLGROUPS);
         
         //Send Hue
-        SendHue( FirstEntryColour, AllGroupByte);
+        SendHue(FirstEntryColour);
         
         //Individually send brightness 
         for (std::pair<const int, Colour>* entry : ExpectedOutput ) {
             if ((entry->first < 5) && (entry->first > 0)) {
-                char GroupHexByte = GetGroupHexByte(entry->first);
-                UDPPacketSender.SendHexPackets(GroupHexByte);
-                SendBrightness( (entry->second), GroupHexByte);
+                
+                SendGroup(GetGroupEnum(entry->first));
+                
+                SendBrightness( entry->second);
             }
         }
         
@@ -52,16 +53,18 @@ void Milight::EmitColour(const Command CommandItem , const std::vector<std::pair
         //Individually send Hue 
         for (std::pair<const int, Colour>* entry : ExpectedOutput ) {
             if ((entry->first < 5) && (entry->first > 0)) {
-                char GroupHexByte = GetGroupHexByte(entry->first);
-                UDPPacketSender.SendHexPackets(GroupHexByte);
-                SendHue( (entry->second), GroupHexByte);
+                
+                
+                SendGroup(GetGroupEnum(entry->first));
+
+                SendHue( entry->second);
             }
         }
         //Send GroupByte
-        UDPPacketSender.SendHexPackets(AllGroupByte);
+        SendGroup(MilightGroupIDs::ALLGROUPS);
         
         //Send Brightness
-        SendBrightness(FirstEntryColour, AllGroupByte);
+        SendBrightness(FirstEntryColour);
     }
 }
 
@@ -121,45 +124,64 @@ CanUseByteForALLGROUPS Milight::CheckIfCanUseByteForALLGROUPS (const std::vector
 
     return ret;
 }
-void Milight::OnCurrentGroupsUpdate(GroupManager& Manager) {
+void Milight::OnCurrentGroupsUpdate(const Command CommandItem , std::vector<std::pair<const int, Colour>*>  CurrentGroups) {
     
-    CurrentGroupBytes.clear();
+    
     //These bools allow us to ensure no doubles occur, and question if all are in
     //We could probably replace this with a list that ensures unique values
     //And then check for "Four" inputs at the end
-    UpdatedCurrentGroup = false;
-
+    
     bool ContainsGroup1 = false;
     bool ContainsGroup2 = false;
     bool ContainsGroup3 = false;
     bool ContainsGroup4 = false;
         
 
-    for (std::pair<const int, Colour>* item : Manager.CurrentlySelectedGroups) {
+    for (std::pair<const int, Colour>* item : CurrentGroups) {
         if ((item->first == 1) && (ContainsGroup1 == false))  {
             ContainsGroup1 = true;
-            CurrentGroupBytes.push_back(GetGroupHexByte(item->first));
         }
         if ((item->first == 2) && (ContainsGroup2 == false))  {
             ContainsGroup2 = true;
-            CurrentGroupBytes.push_back(GetGroupHexByte(item->first));
         }
         if ((item->first == 3) && (ContainsGroup3 == false))  {
             ContainsGroup3 = true;
-            CurrentGroupBytes.push_back(GetGroupHexByte(item->first));
         }
         if ((item->first == 4) && (ContainsGroup4 == false))  {
             ContainsGroup4 = true;
-            CurrentGroupBytes.push_back(GetGroupHexByte(item->first));
         }
     }
-    
+
+    //We send the packet in advance, this means that the delay time can be concealed in following "WAIT" commands
     if ( ((ContainsGroup1 && ContainsGroup2) && (ContainsGroup3 && ContainsGroup4)) == true) {
-        CurrentGroupBytes.clear();
-        CurrentGroupBytes.push_back(0x42);
+        UDPPacketSender.SendHexPackets( 0x42 );
+    } else if (CurrentGroups.size() == 1) {
+        
+        const int GroupID = CurrentGroups[0]->first;
+        
+        if ((GroupID > 0) && (GroupID < 5)) {
+            
+            UDPPacketSender.SendHexPackets( GetGroupHexByte(GroupID) );
+        }
     }
 }
+MilightGroupIDs Milight::GetGroupEnum(int GroupNumber) {
+    MilightGroupIDs GroupIDEnum;
+    if (GroupNumber == 1) {
+        GroupIDEnum = Group1;
+    }
+    if (GroupNumber == 2) {
+        GroupIDEnum = Group2;
+    }
+    if (GroupNumber == 3) {
+        GroupIDEnum = Group3;
+    }
+    if (GroupNumber == 4) {
+        GroupIDEnum = Group4;
+    }
 
+    return GroupIDEnum;
+}
 
 char  Milight::GetGroupHexByte(int GroupNumber) {
     //Group 1 ALL ON is 0x45, Group 2 ALL ON is 0x47, and so on
@@ -173,14 +195,33 @@ char  Milight::GetGroupHexByte(int GroupNumber) {
     return GroupHex;
 }
 
-void Milight::SendHue(const Colour OutputColour, const char CurrentGroupByte)
+char LastGroupPacketSent; 
+
+void Milight::SendGroup(MilightGroupIDs GroupID)
+{
+    char ByteToSend;
+    if (GroupID == ALLGROUPS ) {
+        ByteToSend = 0x42;
+    } else if (GroupID != Invalid) {
+        ByteToSend = GetGroupHexByte(GroupID);
+    }
+
+    if ((GroupID != Invalid) && (LastGroupPacketSent != ByteToSend)) {
+        LastGroupPacketSent = ByteToSend;
+        UDPPacketSender.SendHexPackets(ByteToSend);
+
+    }
+    
+
+}
+
+void Milight::SendHue(const Colour OutputColour)
 {
     char bytes[3];
     int WhiteThreshhold = 10;
     
-
     if (OutputColour.Saturation < WhiteThreshhold) {
-        UDPPacketSender.SendHexPackets(CurrentGroupByte + 128);
+        UDPPacketSender.SendHexPackets(LastGroupPacketSent + 128);
         std::cout << "SETTING WHITE" << std::endl;
     }
     else {
@@ -192,16 +233,16 @@ void Milight::SendHue(const Colour OutputColour, const char CurrentGroupByte)
     }
 }
 
-void Milight::SendBrightness(const Colour OutputColour, const char CurrentGroupByte)
+void Milight::SendBrightness(const Colour OutputColour)
 {
     int BrightnessThreshhold = 10;
     if (OutputColour.Brightness < BrightnessThreshhold)
     {
-        if (CurrentGroupByte == 0x42) {
+        if (LastGroupPacketSent == 0x42) {
             UDPPacketSender.SendHexPackets(0x41);
         }
         else {
-            UDPPacketSender.SendHexPackets(CurrentGroupByte + 1);
+            UDPPacketSender.SendHexPackets(LastGroupPacketSent + 1);
         }
         std::cout << "TURNING OFF" << std::endl;
     } 

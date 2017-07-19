@@ -2,14 +2,19 @@
 #include "ConsoleLight.h"
 #include <iostream>
 #include "GroupManager.h"
-
+bool PostedNewGroups = true;
 void ConsoleLight::EmitColour(const Command CommandItem , const std::vector<std::pair<const int, Colour>*> ExpectedOutput) {
 
-    std::cout << "CURRENT GROUPS:" << std::endl;
-        
-    for (const std::pair<const int, Colour>* group : ExpectedOutput) {
+    
+    if (PostedNewGroups == false)
+    {
+        std::cout << "CURRENT GROUPS:" << std::endl;
+        for (const std::pair<const int, Colour>* group : ExpectedOutput) {
             std::cout << group->first << ", ";
+        }
+        PostedNewGroups = true;
     }
+    
     
     std::cout << std::endl;
 
@@ -35,12 +40,11 @@ void ConsoleLight::EmitColour(const Command CommandItem , const std::vector<std:
 void ConsoleLight::SetColourForCurrentGroups(const Colour OutputColour) {
 }
 
-bool PostedNewGroups = true;
-std::vector<std::pair<const int, Colour>*>* CurrentGroupsPTR;
 
-void ConsoleLight::OnCurrentGroupsUpdate(GroupManager& Manager) {
+
+
+void ConsoleLight::OnCurrentGroupsUpdate(const Command CommandItem , std::vector<std::pair<const int, Colour>*>  CurrentGroups) {
     PostedNewGroups = false;
-    CurrentGroupsPTR = &(Manager.CurrentlySelectedGroups);
 }
 
 void ConsoleLight::SpecificCommand(const Command command){
