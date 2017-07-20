@@ -14,6 +14,7 @@
 #include <thread>
 #include <ctime>
 #include <iomanip>
+#include <chrono>
 
 GroupManager Manager;
 
@@ -75,7 +76,7 @@ void SongPlayer::RunCommand(Command item ) {
         std::cout << "WAIT: " << timetowait << '\n';
         
 
-        WaitMilliseconds(timetowait * 1000);
+        WaitMilliseconds( (int) (timetowait * 1000) ) ;
     } 
     else {
 
@@ -89,7 +90,7 @@ void SongPlayer::RunCommand(Command item ) {
         }
 
         if (item.type == CommandType::Group) {
-            Manager.SetGroups(atoi(item.value.c_str()), item.Operation);
+            Manager.SetGroups(atoi(item.value.c_str()), item);
             
         } 
         if (item.type == CommandType::FunctionName){
@@ -117,23 +118,25 @@ void SongPlayer::RunCommand(Command item ) {
         }
     }
 }
+std::chrono::high_resolution_clock::time_point SongStartTime;
+int WaitTimeTotalInMilli;
 
-clock_t SongStartTime;
-float WaitTimeTotal;
-
-void SongPlayer::WaitMilliseconds (float milliseconds) {
+void SongPlayer::WaitMilliseconds (int milliseconds) {
     
-    WaitTimeTotal = WaitTimeTotal + milliseconds;
-    std::cout << "START WAIT" << std::endl;
-    while (clock() < (SongStartTime + WaitTimeTotal) ) { 
+    std::cout << "Starting Wait" << milliseconds << std::endl; 
+    WaitTimeTotalInMilli = WaitTimeTotalInMilli + milliseconds;
+    
+    while (std::chrono::high_resolution_clock::now() < (SongStartTime + std::chrono::milliseconds((int)WaitTimeTotalInMilli) ) ) { 
         //Do nothing
     }
+  
     std::cout << "END WAIT" << std::endl;
 }
 
 void SongPlayer::StartPlaying(std::string FunctionToPlay , std::string SongToPlay) {
     PlaySong(SongToPlay);
-    SongStartTime = clock();
+    SongStartTime = std::chrono::high_resolution_clock::now();
+    WaitTimeTotalInMilli = 0;
     RunFunction(FunctionToPlay);
 }
 

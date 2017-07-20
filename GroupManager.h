@@ -11,7 +11,7 @@
 class GroupManager
 {
   public:
-    void SetGroups(const int Group, CommandOperation Operation);
+    void SetGroups(const int Group, Command CommandItem);
     void AddToCurrentGroups(const int GroupToAdd);
     void AddColour(const Colour OutputColour , Command item); 
     void SetColour(const Colour OutputColour , Command item); 

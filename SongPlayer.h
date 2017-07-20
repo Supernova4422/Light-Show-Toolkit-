@@ -19,7 +19,7 @@ class SongPlayer
 
     FileParserHandler Parser;
     
-    void WaitMilliseconds(float milliseconds);
+    void WaitMilliseconds(int milliseconds);
     
     SongPlayer();
 

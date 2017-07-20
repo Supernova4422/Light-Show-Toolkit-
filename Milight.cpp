@@ -12,14 +12,17 @@ Milight::Milight() {
     UDPPacketSender.InitialiseConnection("10.0.0.65" , 8899);
 
 }
+
 void Milight::EmitColour(const Command CommandItem , const std::vector<std::pair<const int, Colour>*> ExpectedOutput) {
     
     CanUseByteForALLGROUPS CanSendAllGroupByte = CheckIfCanUseByteForALLGROUPS(ExpectedOutput);
     
     //COLOUR MUST ALWAYS BE SENT FIRST
     Colour FirstEntryColour = ExpectedOutput[0]->second;
-    if (CanSendAllGroupByte == ForBoth) {
-        
+
+    switch (CanSendAllGroupByte)
+    {
+        case ForBoth:
         //Send Group Byte
         SendGroupOn(MilightGroupIDs::ALLGROUPS);
         
@@ -29,7 +32,9 @@ void Milight::EmitColour(const Command CommandItem , const std::vector<std::pair
         //Individually send brightness 
         SendBrightness( FirstEntryColour);
         
-    } else if (CanSendAllGroupByte == ForHue) {
+        break;
+        
+        case ForHue:
         //Send Group Byte
         SendGroupOn(MilightGroupIDs::ALLGROUPS);
         
@@ -45,14 +50,14 @@ void Milight::EmitColour(const Command CommandItem , const std::vector<std::pair
                 SendBrightness( entry->second);
             }
         }
+
+        break;
         
-    }
-    else if (CanSendAllGroupByte == ForBrightness){
-        
+        case ForBrightness:
+
         //Individually send Hue 
         for (std::pair<const int, Colour>* entry : ExpectedOutput ) {
             if ((entry->first < 5) && (entry->first > 0)) {
-                
                 
                 SendGroupOn(GetGroupEnum(entry->first));
 
@@ -64,6 +69,21 @@ void Milight::EmitColour(const Command CommandItem , const std::vector<std::pair
         
         //Send Brightness
         SendBrightness(FirstEntryColour);
+
+        break;
+        case ForNeither:
+        //Individually send Hue, then Brightness
+        for (std::pair<const int, Colour>* entry : ExpectedOutput ) {
+            if ((entry->first < 5) && (entry->first > 0)) {
+                
+                SendGroupOn(GetGroupEnum(entry->first));
+
+                SendHue( entry->second);
+                SendBrightness( entry->second);
+            }
+        }
+
+        break;
     }
 }
 
@@ -150,7 +170,7 @@ void Milight::OnCurrentGroupsUpdate(const Command CommandItem , std::vector<std:
             ContainsGroup4 = true;
         }
     }
-
+    
     //We send the packet in advance, this means that the delay time can be concealed in following "WAIT" commands
     if ( ((ContainsGroup1 && ContainsGroup2) && (ContainsGroup3 && ContainsGroup4)) == true) {
         UDPPacketSender.SendHexPackets( 0x42 );
@@ -159,8 +179,7 @@ void Milight::OnCurrentGroupsUpdate(const Command CommandItem , std::vector<std:
         const int GroupID = CurrentGroups[0]->first;
         
         if ((GroupID > 0) && (GroupID < 5)) {
-            
-            UDPPacketSender.SendHexPackets( GetGroupHexByte(GroupID) );
+            SendGroupOn(GetGroupEnum(GroupID));
         }
     }
 }
@@ -211,7 +230,6 @@ void Milight::SendGroupOn(MilightGroupIDs GroupID)
         LastGroupPacketSent = ByteToSend;
         UDPPacketSender.SendHexPackets(ByteToSend);
         std::cout << "Sent Group ON" << std::endl;
-
     }
 }
 

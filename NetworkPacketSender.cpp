@@ -5,7 +5,7 @@
 #include <iomanip>
 #include <iostream>
 #include "NetworkPacketSender.h"
-
+#include <chrono>
 
 
 void NetworkPacketSender::InitialiseConnection (const char * IPAddress , unsigned short Port, NetworkProtocal Protocal) {
@@ -39,17 +39,16 @@ void NetworkPacketSender::InitialiseConnection (const char * IPAddress , unsigne
 }
 
 void NetworkPacketSender::SendHexPackets (const uint8_t buffer) {
-    uint8_t BufferArray[0];
+    uint8_t BufferArray[1];
     BufferArray[0] = buffer;
     SendHexPackets(BufferArray);
 }
 
 void NetworkPacketSender::SendHexPackets (const uint8_t buffer[]) {
-    std::cout << " MADE TO SENDING " << std::endl;
-    clock_t EndTime;
-    EndTime = clock() + (100);
-    while (clock() < EndTime) { 
-    }
+
+    
+    
+    
 
     int BufLen = sizeof(buffer);
     
@@ -68,4 +67,11 @@ void NetworkPacketSender::SendHexPackets (const uint8_t buffer[]) {
         closesocket(SendSocket);
         WSACleanup();
     }
+
+    std::chrono::high_resolution_clock::time_point SongStartTime = std::chrono::high_resolution_clock::now();
+    
+    while (std::chrono::high_resolution_clock::now() < (SongStartTime + std::chrono::milliseconds(100) ) ) { 
+        //Do nothing
+    }
+
 }

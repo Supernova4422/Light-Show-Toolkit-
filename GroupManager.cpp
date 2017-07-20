@@ -21,7 +21,7 @@ GroupManager::GroupManager ()
     ListeningLights.push_back(&ConsoleView);
     ListeningLights.push_back(&TestLight);
 }
-void GroupManager::SetGroups(const int Group, CommandOperation Operation)
+void GroupManager::SetGroups(const int Group, Command CommandItem)
 {
 
     Colour empty;
@@ -29,7 +29,7 @@ void GroupManager::SetGroups(const int Group, CommandOperation Operation)
     std::pair<const int, Colour> *Entry;
     const int *PointerToGroupID;
 
-    switch (Operation) {
+    switch (CommandItem.Operation) {
     case set:
         CurrentlySelectedGroups.clear();
         AddToCurrentGroups(Group);
@@ -44,8 +44,19 @@ void GroupManager::SetGroups(const int Group, CommandOperation Operation)
                                                   CurrentlySelectedGroups.end(),
                                                   Entry),
                                                   CurrentlySelectedGroups.end());
+        
         break;
     }
+
+    for (ColourListiner* light : ListeningLights) {
+        light->OnCurrentGroupsUpdate(CommandItem, CurrentlySelectedGroups);
+    }
+
+    std::cout << "Current Groups are now: ";
+    for (const std::pair<const int, Colour>* group : CurrentlySelectedGroups) {
+            std::cout << group->first << ", ";
+    }
+    std::cout << std::endl;
 
     //Send CUrrently selected groups to each light
 }
@@ -53,12 +64,12 @@ void GroupManager::SetGroups(const int Group, CommandOperation Operation)
 void GroupManager::AddToCurrentGroups(const int GroupToAdd)
 {
     Colour empty;
-    std::pair<const int, Colour> *Entry = GetGroupByID(GroupToAdd);
+    std::pair<const int, Colour>* Entry = GetGroupByID(GroupToAdd);
     //A pointer is used to ensure that the group is kept track of
     
     const int *PointerToGroupID = &Entry->first; //Redundant?
     
-    CurrentlySelectedGroups.push_back(Entry);
+    CurrentlySelectedGroups.push_back(GetGroupByID(GroupToAdd));
 }
 
 std::pair<const int, Colour> *GroupManager::GetGroupByID(const int ID)
@@ -98,6 +109,7 @@ void GroupManager::SetColour(const Colour OutputColour, Command item)
     {
         group->second = OutputColour;
     }
+    
 
     for (ColourListiner* light : ListeningLights) {
         light->EmitColour(item, CurrentlySelectedGroups);
