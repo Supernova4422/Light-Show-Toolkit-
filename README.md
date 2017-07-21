@@ -2,7 +2,16 @@
 
 This software can be used to play "Light Show" Files, which are files designed to go along with a light system (Such as Hue or Milight) and play a timed lightshow with music!
 
-This works by sending out commands in sequence, which are interpreted properly by each individual system
+This works by running a function (which means commands in sequence), which are interpreted properly by each individual system. This program will begin running the function "Play" from a given file, alongside a given song.
+
+The aim is for future light systems to be added, allowing for a standard method. 
+
+## Loading and Playing LightShow Files using the CLI
+
+"LoadMain <LightShowFile.ls>":  is used to load the file used to play the song
+"LoadSupport <LightShowFile.ls>":  loads a file that the "FunctionName" command will also search inside
+"Help" Print out some helpful text
+"Run <AudioFile.wav">" begins executing the "Play" function, with the given music
 
 ## Available "Commands"
 * ColourChange: Change the colour to what is specified for the currently selected groups
