@@ -7,11 +7,7 @@
 #include <map>
 #include "CommandDataTypes.cpp"
 #include "Colour.h"
-#include "ColourListiner.h"
-#include "GroupManager.h"
-
-
-class ProgrammableLight: public ColourListiner
+class ProgrammableLight
 {
   public:
    

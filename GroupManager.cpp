@@ -48,7 +48,7 @@ void GroupManager::SetGroups(const int Group, Command CommandItem)
         break;
     }
 
-    for (ColourListiner* light : ListeningLights) {
+    for (ProgrammableLight* light : ListeningLights) {
         light->OnCurrentGroupsUpdate(CommandItem, CurrentlySelectedGroups);
     }
 
@@ -89,7 +89,7 @@ void GroupManager::AddColour(const Colour OutputColour , Command item)
         group->second += OutputColour;
     }
     
-    for (ColourListiner* light : ListeningLights) {
+    for (ProgrammableLight* light : ListeningLights) {
         light->EmitColour(item, CurrentlySelectedGroups);
     }
 }
@@ -99,7 +99,7 @@ void GroupManager::RemoveColour(const Colour OutputColour , Command item)
     {
         group->second -= OutputColour;
     }
-    for (ColourListiner* light : ListeningLights) {
+    for (ProgrammableLight* light : ListeningLights) {
         light->EmitColour(item, CurrentlySelectedGroups);
     }
 }
@@ -111,8 +111,13 @@ void GroupManager::SetColour(const Colour OutputColour, Command item)
     }
     
 
-    for (ColourListiner* light : ListeningLights) {
+    for (ProgrammableLight* light : ListeningLights) {
         light->EmitColour(item, CurrentlySelectedGroups);
     }
 
+}
+void GroupManager::SpecificCommand(const Command command){
+    for (ProgrammableLight* light : ListeningLights) {
+        light->SpecificCommand(command);
+    }
 }

@@ -7,7 +7,7 @@
 #include <map>
 #include "CommandDataTypes.cpp"
 #include "Colour.h"
-#include "ColourListiner.h"
+#include "ProgrammableLight.h"
 class GroupManager
 {
   public:
@@ -16,16 +16,16 @@ class GroupManager
     void AddColour(const Colour OutputColour , Command item); 
     void SetColour(const Colour OutputColour , Command item); 
     void RemoveColour(const Colour OutputColour , Command item); 
+    void SpecificCommand(const Command command);
     
     GroupManager();
     
-
     std::pair<const int, Colour> *GetGroupByID(const int ID);
     std::vector<std::pair<const int, Colour>*> CurrentlySelectedGroups;
   private:
     std::map<int, Colour> AllGroups;
     Colour CurrentSelectedColour;
-    std::vector<ColourListiner*> ListeningLights;
+    std::vector<ProgrammableLight*> ListeningLights;
     
 };
 #endif
