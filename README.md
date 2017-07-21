@@ -6,15 +6,16 @@ This works by running a function (which means commands in sequence), which are i
 
 The aim is for future light systems to be added, allowing for a standard method. 
 
-## Loading and Playing LightShow Files using the CLI
+## Using the CLI
 
-"LoadMain <LightShowFile.ls>":  is used to load the file used to play the song
+* LoadMain <LightShowFile.ls>: Is used to load the file used to play the song
 
-"LoadSupport <LightShowFile.ls>":  loads a file that the "FunctionName" command will also search inside
+* LoadSupport <LightShowFile.ls>: Loads a file that the "FunctionName" command will also search inside
 
-"Help" Prints out some helpful text
+* Run <AudioFile.wav>: Begins executing the "Play" function, with the given music
 
-"Run <AudioFile.wav">" begins executing the "Play" function, with the given music
+* Help: Prints out some helpful text
+
 
 ## Available "Commands"
 * ColourChange: Change the colour to what is specified for the currently selected groups
