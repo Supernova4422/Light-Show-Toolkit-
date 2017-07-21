@@ -1,6 +1,6 @@
 # Light-Show-Toolkit
 
-This software can be used to play "Light Show" Files, which are files designed to go along with a light system (Such as Hue or Milight) and play a timed lightshow with music!
+This software can be used to play "Light Show" Files, which are files designed to go along with a light system (Such as Hue or LimitlessLED/Milight) and play a timed lightshow with music!
 
 This works by running a function (which means commands in sequence), which are interpreted properly by each individual system. This program will begin running the function "Play" from a given file, alongside a given song.
 
@@ -65,8 +65,8 @@ To change the colour of a light,
 
 ## Settings Files
 
-### Milight Settings
-MiLightSettings.txt holds the settings for MiLight. 
+### LimitlessLED/Milight Settings
+MiLightSettings.txt holds the settings for LimitlessLED/MiLight. 
 * The first line is the IP Address (e.g: 10.0.0.65)
 * The second line is the PORT (e.g: 8899)
 * The third line is UDP or TCP (Protocol to use)
