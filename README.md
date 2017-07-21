@@ -3,12 +3,12 @@
 This software can be used to play "Light Show" Files, which are files designed to go along with a light system (Such as Hue or Milight) and play a timed lightshow with music!
 
 Currently Supported Light-Systems: 
-  -Milight
+* Milight
 
 Currently supported File-Formats
-  -.LS (Lightshow file format)
+* .LS (Lightshow file format)
   
-## LightShow file-format
+## LightShow file format
 The lightshow file format is a unique file format used by this program, "Example.ls" outlines the syntax and functionality of the format
 
 
@@ -45,4 +45,11 @@ Within the LS file format, a command preceeded by '+' denotes "add", '-' denotes
 To change the colour of a light, 
 1. FIRST you set the "Current Groups" to the light.
 2. Secondly you fire off a Colour. 
- 
+
+## Settings Files
+
+### Milight Settings
+MiLightSettings.txt holds the settings for MiLight. 
+* The first line is the IP Address (e.g: 10.0.0.65)
+* The second lien is the PORT (e.g: 8899)
+* The third line is UDP or TCP (Protocol to use)
