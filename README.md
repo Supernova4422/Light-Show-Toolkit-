@@ -82,3 +82,7 @@ MiLightSettings.txt holds the settings for MiLight.
 
 ### Currently support audio file formats
 * Windows: .Wav
+
+## Compiling
+### Windows
+I run Compile.bat with G++, works fine. 
