@@ -8,9 +8,9 @@ The aim is for future light systems to be added, allowing for a standard method.
 
 ## Using the CLI
 
-* LoadMain <LightShowFile.ls>: Is used to load the file used to play the song
+* LoadMain <LightShowFile.lightshow>: Is used to load the file used to play the song
 
-* LoadSupport <LightShowFile.ls>: Loads a file that the "FunctionName" command will also search inside
+* LoadSupport <LightShowFile.lightshow>: Loads a file that the "FunctionName" command will also search inside
 
 * Run <AudioFile.wav>: Begins executing the "Play" function, with the given music
 
@@ -18,7 +18,7 @@ The aim is for future light systems to be added, allowing for a standard method.
 
 
 ## LightShow file format
-The lightshow file format is a unique file format used by this program, "Example.ls" outlines the syntax and functionality of the format
+The lightshow file format is a unique file format used by this program, "Example.lightshow" outlines the syntax and functionality of the format
 
 Generally, a function is a collection of sequential commands. A command has three properties: 
 * What the command does
@@ -27,7 +27,7 @@ Generally, a function is a collection of sequential commands. A command has thre
 
 The "Play" Function is where the song starts from.
 
-If you are still confused, Example.ls will definetely clear up a few questions
+If you are still confused, Example.lightshow will definetely clear up a few questions
 
 ## Available "Commands"
 * ColourChange: Change the colour to what is specified for the currently selected groups
@@ -39,7 +39,7 @@ If you are still confused, Example.ls will definetely clear up a few questions
 ## Available Operations
 Operations can be applied to a command, changing their functionality
 
-Within the LS file format, a command preceeded by '+' denotes "add", '-' denotes "Subtract", nothing denotes "Set"
+Within the lightshow file format, a command preceeded by '+' denotes "add", '-' denotes "Subtract", nothing denotes "Set"
 
 ### Set Operator (Default)
 * For Colour, will SET the colour to the given value for each "Currently Selected Group" 
