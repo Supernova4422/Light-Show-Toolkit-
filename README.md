@@ -9,8 +9,11 @@ The aim is for future light systems to be added, allowing for a standard method.
 ## Loading and Playing LightShow Files using the CLI
 
 "LoadMain <LightShowFile.ls>":  is used to load the file used to play the song
+
 "LoadSupport <LightShowFile.ls>":  loads a file that the "FunctionName" command will also search inside
-"Help" Print out some helpful text
+
+"Help" Prints out some helpful text
+
 "Run <AudioFile.wav">" begins executing the "Play" function, with the given music
 
 ## Available "Commands"
