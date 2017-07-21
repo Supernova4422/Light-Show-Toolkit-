@@ -51,5 +51,5 @@ To change the colour of a light,
 ### Milight Settings
 MiLightSettings.txt holds the settings for MiLight. 
 * The first line is the IP Address (e.g: 10.0.0.65)
-* The second lien is the PORT (e.g: 8899)
+* The second line is the PORT (e.g: 8899)
 * The third line is UDP or TCP (Protocol to use)
