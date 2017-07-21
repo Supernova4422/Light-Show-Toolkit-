@@ -8,11 +8,11 @@ Currently Supported Light-Systems:
 Currently supported File-Formats
   -.LS (Lightshow file format)
   
-#LightShow file-format
+## LightShow file-format
 The lightshow file format is a unique file format used by this program, "Example.ls" outlines the syntax and functionality of the format
 
 
-#Available "Commands"
+## Available "Commands"
   ColourChange: Change the colour to what is specified for the currently selected groups
   Wait: Pause for an amount of seconds
   Group: Set the current group 
@@ -20,7 +20,7 @@ The lightshow file format is a unique file format used by this program, "Example
   FunctionPointer: Not implemented yet
   SpecificCommand: Not implemented yet
   
-#Available Operations
+## Available Operations
 >Operations can be applied to a command, changing their functionality
 >Within the LS file format, a command preceeded by '+' denotes "add", '-' denotes "Subtract", nothing denotes "Set"
 
