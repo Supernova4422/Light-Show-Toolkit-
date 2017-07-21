@@ -25,6 +25,7 @@ void NetworkPacketSender::InitialiseConnection (const char * IPAddress , unsigne
         ProtocalIdentifier = IPPROTO_TCP;
     }
 
+    
     SendSocket = socket(AF_INET, SOCK_DGRAM, ProtocalIdentifier);
    
     if (SendSocket == INVALID_SOCKET) {
@@ -47,9 +48,6 @@ void NetworkPacketSender::SendHexPackets (const uint8_t buffer) {
 void NetworkPacketSender::SendHexPackets (const uint8_t buffer[]) {
 
     
-    
-    
-
     int BufLen = sizeof(buffer);
     
     int iResult;
@@ -59,8 +57,9 @@ void NetworkPacketSender::SendHexPackets (const uint8_t buffer[]) {
         std::cout << (int)buffer[i] << " , " ;
     }
     std::cout << std::endl;
-    
-    iResult = sendto(SendSocket, (const char*) &buffer[0], BufLen, 0, (SOCKADDR *) & RecvAddr, sizeof (RecvAddr));
+    for (int i = 0 ; i < 5 ; i++) {
+        iResult = sendto(SendSocket, (const char*) &buffer[0], BufLen, 0, (SOCKADDR *) & RecvAddr, sizeof (RecvAddr));
+    }
     
     if (iResult == SOCKET_ERROR) {
         wprintf(L"sendto failed with error: %d\n", WSAGetLastError());
@@ -70,7 +69,7 @@ void NetworkPacketSender::SendHexPackets (const uint8_t buffer[]) {
 
     std::chrono::high_resolution_clock::time_point SongStartTime = std::chrono::high_resolution_clock::now();
     
-    while (std::chrono::high_resolution_clock::now() < (SongStartTime + std::chrono::milliseconds(100) ) ) { 
+    while (std::chrono::high_resolution_clock::now() < (SongStartTime + std::chrono::milliseconds(500) ) ) { 
         //Do nothing
     }
 

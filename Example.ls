@@ -1,8 +1,8 @@
 Play {
-	Group1
-	#FF0000 : 10
-	#FF0000 : 2
-	#FF0000 : 2
+	
+	Group2 : #FF0000 : 5
+	Group1 : 5 
+	
 }
 RED { 
 	Group1 : #FF0000

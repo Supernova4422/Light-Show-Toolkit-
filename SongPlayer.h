@@ -32,8 +32,10 @@ class SongPlayer
     
     void AddFunctionToSupportFile(std::string, std::vector<Command>);
     void AddParsedFileToSupportFile(std::map<std::string, std::vector<Command>> ParsedFile);
-    void StartPlaying(std::string FunctionToPlay , std::string SongToPlay);
-    void PlaySong(std::string SongToPlay);
+    void StartPlaying(std::string SongToPlay, std::string FunctionToPlay = "Play");
+    
+    bool PlaySong(std::string SongToPlay);
+    void StopSong();
 
     void LoadMainFile(std::string FileName);
     void AddSupportFile(std::string FileName); 

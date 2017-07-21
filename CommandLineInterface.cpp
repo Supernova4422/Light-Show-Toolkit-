@@ -52,8 +52,7 @@ void CommandLineInterface::ParseLine (std::string Line) {
     }
     if (BeforeSpace == RunCommand)
     {
-        std::string Play = "Play";
-        Player->StartPlaying(Play, AfterSpace);
+        Player->StartPlaying(AfterSpace);
     }
     if (BeforeSpace == PrintMainDataCommand) {
     } 

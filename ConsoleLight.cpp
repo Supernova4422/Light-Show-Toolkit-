@@ -5,7 +5,6 @@
 bool PostedNewGroups = false;
 void ConsoleLight::EmitColour(const Command CommandItem , const std::vector<std::pair<const int, Colour>*> ExpectedOutput) {
 
-    
     if (PostedNewGroups == false)
     {
         std::cout << "Sending to groups: ";
@@ -19,9 +18,6 @@ void ConsoleLight::EmitColour(const Command CommandItem , const std::vector<std:
         std::cout << std::endl;
     }
     
-    
-    
-
     Colour NewColour(CommandItem.value);
     
     switch (CommandItem.Operation)

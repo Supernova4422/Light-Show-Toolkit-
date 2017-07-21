@@ -1,2 +1,2 @@
-g++ Colour.cpp CommandDataTypes.cpp CommandFactory.cpp CommandLineInterface.cpp ConsoleLight.cpp FileParserHandler.cpp GroupManager.cpp LightShowFileReader.cpp main.cpp Milight.cpp NetworkpacketSender.cpp ProgrammableLight.cpp SongPlayer.cpp -std=c++11 -lws2_32 -D_GLIBCXX_USE_NANOSLEEP 
+g++ Colour.cpp CommandDataTypes.cpp CommandFactory.cpp CommandLineInterface.cpp ConsoleLight.cpp FileParserHandler.cpp GroupManager.cpp LightShowFileReader.cpp main.cpp Milight.cpp NetworkpacketSender.cpp ProgrammableLight.cpp SongPlayer.cpp -std=c++11 -lws2_32 -D_GLIBCXX_USE_NANOSLEEP -lwinmm
 PAUSE

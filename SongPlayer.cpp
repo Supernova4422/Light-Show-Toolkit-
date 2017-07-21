@@ -15,7 +15,10 @@
 #include <ctime>
 #include <iomanip>
 #include <chrono>
+#include <fstream>
 
+#include <windows.h>
+#include <MMSystem.h>
 GroupManager Manager;
 
 
@@ -133,12 +136,24 @@ void SongPlayer::WaitMilliseconds (int milliseconds) {
     std::cout << "END WAIT" << std::endl;
 }
 
-void SongPlayer::StartPlaying(std::string FunctionToPlay , std::string SongToPlay) {
-    PlaySong(SongToPlay);
-    SongStartTime = std::chrono::high_resolution_clock::now();
-    WaitTimeTotalInMilli = 0;
-    RunFunction(FunctionToPlay);
+void SongPlayer::StartPlaying(std::string SongToPlay , std::string FunctionToPlay ) {
+    bool SongIsPlaying;
+    SongIsPlaying = PlaySong(SongToPlay);
+
+    if (SongIsPlaying) {
+        SongStartTime = std::chrono::high_resolution_clock::now();
+        WaitTimeTotalInMilli = 0;
+        RunFunction(FunctionToPlay);
+        StopSong();
+    } else {
+        std::cout << "There was an error loading the song!" << std::endl;
+    }
 }
 
-void SongPlayer::PlaySong(std::string SongToPlay) {
+bool SongPlayer::PlaySong(std::string SongToPlay) {
+    LPCTSTR sw = SongToPlay.c_str();
+    return PlaySound( sw, NULL, SND_ASYNC | SND_FILENAME | SND_NODEFAULT);
+}
+void SongPlayer::StopSong() {
+    PlaySound(NULL, 0, 0);
 }
