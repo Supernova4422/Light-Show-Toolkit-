@@ -34,8 +34,7 @@ If you are still confused, Example.ls will definetely clear up a few questions
 * Wait: Pause for an amount of seconds
 * Group: Set the current group  
 * FunctionName: Run another function
-* FunctionPointer: Not implemented yet
-* SpecificCommand: Not implemented yet
+* SpecificCommand: Passes a string to the light class, for individual interpretation
   
 ## Available Operations
 Operations can be applied to a command, changing their functionality
@@ -55,7 +54,7 @@ Within the LS file format, a command preceeded by '+' denotes "add", '-' denotes
 * The opposite for each
 
 ### Repeat Operator (Integer)
-* For any command, will execute that number of times
+* For a function, will execute it the given number of times
 
 ## General Principle of changing a light's colour:
 
