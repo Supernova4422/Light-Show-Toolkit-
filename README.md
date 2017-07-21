@@ -2,21 +2,7 @@
 
 This software can be used to play "Light Show" Files, which are files designed to go along with a light system (Such as Hue or Milight) and play a timed lightshow with music!
 
-## Currently Supports: 
-### Currently Supported Light-Systems: 
-* Milight
-
-### Currently supported File-Formats for light-shows
-* .LS (Lightshow file format)
-### Currently supported Operating systems
-* Windows
-
-### Currently support audio file formats
-* Windows: .Wav
-
-## LightShow file format
-The lightshow file format is a unique file format used by this program, "Example.ls" outlines the syntax and functionality of the format
-
+This works by sending out commands in sequence, which are interpreted properly by each individual system
 
 ## Available "Commands"
 * ColourChange: Change the colour to what is specified for the currently selected groups
@@ -59,3 +45,19 @@ MiLightSettings.txt holds the settings for MiLight.
 * The first line is the IP Address (e.g: 10.0.0.65)
 * The second line is the PORT (e.g: 8899)
 * The third line is UDP or TCP (Protocol to use)
+
+## Currently Supports: 
+### Currently Supported Light-Systems: 
+* Milight
+
+### Currently supported File-Formats for light-shows
+* .LS (Lightshow file format)
+### Currently supported Operating systems
+* Windows
+
+### Currently support audio file formats
+* Windows: .Wav
+
+## LightShow file format
+The lightshow file format is a unique file format used by this program, "Example.ls" outlines the syntax and functionality of the format
+
