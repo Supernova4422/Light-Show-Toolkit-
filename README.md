@@ -73,7 +73,7 @@ MiLightSettings.txt holds the settings for MiLight.
 
 ## Currently Supports: 
 ### Currently Supported Light-Systems: 
-* Milight
+* Milight/LimitlessLED
 
 ### Currently supported File-Formats for light-shows
 * .LS (Lightshow file format)
