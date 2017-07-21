@@ -22,21 +22,22 @@ The lightshow file format is a unique file format used by this program, "Example
   
 ## Available Operations
 >Operations can be applied to a command, changing their functionality
+
 >Within the LS file format, a command preceeded by '+' denotes "add", '-' denotes "Subtract", nothing denotes "Set"
 
-Set Operator (Default)
-    For Colour, will SET the colour to the given value for each "Currently Selected Group" 
-    For Group, will SET the "Currently Selected Group" to the given value
-    For FunctionName, will run every function
+### Set Operator (Default)
+    -For Colour, will SET the colour to the given value for each "Currently Selected Group" 
+    -For Group, will SET the "Currently Selected Group" to the given value
+    -For FunctionName, will run every function
     
-Add operator
-    For Colour, will ADD the colour to each light individually
-    For Group, will ADD the group to the currently selected group
-    For FunctionName, will run every command with the + operator
-Subtract Operator
-    The opposite for each
+### Add operator
+    -For Colour, will ADD the colour to each light individually
+    -For Group, will ADD the group to the currently selected group
+    -For FunctionName, will run every command with the + operator
+### Subtract Operator
+    -The opposite for each
 
-#General Principle of changing a light's colour:
+## General Principle of changing a light's colour:
 
 To change the colour of a light, 
   FIRST you set the "Current Groups" to the light.
