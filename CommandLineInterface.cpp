@@ -8,7 +8,7 @@ CommandLineInterface::CommandLineInterface(SongPlayer &Player) {
     std::cout << "CommandLine Interface has loaded" << std::endl;
     std::cout << "Type 'Help' to get started." << std::endl;
     while (Running) {
-        
+        std::cout << std::endl;
         std::cout << "Waiting on Input" << std::endl;
         std::string Line;
         std::getline(std::cin, Line);
@@ -45,18 +45,22 @@ void CommandLineInterface::ParseLine (std::string Line) {
             }
         }
     }
+    std::cout << std::endl;
     
     if (BeforeSpace == LoadMainCommand) {
-        
         Player->LoadMainFile(AfterSpace);
+        std::cout << "Loaded Main File" << std::endl;
     } 
     if (BeforeSpace == LoadSupportCommand)
     {
         Player->AddSupportFile(AfterSpace);
+        std::cout << "Loaded Support File" << std::endl;
     }
     if (BeforeSpace == RunCommand)
     {
+        std::cout << "Starting Song" << std::endl;
         Player->StartPlaying(AfterSpace);
+        std::cout << "Finished Playing" << std::endl;
     }
     if (BeforeSpace == PrintMainDataCommand) {
     } 

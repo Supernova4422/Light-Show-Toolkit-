@@ -81,7 +81,7 @@ void SongPlayer::RunCommand(Command item ) {
     else {
 
         if (item.type == CommandType::SpecificCommand) {
-            std::cout << "Sending Unique commands has not been implemented yet!";
+            std::cout << "Sending Unique commands has not been implemented yet!" << std::endl;
         }
 
         if (item.type == CommandType::Group) {

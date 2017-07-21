@@ -1,10 +1,11 @@
 //In a lightshow file
 
-/*
-//The text preceeding {} is the "Function Name"
-//These CAN NOT start with a number, and are also case sensitive
-//"Play" is the function that will be executed 
-*/
+// Double slashes are used for comments, meaning everything that follows is ignored by the parser
+// Keep in mind /* and */ are not usable as comments  
+
+//The text preceeding '{' is the "Function Name", with everything until "}" being apart of the function
+//Function Names CAN NOT start with a number, and are also case sensitive
+//"Play" is the function that will be used when the "Run" command is given
 
 Play {
 	//In a lightshow file, each line is read as a new "command"
@@ -12,11 +13,11 @@ Play {
 
 	Group1   		//"Group{Number}" is used to set the current group to that number
 	+Group2  		//When using a '+' it is considered an ADD, is this case "2" is added, making the "Currently Selected Groups" 1 and 2. 
-	-Group1  		//When using a '-' it is considered a REMOVE, in this case, 2 is now the only "Currently Selected Group" 
-	Group3  		//When nothing is used, it is considered a SET, in this case, 3 is now the only "Currently Selected Group"
+	-Group1  		//When using a '-' it is considered a REMOVE, in this case, "2" is now the only "Currently Selected Group" 
+	Group3  		//When nothing is used, it is considered a SET, in this case, "3" is now the only "Currently Selected Group"
 	
 	#0000FF  		//When a '#' is used infront of a number, it is considered a HEX colour, and will be sent to the "Currently Selected Groups"
-	+#00FF00		//Similarly, + and - will ADD and SUBTRACT the current colour for each light individually. 
+	+#00FF00		//Similarly, + and - will ADD and SUBTRACT the current colour for each light INDIVIDUALLY. 
 	-#FF00FF
 
 	2			//When a number is included on its own, it means the program will wait for that duration IN SECONDS
@@ -35,7 +36,7 @@ Play {
 	2Minutes		//This runs the "Minutes" function twice, which is just a function that waits 60 seconds!
 	Red			//Easily remember a colour you like
 	AllGroups		
-	Lamp			Easily remember Light Names
+	Lamp			//Easily remember Light Names
 }
 
 Siren { 

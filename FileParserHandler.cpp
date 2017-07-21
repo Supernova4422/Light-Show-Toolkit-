@@ -7,7 +7,7 @@
 #include "CommandDataTypes.cpp"
 
 std::map<std::string, std::vector<Command>> FileParserHandler::ParseFile (std::string FileToParse) {
-    std::cout << FileToParse;
+    std::cout << "Parsing: " << FileToParse <<std::endl;
     std::map<std::string, std::vector<std::string>> IntermediateFile;
     //Therefore it is the .LS format
     if ((FileToParse.back() == 's') | (FileToParse.back() == 'S')) {

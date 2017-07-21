@@ -300,7 +300,7 @@ void Milight::SendHue(const Colour OutputColour)
     int WhiteThreshhold = 10;
     
     if (OutputColour.Saturation < WhiteThreshhold) {
-        std::cout << "SETTING WHITE: " << std::endl;
+        std::cout << "Milight is sending the Color: WHITE" << std::endl;
         UDPPacketSender.SendHexPackets(LastGroupPacketSent + 128);
         
     }
@@ -308,7 +308,7 @@ void Milight::SendHue(const Colour OutputColour)
         bytes[0] = 0x40; 
         bytes[1] = 174 - OutputColour.Hue;
         bytes[2] = 0x55;
-        std::cout << "SETTING COLOUR: " << std::endl;
+        std::cout << "Milight is sending the Color: " << (int) bytes[1] << std::endl;
         UDPPacketSender.SendHexPackets(bytes);
         
     }
@@ -319,6 +319,7 @@ void Milight::SendBrightness(const Colour OutputColour)
     int BrightnessThreshhold = 10;
     if (OutputColour.Brightness < BrightnessThreshhold)
     {
+        std::cout << "Milight is turning off the lights" << std::endl;
         std::cout << "TURNING OFF: " << std::endl;
         SendGroupOFF();
         
@@ -329,6 +330,7 @@ void Milight::SendBrightness(const Colour OutputColour)
         BrightnessBuffer[0] = 0x4E;
         BrightnessBuffer[1] = 2 + (( ( (float)OutputColour.Brightness) / 255) * 25);
         BrightnessBuffer[2] = 0x55; 
+        std::cout << "Milight is sending the brightness code: " << (int) BrightnessBuffer[1] << std::endl;
         UDPPacketSender.SendHexPackets(BrightnessBuffer);
     }
 }
