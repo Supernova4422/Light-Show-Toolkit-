@@ -1,22 +1,53 @@
+//In a lightshow file
+
+/*
+//The text preceeding {} is the "Function Name"
+//These CAN NOT start with a number, and are also case sensitive
+//"Play" is the function that will be executed 
+*/
+
 Play {
+	//In a lightshow file, each line is read as a new "command"
+	//However, if you would rather have more commands on a single line, use ':' between each command
+
+	Group1   		//"Group{Number}" is used to set the current group to that number
+	+Group2  		//When using a '+' it is considered an ADD, is this case "2" is added, making the "Currently Selected Groups" 1 and 2. 
+	-Group1  		//When using a '-' it is considered a REMOVE, in this case, 2 is now the only "Currently Selected Group" 
+	Group3  		//When nothing is used, it is considered a SET, in this case, 3 is now the only "Currently Selected Group"
 	
-	Group2 : #FF0000 : 5
-	Group1 : 5 
-	
+	#0000FF  		//When a '#' is used infront of a number, it is considered a HEX colour, and will be sent to the "Currently Selected Groups"
+	+#00FF00		//Similarly, + and - will ADD and SUBTRACT the current colour for each light individually. 
+	-#FF00FF
+
+	2			//When a number is included on its own, it means the program will wait for that duration IN SECONDS
+	2.5			//Decimals are fine to use
+
+	#FF0000 : 2		//This is an example of setting the current groups to red, and waiting 2 seconds afterwards
+	#00FF00 : 2 :#FF0000    //You may even specify multiple commands
+
+	Siren 			//When a text name is utilised, it will begin runing the function in this file, or a loaded support file 
+	+Siren			//When '+' or '-' are used, each individual command will run with the given operator
+	2Siren			//When a number is used, the function will execute that number of times
+
+	[DISCO]			//Using enclosing brackets sends specific commands to API's. 
+
+	//Some Clever Tricks
+	2Minutes		//This runs the "Minutes" function twice, which is just a function that waits 60 seconds!
+	Red			//Easily remember a colour you like
+	AllGroups		
+	Lamp			Easily remember Light Names
 }
-RED { 
-	Group1 : #FF0000
+
+Siren { 
+	Red : 0.5 : Blue
 }
 
 Minutes {60}
-M {60}
-Green {#0000FF}
 
-OFFANDON {
-	#FFFFFF : 2
-	#000000 : 2
-}
-SIREN {
-	#FF0000 : 1
-	#00FF00 : 1
-}
+Red {#FF0000}
+
+Blue {#0000FF}
+
+AllGroups { Group1 : +Group2 : +Group3 : +Group4 }
+
+Lamp {Group1}
