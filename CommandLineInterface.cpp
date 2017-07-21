@@ -5,12 +5,16 @@
 CommandLineInterface::CommandLineInterface(SongPlayer &Player) {
     bool Running = true;
     this->Player = &Player;
+    std::cout << "CommandLine Interface has loaded" << std::endl;
+    std::cout << "Type 'Help' to get started." << std::endl;
     while (Running) {
+        
         std::cout << "Waiting on Input" << std::endl;
         std::string Line;
         std::getline(std::cin, Line);
         ParseLine(Line);
     }
+    
 }
 
 
@@ -58,6 +62,13 @@ void CommandLineInterface::ParseLine (std::string Line) {
     } 
     if (BeforeSpace == PrintSupportDataCommand) {
     }     
+    if (BeforeSpace == Help) {
+        
+        std::cout << "Guide to usage:" << std::endl;
+        std::cout << "  Load the Lighshow file with: LoadMain FILENAME" << std::endl;
+        std::cout << "  Load any secondary files with: LoadSupport FILENAME" << std::endl;
+        std::cout << "  Start the 'Play' Function in the main file with a song by: RUN MusicFileName" << std::endl;
+    } 
     
    
 }

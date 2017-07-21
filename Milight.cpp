@@ -6,84 +6,132 @@
 
 #include <ctime>
 #include <iomanip>
-
+#include <string>
+#include <fstream>
+#include <cstdlib>
+#include <errno.h>
 
 Milight::Milight() {
-    UDPPacketSender.InitialiseConnection("10.0.0.65" , 8899);
+    std::cout << "MiLight" << std::endl;
+    const std::string SettingsFile = "MiLightSettings.txt";
+    std::ifstream myfile(SettingsFile);
+    
+    const char * IPAddress = "255.255.255.255";
+    unsigned short Port = 8899;
+    NetworkProtocal Protocal = NetworkProtocal::UDP;
+
+    if (myfile.is_open()) {
+        
+        
+        std::string IPAsString; 
+        getline(myfile,IPAsString);
+        IPAddress = IPAsString.c_str();
+        
+        std::string CurrentLine;
+        getline(myfile,CurrentLine);
+        Port = (unsigned short) std::stoi(CurrentLine, NULL, 0);
+
+        getline(myfile,CurrentLine);
+        if ( CurrentLine == "TCP") {
+            Protocal = NetworkProtocal::TCP;
+        }
+        else {
+            Protocal = NetworkProtocal::UDP;
+        }
+
+    }
+    std::cout << "Loaded with the following settings:" << std::endl;
+    std::cout << "  IP Address: " << IPAddress << std::endl;   
+    std::cout << "  Port: " << Port << std::endl;
+    std::cout << "  Protocal: ";
+    switch (Protocal)
+    {
+        case TCP: 
+        std::cout << "TCP";
+        break;
+        case UDP: 
+        std::cout << "UDP";
+        break;
+    }
+    std::cout <<  std::endl <<  std::endl;
+    
+    UDPPacketSender.InitialiseConnection(IPAddress, Port, Protocal);
 
 }
 
 void Milight::EmitColour(const Command CommandItem , const std::vector<std::pair<const int, Colour>*> ExpectedOutput) {
     
     CanUseByteForALLGROUPS CanSendAllGroupByte = CheckIfCanUseByteForALLGROUPS(ExpectedOutput);
-    
-    //COLOUR MUST ALWAYS BE SENT FIRST
-    Colour FirstEntryColour = ExpectedOutput[0]->second;
+    if (ExpectedOutput.size() > 0) {
 
-    switch (CanSendAllGroupByte)
-    {
-        case ForBoth:
-        //Send Group Byte
-        SendGroupOn(MilightGroupIDs::ALLGROUPS);
-        
-        //Send Hue
-        SendHue(FirstEntryColour);
-        
-        //Individually send brightness 
-        SendBrightness( FirstEntryColour);
-        
-        break;
-        
-        case ForHue:
-        //Send Group Byte
-        SendGroupOn(MilightGroupIDs::ALLGROUPS);
-        
-        //Send Hue
-        SendHue(FirstEntryColour);
-        
-        //Individually send brightness 
-        for (std::pair<const int, Colour>* entry : ExpectedOutput ) {
-            if ((entry->first < 5) && (entry->first > 0)) {
-                
-                SendGroupOn(GetGroupEnum(entry->first));
-                
-                SendBrightness( entry->second);
+        //COLOUR MUST ALWAYS BE SENT FIRST
+        Colour FirstEntryColour = ExpectedOutput[0]->second;
+
+        switch (CanSendAllGroupByte)
+        {
+            case ForBoth:
+            //Send Group Byte
+            SendGroupOn(MilightGroupIDs::ALLGROUPS);
+            
+            //Send Hue
+            SendHue(FirstEntryColour);
+            
+            //Individually send brightness 
+            SendBrightness( FirstEntryColour);
+            
+            break;
+            
+            case ForHue:
+            //Send Group Byte
+            SendGroupOn(MilightGroupIDs::ALLGROUPS);
+            
+            //Send Hue
+            SendHue(FirstEntryColour);
+            
+            //Individually send brightness 
+            for (std::pair<const int, Colour>* entry : ExpectedOutput ) {
+                if ((entry->first < 5) && (entry->first > 0)) {
+                    
+                    SendGroupOn(GetGroupEnum(entry->first));
+                    
+                    SendBrightness( entry->second);
+                }
             }
-        }
 
-        break;
-        
-        case ForBrightness:
+            break;
+            
+            case ForBrightness:
 
-        //Individually send Hue 
-        for (std::pair<const int, Colour>* entry : ExpectedOutput ) {
-            if ((entry->first < 5) && (entry->first > 0)) {
-                
-                SendGroupOn(GetGroupEnum(entry->first));
+            //Individually send Hue 
+            for (std::pair<const int, Colour>* entry : ExpectedOutput ) {
+                if ((entry->first < 5) && (entry->first > 0)) {
+                    
+                    SendGroupOn(GetGroupEnum(entry->first));
 
-                SendHue( entry->second);
+                    SendHue( entry->second);
+                }
             }
-        }
-        //Send GroupByte
-        SendGroupOn(MilightGroupIDs::ALLGROUPS);
-        
-        //Send Brightness
-        SendBrightness(FirstEntryColour);
+            //Send GroupByte
+            SendGroupOn(MilightGroupIDs::ALLGROUPS);
+            
+            //Send Brightness
+            SendBrightness(FirstEntryColour);
 
-        break;
-        case ForNeither:
-        //Individually send Hue, then Brightness
-        for (std::pair<const int, Colour>* entry : ExpectedOutput ) {
-            if ((entry->first < 5) && (entry->first > 0)) {
-                
-                SendGroupOn(GetGroupEnum(entry->first));
+            break;
+            case ForNeither:
+            //Individually send Hue, then Brightness
+            for (std::pair<const int, Colour>* entry : ExpectedOutput ) {
+                if ((entry->first < 5) && (entry->first > 0)) {
+                    
+                    SendGroupOn(GetGroupEnum(entry->first));
 
-                SendHue( entry->second);
-                SendBrightness( entry->second);
+                    SendHue( entry->second);
+                    SendBrightness( entry->second);
+                }
             }
-        }
 
-        break;
+            break;
+        }
     }
 }
 

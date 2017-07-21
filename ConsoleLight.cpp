@@ -3,6 +3,12 @@
 #include <iostream>
 #include "GroupManager.h"
 bool PostedNewGroups = false;
+
+ConsoleLight::ConsoleLight() {
+    std::cout << "All commands will print to console" << std::endl;
+    std::cout << std::endl;
+}
+
 void ConsoleLight::EmitColour(const Command CommandItem , const std::vector<std::pair<const int, Colour>*> ExpectedOutput) {
 
     if (PostedNewGroups == false)
