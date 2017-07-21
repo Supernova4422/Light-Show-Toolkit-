@@ -135,18 +135,7 @@ bool CommandFactory::IsWhiteSpace(char c) {
 }
 
 void ConvertMacrosToPointers (std::map<std::string, std::vector<Command>> *FunctionCollection) {
-    /*
-    for (std::map<string, vector<Command>>::iterator it = FunctionCollection->begin(); it != FunctionCollection->end(); ++it) {
-                
-                vector<Command> Commands;
-                for (Command Entry : it->second) {
-                    if (Entry.type == CommandType.FunctionName) {
-                        Entry.value == &FunctionCollection->find(Entry.value)
-                    }
-                }        
-                FunctionsToPlay.insert(std::pair<std::string, vector<Command>>(it->first,Commands));
-            }
-    */
+   
 }
 
 void CommandFactory::PrintAll(std::map <string, vector<string>> FunctionsWithCommands ){

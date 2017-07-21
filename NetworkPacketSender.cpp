@@ -47,20 +47,10 @@ void NetworkPacketSender::SendHexPackets (const uint8_t buffer) {
 
 void NetworkPacketSender::SendHexPackets (const uint8_t buffer[]) {
 
-    
     int BufLen = sizeof(buffer);
     
     int iResult;
 
-    for (int i = 0; i < BufLen; i++)
-    {
-        std::cout << (int)buffer[i] << " , " ;
-    }
-    std::cout << std::endl;
-    for (int i = 0 ; i < 5 ; i++) {
-        iResult = sendto(SendSocket, (const char*) &buffer[0], BufLen, 0, (SOCKADDR *) & RecvAddr, sizeof (RecvAddr));
-    }
-    
     if (iResult == SOCKET_ERROR) {
         wprintf(L"sendto failed with error: %d\n", WSAGetLastError());
         closesocket(SendSocket);

@@ -63,11 +63,12 @@ void CommandLineInterface::ParseLine (std::string Line) {
     if (BeforeSpace == PrintSupportDataCommand) {
     }     
     if (BeforeSpace == Help) {
-        
+        std::cout << "For more information, visit: https://github.com/Fantasmos/Light-Show-Toolkit-" << std::endl << std::endl;
         std::cout << "Guide to usage:" << std::endl;
-        std::cout << "  Load the Lighshow file with: LoadMain FILENAME" << std::endl;
+        std::cout << "  Load the Lighshow file with: LoadMain FILENAME.ls" << std::endl;
         std::cout << "  Load any secondary files with: LoadSupport FILENAME" << std::endl;
-        std::cout << "  Start the 'Play' Function in the main file with a song by: RUN MusicFileName" << std::endl;
+        std::cout << "  To start playing the file alongside a song, use: RUN MusicFileName" << std::endl;
+        
     } 
     
    

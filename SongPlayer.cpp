@@ -75,21 +75,13 @@ void SongPlayer::RunCommand(Command item ) {
     //Make into seperate function to make recursive
     if (item.type == CommandType::Wait) {
         float timetowait = std::atof(item.value.c_str());
-        std::cout << std::setprecision(5);
-        std::cout << "WAIT: " << timetowait << '\n';
         
-
         WaitMilliseconds( (int) (timetowait * 1000) ) ;
     } 
     else {
 
         if (item.type == CommandType::SpecificCommand) {
-            std::cout << "SPECIFIC COMMAND NOT IMPLEMENTED IN MANAGER";
-            /*
-            for (ProgrammableLight* Listiner : GroupChangeEventListiners) {
-                Listiner->SpecificCommand(item);
-            }
-            */
+            std::cout << "Sending Unique commands has not been implemented yet!";
         }
 
         if (item.type == CommandType::Group) {
@@ -126,14 +118,14 @@ int WaitTimeTotalInMilli;
 
 void SongPlayer::WaitMilliseconds (int milliseconds) {
     
-    std::cout << "Starting Wait" << milliseconds << std::endl; 
+    std::cout << "Starting wait for: " << milliseconds << " Milliseconds" << std::endl; 
     WaitTimeTotalInMilli = WaitTimeTotalInMilli + milliseconds;
     
     while (std::chrono::high_resolution_clock::now() < (SongStartTime + std::chrono::milliseconds((int)WaitTimeTotalInMilli) ) ) { 
         //Do nothing
     }
   
-    std::cout << "END WAIT" << std::endl;
+    std::cout << "Finished Waiting" << std::endl;
 }
 
 void SongPlayer::StartPlaying(std::string SongToPlay , std::string FunctionToPlay ) {
