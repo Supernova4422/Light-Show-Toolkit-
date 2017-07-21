@@ -13,12 +13,12 @@ The lightshow file format is a unique file format used by this program, "Example
 
 
 ## Available "Commands"
-  ColourChange: Change the colour to what is specified for the currently selected groups
-  Wait: Pause for an amount of seconds
-  Group: Set the current group 
-  FunctionName: Play the function
-  FunctionPointer: Not implemented yet
-  SpecificCommand: Not implemented yet
+  -ColourChange: Change the colour to what is specified for the currently selected groups
+  -Wait: Pause for an amount of seconds
+  -Group: Set the current group 
+  -FunctionName: Play the function
+  -FunctionPointer: Not implemented yet
+  -SpecificCommand: Not implemented yet
   
 ## Available Operations
 >Operations can be applied to a command, changing their functionality
