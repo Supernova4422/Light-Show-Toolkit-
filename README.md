@@ -17,11 +17,23 @@ The aim is for future light systems to be added, allowing for a standard method.
 * Help: Prints out some helpful text
 
 
+## LightShow file format
+The lightshow file format is a unique file format used by this program, "Example.ls" outlines the syntax and functionality of the format
+
+Generally, a function is a collection of sequential commands. A command has three properties: 
+* What the command does
+* The Operator
+* The Value
+
+The "Play" Function is where the song starts from.
+
+If you are still confused, Example.ls will definetely clear up a few questions
+
 ## Available "Commands"
 * ColourChange: Change the colour to what is specified for the currently selected groups
 * Wait: Pause for an amount of seconds
-* Group: Set the current group 
-* FunctionName: Play the function
+* Group: Set the current group  
+* FunctionName: Run another function
 * FunctionPointer: Not implemented yet
 * SpecificCommand: Not implemented yet
   
@@ -70,7 +82,3 @@ MiLightSettings.txt holds the settings for MiLight.
 
 ### Currently support audio file formats
 * Windows: .Wav
-
-## LightShow file format
-The lightshow file format is a unique file format used by this program, "Example.ls" outlines the syntax and functionality of the format
-
