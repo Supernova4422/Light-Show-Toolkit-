@@ -85,10 +85,18 @@ MiLightSettings.txt holds the settings for LimitlessLED/MiLight.
 * .LS (Lightshow file format)
 ### Currently supported Operating systems
 * Windows
+* Linux (Tested on Ubuntu)
 
 ### Currently support audio file formats
-* Windows: .Wav
+* WAVE
+* MOD
+* MIDI
+* OGG
+* MP3 
+* FLAC
 
 ## Compiling
 ### Windows
 I run Compile.bat with G++, works fine. 
+### Linux
+Get the necessary libraries (SDL2, SDL2_Mixer, SDL2_Net) and run compile.sh with G++. 
