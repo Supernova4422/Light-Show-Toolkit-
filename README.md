@@ -6,9 +6,10 @@ This works by running a function (which means commands in sequence), which are i
 
 The aim is for future light systems to be added, allowing for a standard method. 
 
-##Libraries utilised
+## Libraries utilised
 
-This program uses SDL for audio playback as well as for TCP/UDP networking.
+This program uses SDL for audio playback and TCP/UDP networking, more specifically: SDL2, SDL2_mixer and SDL2_net
+
 
 ## Using the CLI
 
