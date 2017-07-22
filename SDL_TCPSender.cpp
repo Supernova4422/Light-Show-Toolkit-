@@ -6,8 +6,6 @@
 #include <chrono>
 #include <SDL_net.h>
 
-
-
 void SDL_TCPSender::InitialiseConnection (const char * IPAddress , unsigned short Port, NetworkProtocal Protocal) {
     char *host;
     

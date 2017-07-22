@@ -15,9 +15,6 @@
 #include <iomanip>
 #include <chrono>
 #include <fstream>
-
-#include <windows.h>
-#include <MMSystem.h>
 #include <SDL.h>
 #include <SDL_mixer.h>
 
