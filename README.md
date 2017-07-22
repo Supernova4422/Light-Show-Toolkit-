@@ -97,6 +97,14 @@ MiLightSettings.txt holds the settings for LimitlessLED/MiLight.
 
 ## Compiling
 ### Windows
-I run Compile.bat with G++, works fine. 
+Run Compile.bat with G++, you may need to make the following changes: 
+* Ensure you have SDL2, SDL_mixer, SDL_net development files 
+
+* For: -IC:\mingw_dev_lib\include change this directory to point to the folder containing a folder named "SDL2" which contains the following files: SDL.h, SDL_net.h and SDL2_mixer.h 
+
+* Likewise for -LC:\mingw_dev_lib\lib and the necessary .a files.
+
+* Upon compiling, drop in the DLLS necessary until no more errors occur at launch
+
 ### Linux
 Get the necessary libraries (SDL2, SDL2_Mixer, SDL2_Net) and run compile.sh with G++. 
