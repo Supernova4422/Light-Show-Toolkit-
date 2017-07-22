@@ -10,6 +10,12 @@
 #include <fstream>
 #include <cstdlib>
 #include <errno.h>
+#include "SDL_UDPSender.h"
+#include "SDL_TCPSender.h"
+
+
+SDL_TCPSender TCPSender;
+SDL_UDPSender UDPSender;
 
 Milight::Milight() {
     std::cout << "MiLight" << std::endl;
@@ -19,14 +25,13 @@ Milight::Milight() {
     const char * IPAddress = "255.255.255.255";
     unsigned short Port = 8899;
     NetworkProtocal Protocal = NetworkProtocal::UDP;
-
+    int DelayAfterPacketMS; 
     if (myfile.is_open()) {
         
         
         std::string IPAsString; 
         getline(myfile,IPAsString);
         IPAddress = IPAsString.c_str();
-        
         std::string CurrentLine;
         getline(myfile,CurrentLine);
         Port = (unsigned short) std::stoi(CurrentLine, NULL, 0);
@@ -38,25 +43,34 @@ Milight::Milight() {
         else {
             Protocal = NetworkProtocal::UDP;
         }
+        getline(myfile,CurrentLine);
+        DelayAfterPacketMS = std::stoi(CurrentLine, NULL, 0);
 
     }
     std::cout << "Loaded with the following settings:" << std::endl;
     std::cout << "  IP Address: " << IPAddress << std::endl;   
     std::cout << "  Port: " << Port << std::endl;
     std::cout << "  Protocal: ";
+    
     switch (Protocal)
     {
         case TCP: 
-        std::cout << "TCP";
+            TCPSender = SDL_TCPSender();
+            PacketSender = &TCPSender;
+            std::cout << "TCP" << std::endl;
         break;
+
         case UDP: 
-        std::cout << "UDP";
+            UDPSender = SDL_UDPSender();
+            UDPSender.DelayAfterPacketMS = DelayAfterPacketMS;
+            PacketSender = &UDPSender;
+            std::cout << "UDP" << std::endl;
+            std::cout << "  Delay after each packet:" << DelayAfterPacketMS << "MS" << std::endl;
         break;
     }
-    std::cout <<  std::endl <<  std::endl;
-    
-    UDPPacketSender.InitialiseConnection(IPAddress, Port, Protocal);
+    PacketSender->InitialiseConnection(IPAddress, Port, Protocal);
 
+    std::cout <<  std::endl <<  std::endl;
 }
 
 void Milight::EmitColour(const Command CommandItem , const std::vector<std::pair<const int, Colour>*> ExpectedOutput) {
@@ -221,7 +235,7 @@ void Milight::OnCurrentGroupsUpdate(const Command CommandItem , std::vector<std:
     
     //We send the packet in advance, this means that the delay time can be concealed in following "WAIT" commands
     if ( ((ContainsGroup1 && ContainsGroup2) && (ContainsGroup3 && ContainsGroup4)) == true) {
-        UDPPacketSender.SendHexPackets( 0x42 );
+        PacketSender->SendHexPackets( 0x42 );
     } else if (CurrentGroups.size() == 1) {
         
         const int GroupID = CurrentGroups[0]->first;
@@ -276,7 +290,7 @@ void Milight::SendGroupOn(MilightGroupIDs GroupID)
     
     if ((GroupID != Invalid) && (LastGroupPacketSent != ByteToSend)) {
         LastGroupPacketSent = ByteToSend;
-        UDPPacketSender.SendHexPackets(ByteToSend);
+        PacketSender->SendHexPackets(ByteToSend);
         std::cout << "Sent Group ON" << std::endl;
     }
 }
@@ -284,12 +298,12 @@ void Milight::SendGroupOn(MilightGroupIDs GroupID)
 void Milight::SendGroupOFF()
 {
     if (LastGroupPacketSent == 0x42) {
-            UDPPacketSender.SendHexPackets(0x41);
+            PacketSender->SendHexPackets(0x41);
             LastGroupPacketSent = LastGroupPacketSent - 1;
         }
         else {
             LastGroupPacketSent = LastGroupPacketSent + 1;
-            UDPPacketSender.SendHexPackets(LastGroupPacketSent + 1);
+            PacketSender->SendHexPackets(LastGroupPacketSent + 1);
     }
 }
 
@@ -301,7 +315,7 @@ void Milight::SendHue(const Colour OutputColour)
     
     if (OutputColour.Saturation < WhiteThreshhold) {
         std::cout << "Milight is sending the Color: WHITE" << std::endl;
-        UDPPacketSender.SendHexPackets(LastGroupPacketSent + 128);
+        PacketSender->SendHexPackets(LastGroupPacketSent + 128);
         
     }
     else {
@@ -309,7 +323,7 @@ void Milight::SendHue(const Colour OutputColour)
         bytes[1] = 174 - OutputColour.Hue;
         bytes[2] = 0x55;
         std::cout << "Milight is sending the Color: " << (int) bytes[1] << std::endl;
-        UDPPacketSender.SendHexPackets(bytes);
+        PacketSender->SendHexPackets(bytes);
         
     }
 }
@@ -331,7 +345,7 @@ void Milight::SendBrightness(const Colour OutputColour)
         BrightnessBuffer[1] = 2 + (( ( (float)OutputColour.Brightness) / 255) * 25);
         BrightnessBuffer[2] = 0x55; 
         std::cout << "Milight is sending the brightness code: " << (int) BrightnessBuffer[1] << std::endl;
-        UDPPacketSender.SendHexPackets(BrightnessBuffer);
+        PacketSender->SendHexPackets(BrightnessBuffer);
     }
 }
 

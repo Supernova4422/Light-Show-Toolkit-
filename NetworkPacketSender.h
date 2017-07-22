@@ -1,20 +1,19 @@
 
-#define WIN32_LEAN_AND_MEAN
-#include <winsock2.h>
-
+#ifndef NETWORKPACKETSENDER_H
+#define NETWORKPACKETSENDER_H
 #include <ctime>
 #include <iomanip>
 enum NetworkProtocal { TCP, UDP};
 
 class NetworkPacketSender {
 
-SOCKET SendSocket = INVALID_SOCKET;
-sockaddr_in RecvAddr;
 public: 
-void InitialiseConnection (const char * IPAddress , unsigned short Port, NetworkProtocal Protocal = UDP);
+virtual void InitialiseConnection (const char * IPAddress , unsigned short Port, NetworkProtocal Protocal = UDP) = 0;
 
-void SendHexPackets (uint8_t buffer);
-void SendHexPackets (uint8_t buffer[]);
+virtual void SendHexPackets (uint8_t buffer) = 0;
+virtual void SendHexPackets (uint8_t buffer[]) = 0;
 };
 
 
+
+#endif

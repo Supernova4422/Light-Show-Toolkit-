@@ -15,7 +15,7 @@ enum MilightGroupIDs {Invalid = 0,  Group1 = 1, Group2 = 2, Group3 = 3, Group4 =
 class Milight: public ProgrammableLight
 {
     public: 
-    NetworkPacketSender UDPPacketSender;
+    NetworkPacketSender* PacketSender;
     CanUseByteForALLGROUPS CheckIfCanUseByteForALLGROUPS (const std::vector<std::pair<const int, Colour>*> Collection);
     Milight();
    

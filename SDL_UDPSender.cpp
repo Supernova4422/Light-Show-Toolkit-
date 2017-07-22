@@ -4,14 +4,13 @@
 #include <ctime>
 #include <iomanip>
 #include <iostream>
-#include "NetworkPacketSender.h"
+#include "SDL_UDPSender.h"
 #include <chrono>
 #include <SDL_net.h>
 
-UDPsocket udpsock;
-IPaddress address;
 
-void NetworkPacketSender::InitialiseConnection (const char * IPAddress , unsigned short Port, NetworkProtocal Protocal) {
+
+void SDL_UDPSender::InitialiseConnection (const char * IPAddress , unsigned short Port, NetworkProtocal Protocal ) {
     char *host;
     
     if(SDL_Init(0)==-1) {
@@ -39,13 +38,13 @@ void NetworkPacketSender::InitialiseConnection (const char * IPAddress , unsigne
     }
 }
 
-void NetworkPacketSender::SendHexPackets (uint8_t buffer) {
+void SDL_UDPSender::SendHexPackets (uint8_t buffer) {
     uint8_t BufferArray[1];
     BufferArray[0] = buffer;
     SendHexPackets(BufferArray);
 }
 
-void NetworkPacketSender::SendHexPackets (uint8_t buffer[]) {
+void SDL_UDPSender::SendHexPackets (uint8_t buffer[]) {
  
     int numsent;
     UDPpacket packet;
@@ -59,5 +58,5 @@ void NetworkPacketSender::SendHexPackets (uint8_t buffer[]) {
         // do something because we failed to send
         // this may just be because no addresses are bound to the channel...
     }
-
+    SDL_Delay(DelayAfterPacketMS);
 }
