@@ -23,10 +23,6 @@ int main()
     SongPlayer Player; 
     CommandLineInterface CLI(Player);
     
-    //Player.AddParsedFileToSupportFile(Parser.ParseFile("SupportFile_V1.txt"));
-    
-    //Player.StartPlaying("Play" , "SONG");
-  
     int num;
     std::cin >> num;
     
