@@ -10,6 +10,8 @@ The aim is for future light systems to be added, allowing for a standard method.
 
 This program uses SDL for audio playback and TCP/UDP networking, more specifically: SDL2, SDL2_mixer and SDL2_net
 
+To compile this program, you may need to download necessary headers, and to run it you may need to include linked libraries.
+
 
 ## Using the CLI
 
