@@ -47,7 +47,7 @@ void SDL_UDPSender::SendHexPackets (uint8_t buffer[]) {
     UDPpacket packet;
     packet.address = address;
     packet.data = buffer;
-    packet.len = strlen((char*)buffer);
+    packet.len = strlen((char*)buffer) -1;
 
     numsent=SDLNet_UDP_Send(udpsock, 0, &packet);
     if(!numsent) {
