@@ -13,8 +13,8 @@ sockaddr_in RecvAddr;
 public: 
 void InitialiseConnection (const char * IPAddress , unsigned short Port, NetworkProtocal Protocal = UDP);
 
-void SendHexPackets (const uint8_t buffer);
-void SendHexPackets (const uint8_t buffer[]);
+void SendHexPackets (uint8_t buffer);
+void SendHexPackets (uint8_t buffer[]);
 };
 
 

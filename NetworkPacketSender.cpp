@@ -6,61 +6,54 @@
 #include <iostream>
 #include "NetworkPacketSender.h"
 #include <chrono>
+#include <SDL_net.h>
 
+UDPsocket udpsock;
+IPaddress *address;
 
 void NetworkPacketSender::InitialiseConnection (const char * IPAddress , unsigned short Port, NetworkProtocal Protocal) {
-    
-    WSADATA wsaData;
-    int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
-    if (iResult != NO_ERROR) {
-        wprintf(L"WSAStartup failed with error: %d\n", iResult);
-    }    
-
-    int ProtocalIdentifier;
-
-    if (Protocal == UDP) {
-        ProtocalIdentifier = IPPROTO_UDP;
+    	
+    if(SDL_Init(0)==-1) {
+        printf("SDL_Init: %s\n", SDL_GetError());
     }
-    if (Protocal == TCP) {
-        ProtocalIdentifier = IPPROTO_TCP;
+    if(SDLNet_Init() == -1) {
+        printf("SDLNet_Init: %s\n", SDLNet_GetError());
     }
 
     
-    SendSocket = socket(AF_INET, SOCK_DGRAM, ProtocalIdentifier);
-   
-    if (SendSocket == INVALID_SOCKET) {
-        wprintf(L"socket failed with error: %ld\n", WSAGetLastError());
-        WSACleanup();
+    udpsock=SDLNet_UDP_Open(Port);
+
+    if(!udpsock) {
+        printf("SDLNet_UDP_Open: %s\n", SDLNet_GetError());
     }
-    
-    RecvAddr.sin_family = AF_INET;
-    RecvAddr.sin_port = htons(Port);
-    RecvAddr.sin_addr.s_addr = inet_addr(IPAddress);
-    
+    int channel;
+
+    //channel=SDLNet_UDP_Bind(udpsock, -1, address);
+    //if(channel==-1) {
+   //     printf("SDLNet_UDP_Bind: %s\n", SDLNet_GetError());
+        // do something because we failed to bind
+    //}
 }
 
-void NetworkPacketSender::SendHexPackets (const uint8_t buffer) {
+void NetworkPacketSender::SendHexPackets (uint8_t buffer) {
     uint8_t BufferArray[1];
     BufferArray[0] = buffer;
     SendHexPackets(BufferArray);
 }
 
-void NetworkPacketSender::SendHexPackets (const uint8_t buffer[]) {
+void NetworkPacketSender::SendHexPackets (uint8_t buffer[]) {
+ 
+    int numsent;
+    UDPpacket packet;
+    packet.address = *address;
+    packet.data = buffer;
+    packet.len = sizeof(buffer);
 
-    int BufLen = sizeof(buffer);
-    
-    int iResult;
-
-    if (iResult == SOCKET_ERROR) {
-        wprintf(L"sendto failed with error: %d\n", WSAGetLastError());
-        closesocket(SendSocket);
-        WSACleanup();
-    }
-
-    std::chrono::high_resolution_clock::time_point SongStartTime = std::chrono::high_resolution_clock::now();
-    
-    while (std::chrono::high_resolution_clock::now() < (SongStartTime + std::chrono::milliseconds(500) ) ) { 
-        //Do nothing
+    numsent=SDLNet_UDP_Send(udpsock, 0, &packet);
+    if(!numsent) {
+        printf("SDLNet_UDP_Send: %s\n", SDLNet_GetError());
+        // do something because we failed to send
+        // this may just be because no addresses are bound to the channel...
     }
 
 }
