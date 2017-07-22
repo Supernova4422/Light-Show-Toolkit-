@@ -55,6 +55,7 @@ Milight::Milight() {
             TCPSender = SDL_TCPSender();
             PacketSender = &TCPSender;
             std::cout << "TCP" << std::endl;
+            TCPSender.InitialiseConnection(IPAddress, Port, Protocal);
         break;
 
         case UDP: 
@@ -63,10 +64,11 @@ Milight::Milight() {
             PacketSender = &UDPSender;
             std::cout << "UDP" << std::endl;
             std::cout << "  Delay after each packet:" << DelayAfterPacketMS << "MS" << std::endl;
+            UDPSender.InitialiseConnection(IPAddress, Port, Protocal);
         break;
     }
-    PacketSender->InitialiseConnection(IPAddress, Port, Protocal);
-
+    std::cout << "  Networking Initialised" << std::endl;
+    
     std::cout <<  std::endl <<  std::endl;
 }
 

@@ -1,5 +1,5 @@
 #include "NetworkPacketSender.h"
-#include <SDL_net.h>
+#include <SDL2/SDL_net.h>
 class SDL_UDPSender : public NetworkPacketSender {
 
 
