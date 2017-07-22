@@ -6,6 +6,7 @@
 #include <chrono>
 #include <SDL_net.h>
 
+#include <string.h>
 void SDL_TCPSender::InitialiseConnection (const char * IPAddress , unsigned short Port, NetworkProtocal Protocal) {
     char *host;
     
@@ -28,6 +29,18 @@ void SDL_TCPSender::InitialiseConnection (const char * IPAddress , unsigned shor
     if(!TCPsock) {
         printf("SDLNet_TCP_Open: %s\n", SDLNet_GetError());
     }
+    int len;
+    char message[1024] = "Hello World";
+    
+
+    len = strlen(message);
+    
+    int result;
+    result = SDLNet_TCP_Send(TCPsock , message , len);
+    result = SDLNet_TCP_Send(TCPsock , message , len);
+    SDLNet_TCP_Close(TCPsock);
+    TCPsock = SDLNet_TCP_Open(&address);
+    result = SDLNet_TCP_Send(TCPsock , message , len);
 }
 
 void SDL_TCPSender::SendHexPackets (uint8_t buffer) {
@@ -38,9 +51,10 @@ void SDL_TCPSender::SendHexPackets (uint8_t buffer) {
 
 void SDL_TCPSender::SendHexPackets (uint8_t buffer[]) {
     int result;
-    int len = sizeof(buffer);
-    result = SDLNet_TCP_Send(TCPsock,buffer,len);
-
+    TCPsock = SDLNet_TCP_Open(&address);
+    int len = strlen((char*)buffer);
+    result = SDLNet_TCP_Send(TCPsock, buffer ,len -1);
+    SDLNet_TCP_Close(TCPsock);
     if(result < len) {
 		printf("SDLNet_TCP_Send: %s\n" , SDLNet_GetError());
     }

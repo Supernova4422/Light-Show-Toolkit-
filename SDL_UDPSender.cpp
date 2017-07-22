@@ -4,7 +4,7 @@
 #include "SDL_UDPSender.h"
 #include <chrono>
 #include <SDL_net.h>
-
+#include <string.h>
 
 
 void SDL_UDPSender::InitialiseConnection (const char * IPAddress , unsigned short Port, NetworkProtocal Protocal ) {
@@ -47,7 +47,7 @@ void SDL_UDPSender::SendHexPackets (uint8_t buffer[]) {
     UDPpacket packet;
     packet.address = address;
     packet.data = buffer;
-    packet.len = sizeof(buffer);
+    packet.len = strlen((char*)buffer);
 
     numsent=SDLNet_UDP_Send(udpsock, 0, &packet);
     if(!numsent) {

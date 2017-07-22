@@ -8,9 +8,5 @@ class LightShowPlayer
   void PlaySong();
   
   CommandFactory CommandParser; 
-  
-  
-
   private:
-  
 };

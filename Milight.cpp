@@ -339,7 +339,7 @@ void Milight::SendBrightness(const Colour OutputColour)
         std::cout << "SETTING BRIGHTNESS: " << std::endl;
         uint8_t BrightnessBuffer[3];
         BrightnessBuffer[0] = 0x4E;
-        BrightnessBuffer[1] = 2 + (( ( (float)OutputColour.Brightness) / 255) * 25);
+        BrightnessBuffer[1] = 2 + (( ( (float)OutputColour.Brightness) / 255) * 24);
         BrightnessBuffer[2] = 0x55; 
         std::cout << "Milight is sending the brightness code: " << (int) BrightnessBuffer[1] << std::endl;
         PacketSender->SendHexPackets(BrightnessBuffer);
