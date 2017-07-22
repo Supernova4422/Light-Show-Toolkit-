@@ -18,21 +18,17 @@ void SDL_TCPSender::InitialiseConnection (const char * IPAddress , unsigned shor
     if(SDLNet_Init() == -1) {
         printf("SDLNet_Init: %s\n", SDLNet_GetError());
     }
-    
-    udpsock=SDLNet_UDP_Open(Port);
 
-    if(!udpsock) {
-        printf("SDLNet_UDP_Open: %s\n", SDLNet_GetError());
-    }
-    
     if(SDLNet_ResolveHost(&address,IPAddress,Port) == -1)
 	{
 		printf("SDLNet_ResolveHost: %s\n",SDLNet_GetError());
 		exit(4);
 	}
+    
+    TCPsock = SDLNet_TCP_Open(&address);
 
-    if(SDLNet_UDP_Bind(udpsock, 0, &address) == -1) {
-        printf("SDLNet_UDP_Bind: %s\n", SDLNet_GetError());
+    if(!TCPsock) {
+        printf("SDLNet_TCP_Open: %s\n", SDLNet_GetError());
     }
 }
 
@@ -43,18 +39,11 @@ void SDL_TCPSender::SendHexPackets (uint8_t buffer) {
 }
 
 void SDL_TCPSender::SendHexPackets (uint8_t buffer[]) {
- 
-    int numsent;
-    UDPpacket packet;
-    packet.address = address;
-    packet.data = buffer;
-    packet.len = sizeof(buffer);
+    int result;
+    int len = sizeof(buffer);
+    result = SDLNet_TCP_Send(TCPsock,buffer,len);
 
-    numsent=SDLNet_UDP_Send(udpsock, 0, &packet);
-    if(!numsent) {
-        printf("SDLNet_UDP_Send: %s\n", SDLNet_GetError());
-        // do something because we failed to send
-        // this may just be because no addresses are bound to the channel...
+    if(result < len) {
+		printf("SDLNet_TCP_Send: %s\n" , SDLNet_GetError());
     }
-
 }
