@@ -93,7 +93,7 @@ void SongPlayer::RunCommand(Command item ) {
     else {
 
         if (item.type == CommandType::SpecificCommand) {
-            std::cout << "Sending Unique commands has not been implemented yet!" << std::endl;
+            Manager.SpecificCommand(item);
         }
 
         if (item.type == CommandType::Group) {
@@ -105,11 +105,6 @@ void SongPlayer::RunCommand(Command item ) {
                     RunFunction(item.value, item.Operation);
                 }
         }
-
-        if (item.type == CommandType::FunctionPointer) {
-
-        }
-        
 
         if (item.type == CommandType::ColourChange) {
             Colour Newcolour(item.value);

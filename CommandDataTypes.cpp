@@ -6,7 +6,7 @@
 
 #include <string>
 
-enum CommandType {ColourChange, Wait, Group, FunctionName, FunctionPointer, SpecificCommand};
+enum CommandType {ColourChange, Wait, Group, FunctionName, SpecificCommand};
 
 enum CommandOperation { set, add, Remove };
 
