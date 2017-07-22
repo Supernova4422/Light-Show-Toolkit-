@@ -18,12 +18,25 @@
 
 #include <windows.h>
 #include <MMSystem.h>
+#include <SDL.h>
+#include <SDL_mixer.h>
+
 GroupManager Manager;
 
 
 std::map <std::string, std::vector<Command>> Dictionary;
 
 SongPlayer::SongPlayer () {
+    //Initialize SDL for audio playback
+    if( SDL_Init( SDL_INIT_AUDIO ) < 0 )
+    {
+        printf( "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
+    }
+     //Initialize SDL_mixer
+    if(Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
+    {
+        printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
+    }            
     
 }
 
@@ -141,10 +154,32 @@ void SongPlayer::StartPlaying(std::string SongToPlay , std::string FunctionToPla
     }
 }
 
+bool loadMedia()
+{
+
+}
+//The music that will be played
+Mix_Music *gMusic = NULL;
+
 bool SongPlayer::PlaySong(std::string SongToPlay) {
-    LPCTSTR sw = SongToPlay.c_str();
-    return PlaySound( sw, NULL, SND_ASYNC | SND_FILENAME | SND_NODEFAULT);
+    
+    bool success = true;
+    gMusic = Mix_LoadMUS( SongToPlay.c_str() );
+    
+    if( gMusic == NULL ) {
+        printf( "Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError() );
+        success = false;
+    } else {
+        Mix_PlayMusic( gMusic, 1 ); //Play the music once        
+    }  
+          
+    return success; 
 }
 void SongPlayer::StopSong() {
-    PlaySound(NULL, 0, 0);
+    if( Mix_PlayingMusic() != 0 ) {
+        //Free and stop the music
+        Mix_FreeMusic( gMusic );
+        gMusic = NULL;
+        Mix_Quit(); 
+    }
 }
