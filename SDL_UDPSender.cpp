@@ -54,7 +54,7 @@ void SDL_UDPSender::SendHexPackets (uint8_t buffer[]) {
 
     SDLNet_UDP_Close(udpsock);
 
-    //SDL_Delay(DelayAfterPacketMS);
+    SDL_Delay(DelayAfterPacketMS);
 }
 
 SDL_UDPSender::~SDL_UDPSender() {

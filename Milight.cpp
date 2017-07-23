@@ -52,6 +52,7 @@ Milight::Milight() {
     switch (Protocal)
     {
         case TCP: 
+            TCPSender.DelayAfterPacketMS = DelayAfterPacketMS;
             PacketSender = &TCPSender;
             std::cout << "TCP" << std::endl;
             TCPSender.InitialiseConnection(IPAddress, Port, Protocal);
@@ -278,16 +279,20 @@ void Milight::SendGroupOn(MilightGroupIDs GroupID)
 {
     
     uint8_t ByteToSend;
-
+    uint8_t bytes[3];
+    
+    bytes[1] = 0x00;
+    bytes[2] = 0x55;
     if (GroupID == ALLGROUPS ) {
-        ByteToSend = 0x42;
+        bytes[0] = 0x42;
     } else if (GroupID != Invalid) {
-        ByteToSend = GetGroupHexByte(GroupID);
+        bytes[0] = GetGroupHexByte(GroupID);
     }
     
-    if ((GroupID != Invalid) && (LastGroupPacketSent != ByteToSend)) {
-        LastGroupPacketSent = ByteToSend;
-        PacketSender->SendHexPackets(ByteToSend);
+    if ((GroupID != Invalid) && (LastGroupPacketSent != bytes[0])) {
+        LastGroupPacketSent = bytes[0];
+
+        PacketSender->SendHexPackets(bytes);
         std::cout << "Sent Group ON" << std::endl;
     }
 }
@@ -307,7 +312,7 @@ void Milight::SendGroupOFF()
 
 void Milight::SendHue(const Colour OutputColour)
 {
-    uint8_t bytes[3];
+    uint8_t bytes[2];
     int WhiteThreshhold = 10;
     
     if (OutputColour.Saturation < WhiteThreshhold) {
@@ -337,7 +342,7 @@ void Milight::SendBrightness(const Colour OutputColour)
         
     }  else {
         std::cout << "SETTING BRIGHTNESS: " << std::endl;
-        uint8_t BrightnessBuffer[3];
+        uint8_t BrightnessBuffer[2];
         BrightnessBuffer[0] = 0x4E;
         BrightnessBuffer[1] = 2 + (( ( (float)OutputColour.Brightness) / 255) * 24);
         BrightnessBuffer[2] = 0x55; 

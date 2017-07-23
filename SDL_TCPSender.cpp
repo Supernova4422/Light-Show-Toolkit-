@@ -6,6 +6,7 @@
 #include <chrono>
 #include <SDL2/SDL_net.h>
 #include <string.h>
+#include <stdio.h>
 void SDL_TCPSender::InitialiseConnection (const char * IPAddress , unsigned short Port, NetworkProtocal Protocal) {
     char *host;
     
@@ -24,8 +25,10 @@ void SDL_TCPSender::InitialiseConnection (const char * IPAddress , unsigned shor
 }
 
 void SDL_TCPSender::SendHexPackets (uint8_t buffer) {
-    uint8_t BufferArray[1];
+    uint8_t BufferArray[3];
     BufferArray[0] = buffer;
+    BufferArray[1] = 0x00;
+    BufferArray[2] = 0x55;
     SendHexPackets(BufferArray);
 }
 
@@ -35,6 +38,21 @@ void SDL_TCPSender::SendHexPackets (uint8_t buffer[]) {
     
     int len = strlen((char*)buffer);
     int result;
-    result = SDLNet_TCP_Send(TCPsock, buffer ,len -1);
+    if (len == 1)
+    {
+        buffer[1] = 0x00;
+        result = SDLNet_TCP_Send(TCPsock, buffer , len  + 1);
+    } else {
+        result = SDLNet_TCP_Send(TCPsock, buffer , len + 1 );
+    }
+    
     SDLNet_TCP_Close(TCPsock);
+
+    //Current time start time
+   
+    Uint32 EndTime = SDL_GetTicks() + DelayAfterPacketMS;
+    while ( SDL_GetTicks() < EndTime)
+    {
+        //Do nothing
+    }
 }
