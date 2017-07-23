@@ -323,6 +323,7 @@ void Milight::SendHue(const Colour OutputColour)
     else {
         bytes[0] = 0x40; 
         bytes[1] = 174 - OutputColour.Hue;
+       
         bytes[2] = 0x55;
         std::cout << "Milight is sending the Color: " << (int) bytes[1] << std::endl;
         PacketSender->SendHexPackets(bytes);
