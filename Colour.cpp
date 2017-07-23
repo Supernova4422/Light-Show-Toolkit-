@@ -21,18 +21,42 @@ void Colour::UpdateHSBColours () {
     if (Saturation == 0) {
         Hue = 0;
     } else {
-        if (red == HighestValue) {
-            Hue =  ((green  - blue) / (HighestValue - LowestValue) ) * 60 / 360 * 255;
-        }
-        if (green == HighestValue) {
+        float r = red / 255;
+        float g = green / 255;
+        float b = blue / 255;
+        float delta;
+        if (HighestValue == LowestValue)
+        {
+            Hue = 0;
+        } else
+        {
+            float high = HighestValue / 255;
+            float low = LowestValue / 255;
+            delta = high - low;
+        
+            float HueHolder;
             
-            Hue = ( 2.0 +   ((blue - red ) / 255) / ((HighestValue - LowestValue) / 255))  * 60 / 360 * 255;
-        }
-        if (blue == HighestValue) {
-            float data = (4.0 + (( (red - green ) / 255) / ((HighestValue - LowestValue) / 255))) * 60 / 360 * 255;
+            if (red == HighestValue) {
+                HueHolder = (g-b) / delta;
+            }
+            if (green == HighestValue) {
+                HueHolder = 2 + (b - r) / delta;
+            }
+            if (blue == HighestValue) {
+                HueHolder = 4 + (r - g) / delta;
+            }
 
-            Hue = (4.0 + (( (red - green ) / 255) / ((HighestValue - LowestValue) / 255))) * 60 / 360 * 255;
-           
+            HueHolder = HueHolder * 60;
+
+            if (HueHolder < 0) {
+                HueHolder = HueHolder + 360;
+            }
+            HueHolder = (HueHolder / 360);
+            std::cout << HueHolder << std::endl;
+            HueHolder *= 255;
+            std::cout << HueHolder << std::endl;
+
+            Hue = (uint8_t)(HueHolder);
         }
     }
 
