@@ -82,7 +82,7 @@ MiLightSettings.txt holds the settings for LimitlessLED/MiLight.
 
 ## Currently Supports: 
 ### Currently Supported Light-Systems: 
-* Milight/LimitlessLED
+* Milight/LimitlessLED -Supports both UDP and TCP
 
 ### Currently supported File-Formats for light-shows
 * .LS (Lightshow file format)
