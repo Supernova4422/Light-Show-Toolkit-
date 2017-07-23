@@ -6,6 +6,8 @@ This works by running a function (which means commands in sequence), which are i
 
 The aim is for future light systems to be added, allowing for a standard method. 
 
+[![Light Show Toolkit Demonstration](http://img.youtube.com/vi/yJPQA24talc/0.jpg)](http://www.youtube.com/watch?v=yJPQA24talc "Light Show Toolkit Demonstration")
+
 ## Libraries utilised
 
 This program uses SDL for audio playback and TCP/UDP networking, more specifically: SDL2, SDL2_mixer and SDL2_net
