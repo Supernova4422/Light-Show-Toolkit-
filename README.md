@@ -76,6 +76,7 @@ MiLightSettings.txt holds the settings for LimitlessLED/MiLight.
 * The first line is the IP Address (e.g: 10.0.0.65)
 * The second line is the PORT (e.g: 8899)
 * The third line is UDP or TCP (Protocol to use)
+* The forth line is the "wait" timer after each packet is sent (During the "Wait" command in this program, the wait time factors in time spent waiting to ensure no desynchronisation occurs)
 
 ## Currently Supports: 
 ### Currently Supported Light-Systems: 
@@ -85,7 +86,8 @@ MiLightSettings.txt holds the settings for LimitlessLED/MiLight.
 * .LS (Lightshow file format)
 ### Currently supported Operating systems
 * Windows
-* Linux (Tested on Ubuntu)
+* Linux (Tested on Ubuntu and Raspbian)
+* Mac OSX (Haven't compiled and tested it myself, but in theory it should be compatible)
 
 ### Currently support audio file formats
 * WAVE
@@ -107,4 +109,4 @@ Run Compile.bat with G++, you may need to make the following changes:
 * Upon compiling, drop in the DLLS necessary until no more errors occur at launch
 
 ### Linux
-Get the necessary libraries (SDL2, SDL2_Mixer, SDL2_Net) and run compile.sh with G++. 
+Get the necessary libraries (libsdl2-dev, libsdl2-net-dev, libSDL2-Mixer-dev, libsdl2) and run compile.sh with G++. 
