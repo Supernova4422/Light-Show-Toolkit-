@@ -34,7 +34,7 @@ Milight::Milight() {
         Port = (unsigned short) std::stoi(CurrentLine, NULL, 0);
 
         getline(myfile,CurrentLine);
-        if ( CurrentLine == "TCP") {
+        if ( CurrentLine[0] == 'T') {
             Protocal = NetworkProtocal::TCP;
         }
         else {
