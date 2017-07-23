@@ -7,6 +7,7 @@
 #include <string.h>
 
 
+
 void SDL_UDPSender::InitialiseConnection (const char * IPAddress , unsigned short Port, NetworkProtocal Protocal ) {
     char *host;
     
@@ -18,21 +19,11 @@ void SDL_UDPSender::InitialiseConnection (const char * IPAddress , unsigned shor
         printf("SDLNet_Init: %s\n", SDLNet_GetError());
     }
     
-    udpsock=SDLNet_UDP_Open(Port);
-
-    if(!udpsock) {
-        printf("SDLNet_UDP_Open: %s\n", SDLNet_GetError());
-    }
-    
     if(SDLNet_ResolveHost(&address,IPAddress,Port) == -1)
 	{
 		printf("SDLNet_ResolveHost: %s\n",SDLNet_GetError());
 		exit(4);
 	}
-
-    if(SDLNet_UDP_Bind(udpsock, 0, &address) == -1) {
-        printf("SDLNet_UDP_Bind: %s\n", SDLNet_GetError());
-    }
 }
 
 void SDL_UDPSender::SendHexPackets (uint8_t buffer) {
@@ -42,18 +33,31 @@ void SDL_UDPSender::SendHexPackets (uint8_t buffer) {
 }
 
 void SDL_UDPSender::SendHexPackets (uint8_t buffer[]) {
- 
+    
+    udpsock = SDLNet_UDP_Open(8900);
+
+    if(!udpsock) {
+        printf("SDLNet_UDP_Open: %s\n", SDLNet_GetError());
+    }
+    
+
     int numsent;
     UDPpacket packet;
     packet.address = address;
     packet.data = buffer;
-    packet.len = strlen((char*)buffer) -1;
+    packet.len = strlen((char*)buffer) -1 ;
 
-    numsent=SDLNet_UDP_Send(udpsock, 0, &packet);
-    if(!numsent) {
-        printf("SDLNet_UDP_Send: %s\n", SDLNet_GetError());
-        // do something because we failed to send
-        // this may just be because no addresses are bound to the channel...
+
+    if (SDLNet_UDP_Send(udpsock, -1, &packet) == 0) {
+        std::cout << "\tSDLNet_UDP_Send failed : " << SDLNet_GetError() << "\n";
     }
-    SDL_Delay(DelayAfterPacketMS);
+
+    SDLNet_UDP_Close(udpsock);
+
+    //SDL_Delay(DelayAfterPacketMS);
+}
+
+SDL_UDPSender::~SDL_UDPSender() {
+    SDLNet_UDP_Close(udpsock);
+    udpsock=NULL;
 }

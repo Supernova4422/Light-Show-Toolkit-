@@ -52,14 +52,12 @@ Milight::Milight() {
     switch (Protocal)
     {
         case TCP: 
-            TCPSender = SDL_TCPSender();
             PacketSender = &TCPSender;
             std::cout << "TCP" << std::endl;
             TCPSender.InitialiseConnection(IPAddress, Port, Protocal);
         break;
 
         case UDP: 
-            UDPSender = SDL_UDPSender();
             UDPSender.DelayAfterPacketMS = DelayAfterPacketMS;
             PacketSender = &UDPSender;
             std::cout << "UDP" << std::endl;
