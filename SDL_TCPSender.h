@@ -7,6 +7,8 @@ void InitialiseConnection (const char * IPAddress , unsigned short Port, Network
 
 void SendHexPackets (uint8_t buffer);
 void SendHexPackets (uint8_t buffer[]);
+int DelayAfterPacketMS = 100;
+
 private: 
 TCPsocket TCPsock;
 IPaddress address;

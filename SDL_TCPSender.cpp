@@ -43,16 +43,10 @@ void SDL_TCPSender::SendHexPackets (uint8_t buffer[]) {
         buffer[1] = 0x00;
         result = SDLNet_TCP_Send(TCPsock, buffer , len  + 1);
     } else {
-        result = SDLNet_TCP_Send(TCPsock, buffer , len + 1 );
+        result = SDLNet_TCP_Send(TCPsock, buffer , len);
     }
     
     SDLNet_TCP_Close(TCPsock);
 
-    //Current time start time
-   
-    Uint32 EndTime = SDL_GetTicks() + DelayAfterPacketMS;
-    while ( SDL_GetTicks() < EndTime)
-    {
-        //Do nothing
-    }
+    
 }
