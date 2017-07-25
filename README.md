@@ -84,6 +84,15 @@ MiLightSettings.txt holds the settings for LimitlessLED/MiLight.
 ### Currently Supported Light-Systems: 
 * Milight/LimitlessLED -Supports both UDP and TCP
 
+### Adding your own lighting system
+You may be interested in including your own lighting system with this program (Such as HUE). Essentially you would develop a class that overrides the "ProgrammableLight" class and implements each virtual function. 
+
+Then within the "GroupManager.cpp" class you will include this class, and add it to the "ListeningLights" vector. 
+
+For examples of this process, view both Consoleview.cpp and Milight.cpp as well as their assignment in GroupManager.cpp
+
+Side note: In this repository i'll happily accept additions
+
 ### Currently supported File-Formats for light-shows
 * .lightshow (Custom lightshow file format)
 ### Currently supported Operating systems
