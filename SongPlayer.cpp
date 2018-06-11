@@ -17,12 +17,13 @@
 #include <fstream>
 #include "SDL_mixer.h"
 #include "SDL_net.h"
-GroupManager Manager;
+#include "GroupManager.h"
+
 
 
 std::map <std::string, std::vector<Command>> Dictionary;
 
-SongPlayer::SongPlayer () {
+SongPlayer::SongPlayer (GroupManager Manager) {
     //Initialize SDL for audio playback
     if( SDL_Init( SDL_INIT_AUDIO ) < 0 )
     {
@@ -32,7 +33,8 @@ SongPlayer::SongPlayer () {
     if(Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
     {
         printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
-    }            
+    }     
+	this->Manager = Manager;
     
 }
 

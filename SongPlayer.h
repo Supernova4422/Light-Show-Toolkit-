@@ -12,17 +12,20 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
+#include "GroupManager.h"
 class SongPlayer
 {
     public: 
+	SongPlayer(GroupManager manager);
+	GroupManager Manager;
     void RunCommand(Command item);
 
     FileParserHandler Parser;
     
     void WaitMilliseconds(int milliseconds);
     
-    SongPlayer();
-
+    
+	
     
     
     std::map<std::string, std::vector<Command>> MainFile;

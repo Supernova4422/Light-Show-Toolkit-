@@ -19,6 +19,8 @@ class GroupManager
     void SpecificCommand(const Command command);
     
     GroupManager();
+
+	void AddLight(ProgrammableLight* light);
     
     std::pair<const int, Colour> *GetGroupByID(const int ID);
     std::vector<std::pair<const int, Colour>*> CurrentlySelectedGroups;

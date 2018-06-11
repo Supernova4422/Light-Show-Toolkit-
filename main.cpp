@@ -18,8 +18,13 @@
 #include <chrono>
 int main()
 {
-    
-    SongPlayer Player; 
+	ConsoleLight ConsoleView;
+	Milight TestLight;
+	GroupManager manager;
+	manager.AddLight(new Milight());
+	manager.AddLight(new ConsoleLight());
+
+    SongPlayer Player = SongPlayer(manager);
     CommandLineInterface CLI(Player);
     
     int num;

@@ -13,14 +13,19 @@
 #include <iostream>
 #include <cctype>
 
-ConsoleLight ConsoleView;
-Milight TestLight;
+
 
 GroupManager::GroupManager ()
 {
-    ListeningLights.push_back(&ConsoleView);
-    ListeningLights.push_back(&TestLight);
+
 }
+
+void GroupManager::AddLight(ProgrammableLight* light)
+{
+	ListeningLights.push_back(light);
+
+}
+
 void GroupManager::SetGroups(const int Group, Command CommandItem)
 {
 
