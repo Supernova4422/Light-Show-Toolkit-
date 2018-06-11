@@ -21,7 +21,7 @@ std::map<std::string, std::vector<std::string>>  LightShowFileReader::ProcessFil
    vector<string> CurrentCommandList;
    bool NewLine = false;
    const char ForwardSlash = '/';
-   char PreviousChar;
+   char PreviousChar = 0;
 
    std::map <string, vector<string>> FunctionsWithCommands;
    if (myfile.is_open()) {

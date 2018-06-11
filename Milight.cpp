@@ -22,7 +22,7 @@ Milight::Milight() {
     const char * IPAddress = "255.255.255.255";
     unsigned short Port = 8899;
     NetworkProtocal Protocal = NetworkProtocal::UDP;
-    int DelayAfterPacketMS; 
+	int DelayAfterPacketMS = 0;
     if (myfile.is_open()) {
         
         
@@ -278,7 +278,6 @@ uint8_t LastGroupPacketSent = 0x00;
 void Milight::SendGroupOn(MilightGroupIDs GroupID)
 {
     
-    uint8_t ByteToSend;
     uint8_t bytes[3];
     
     bytes[1] = 0x00;
@@ -312,7 +311,7 @@ void Milight::SendGroupOFF()
 
 void Milight::SendHue(const Colour OutputColour)
 {
-    uint8_t bytes[2];
+    uint8_t bytes[3];
     int WhiteThreshhold = 10;
     
     if (OutputColour.Saturation < WhiteThreshhold) {
@@ -343,7 +342,7 @@ void Milight::SendBrightness(const Colour OutputColour)
         
     }  else {
         std::cout << "SETTING BRIGHTNESS: " << std::endl;
-        uint8_t BrightnessBuffer[2];
+        uint8_t BrightnessBuffer[3];
         BrightnessBuffer[0] = 0x4E;
         BrightnessBuffer[1] = 2 + (( ( (float)OutputColour.Brightness) / 255) * 24);
         BrightnessBuffer[2] = 0x55; 
