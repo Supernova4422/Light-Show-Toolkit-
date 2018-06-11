@@ -1,5 +1,5 @@
 #include "NetworkPacketSender.h"
-#include <SDL2/SDL_net.h>
+#include "SDL_net.h"
 class SDL_TCPSender : public NetworkPacketSender {
  
 public: 

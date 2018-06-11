@@ -16,7 +16,6 @@
 #include "CommandLineInterface.h"
 
 #include <chrono>
-
 int main()
 {
     

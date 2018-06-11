@@ -4,7 +4,7 @@
 #include <iostream>
 #include "SDL_TCPSender.h"
 #include <chrono>
-#include <SDL2/SDL_net.h>
+#include "SDL_net.h"
 #include <string.h>
 #include <stdio.h>
 void SDL_TCPSender::InitialiseConnection (const char * IPAddress , unsigned short Port, NetworkProtocal Protocal) {

@@ -21,13 +21,13 @@ struct Colour
     uint8_t Saturation = 0;
     uint8_t Brightness = 0;
     
-    Colour operator+=(const Colour& c){
+    void operator+=(const Colour& c){
         this->red += c.red;
         this->green += c.green;
         this->blue += c.blue;
         UpdateHSBColours();
     }
-    Colour operator-=(const Colour& c){
+	void operator-=(const Colour& c){
         this->red -= c.red;
         this->green -= c.green;
         this->blue -= c.blue;

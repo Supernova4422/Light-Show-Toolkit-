@@ -15,9 +15,8 @@
 #include <iomanip>
 #include <chrono>
 #include <fstream>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_mixer.h>
-
+#include "SDL_mixer.h"
+#include "SDL_net.h"
 GroupManager Manager;
 
 
@@ -148,7 +147,7 @@ void SongPlayer::StartPlaying(std::string SongToPlay , std::string FunctionToPla
 
 bool loadMedia()
 {
-
+	return true;
 }
 //The music that will be played
 Mix_Music *gMusic = NULL;

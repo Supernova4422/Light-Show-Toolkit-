@@ -3,7 +3,7 @@
 #include <iostream>
 #include "SDL_UDPSender.h"
 #include <chrono>
-#include <SDL2/SDL_net.h>
+#include "SDL_net.h"
 #include <string.h>
 
 
