@@ -85,7 +85,6 @@ vector<string> LightShowFileReader::SplitLineIntoCommands(const string& Line)
    
     bool IgnoringContent = false;
     bool ReadingLine = true;
-    char PreviousChar;
     string CommentsOnLine; //We may use this later, lets keep it
     
     for(const char c : Line) {

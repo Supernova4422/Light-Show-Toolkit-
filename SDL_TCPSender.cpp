@@ -8,8 +8,7 @@
 #include <string.h>
 #include <stdio.h>
 void SDL_TCPSender::InitialiseConnection (const char * IPAddress , unsigned short Port, NetworkProtocal Protocal) {
-    char *host;
-    
+
     if(SDL_Init(0)==-1) {
         printf("SDL_Init: %s\n", SDL_GetError());
     }

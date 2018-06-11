@@ -9,8 +9,7 @@
 
 
 void SDL_UDPSender::InitialiseConnection (const char * IPAddress , unsigned short Port, NetworkProtocal Protocal ) {
-    char *host;
-    
+   
     if(SDL_Init(0)==-1) {
         printf("SDL_Init: %s\n", SDL_GetError());
     }
@@ -40,8 +39,6 @@ void SDL_UDPSender::SendHexPackets (uint8_t buffer[]) {
         printf("SDLNet_UDP_Open: %s\n", SDLNet_GetError());
     }
     
-
-    int numsent;
     UDPpacket packet;
     packet.address = address;
     packet.data = buffer;

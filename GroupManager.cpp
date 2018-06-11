@@ -31,8 +31,6 @@ void GroupManager::SetGroups(const int Group, Command CommandItem)
 
     Colour empty;
     std::pair<std::map<int, Colour>::iterator, bool> ret;
-    std::pair<const int, Colour> *Entry;
-    const int *PointerToGroupID;
 
     switch (CommandItem.Operation) {
     case set:

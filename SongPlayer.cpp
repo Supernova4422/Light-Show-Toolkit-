@@ -84,7 +84,7 @@ void SongPlayer::RunCommand(Command item ) {
     
     //Make into seperate function to make recursive
     if (item.type == CommandType::Wait) {
-        float timetowait = std::atof(item.value.c_str());
+        double timetowait = std::atof(item.value.c_str());
         
         WaitMilliseconds( (int) (timetowait * 1000) ) ;
     } 
