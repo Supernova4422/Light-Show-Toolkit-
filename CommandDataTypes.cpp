@@ -24,11 +24,6 @@ struct Command {
   }
 };
 
-struct Function
-{
-  std::string Identifier;
-  Command Commands[];
 
-};
 
 #endif

@@ -16,19 +16,18 @@ SDL_UDPSender UDPSender;
 
 Milight::Milight() {
     std::cout << "MiLight" << std::endl;
-    const std::string SettingsFile = "MiLightSettings.txt";
-    std::ifstream myfile(SettingsFile);
+    std::ifstream myfile("MiLightSettings.txt");
     
-    const char * IPAddress = "255.255.255.255";
+	std::string IPAddress = "255.255.255.255";
     unsigned short Port = 8899;
     NetworkProtocal Protocal = NetworkProtocal::UDP;
 	int DelayAfterPacketMS = 0;
     if (myfile.is_open()) {
         
-        
+		std::cout << "Opened config for milight" << std::endl;
         std::string IPAsString; 
-        getline(myfile,IPAsString);
-        IPAddress = IPAsString.c_str();
+        getline(myfile, IPAddress);
+		std::cout << IPAddress << std::endl;
         std::string CurrentLine;
         getline(myfile,CurrentLine);
         Port = (unsigned short) std::stoi(CurrentLine, NULL, 0);
@@ -43,7 +42,10 @@ Milight::Milight() {
         getline(myfile,CurrentLine);
         DelayAfterPacketMS = std::stoi(CurrentLine, NULL, 0);
 
-    }
+	}
+	else {
+		std::cout << "Using Default config" << std::endl;
+	}
     std::cout << "Loaded with the following settings:" << std::endl;
     std::cout << "  IP Address: " << IPAddress << std::endl;   
     std::cout << "  Port: " << Port << std::endl;
@@ -55,7 +57,7 @@ Milight::Milight() {
             TCPSender.DelayAfterPacketMS = DelayAfterPacketMS;
             PacketSender = &TCPSender;
             std::cout << "TCP" << std::endl;
-            TCPSender.InitialiseConnection(IPAddress, Port, Protocal);
+            TCPSender.InitialiseConnection(IPAddress.c_str(), Port, Protocal);
         break;
 
         case UDP: 
@@ -63,7 +65,7 @@ Milight::Milight() {
             PacketSender = &UDPSender;
             std::cout << "UDP" << std::endl;
             std::cout << "  Delay after each packet:" << DelayAfterPacketMS << "MS" << std::endl;
-            UDPSender.InitialiseConnection(IPAddress, Port, Protocal);
+            UDPSender.InitialiseConnection(IPAddress.c_str(), Port, Protocal);
         break;
     }
     std::cout << "  Networking Initialised" << std::endl;

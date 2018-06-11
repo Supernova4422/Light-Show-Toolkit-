@@ -18,8 +18,6 @@
 #include <chrono>
 int main()
 {
-	ConsoleLight ConsoleView;
-	Milight TestLight;
 	GroupManager manager;
 	manager.AddLight(new Milight());
 	manager.AddLight(new ConsoleLight());
