@@ -24,6 +24,9 @@ Milight.h
 SDL_TCPSender.h
 SDL_UDPSender.h
 SongPlayer.h
+BinaryLight.h
+GPIO_PI.h
+BinLight_SYSFS.h
 
 main.cpp
 Colour.cpp

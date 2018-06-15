@@ -11,6 +11,8 @@
 
 void BinLight_SYSFS::initialise()
 {
+	std::cout << "Please ensure that you have run this program using sudo" << std::endl;
+	std::cout << "Also this program will not unexport pins" << std::endl;
 }
 
 void BinLight_SYSFS::turnon(int group)
@@ -47,5 +49,6 @@ void BinLight_SYSFS::exportPin(int group)
 		std::ofstream setDir_file(setdir_filepath.c_str());
 		setDir_file << "out";
 		setDir_file.close();
+		pin_initialised[group] = true;
 	}
 }
