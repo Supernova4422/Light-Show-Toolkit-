@@ -6,7 +6,7 @@ void BinaryLight::EmitColour(const Command CommandItem, const std::vector<std::p
 {
 	for (auto pair : ExpectedOutput)
 	{
-		int group = pair->first;
+		int group = pair->first + group_offset;
 		bool shouldturnon = (pair->second.Brightness > threshhold);
 		std::cout << "Group: " << group << " will be made " << shouldturnon << std::endl;
 		

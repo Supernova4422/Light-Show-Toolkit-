@@ -32,7 +32,7 @@ int main()
 	int threshhold = 10;
 	manager.AddLight(new Milight(threshhold));
 	manager.AddLight(new ConsoleLight());
-	manager.AddLight(new BinaryLight(threshhold, new GPIO_PI()));
+	manager.AddLight(new BinaryLight(threshhold, new GPIO_PI(), 0));
 
     SongPlayer Player = SongPlayer(manager);
     CommandLineInterface CLI(Player);
