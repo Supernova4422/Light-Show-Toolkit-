@@ -12,9 +12,8 @@ find_path(SDL2_MIXER_INCLUDE_DIR NAME SDL_mixer.h HINTS "../library/SDL2_mixer/i
 find_library(SDL2_mixer NAME SDL2_mixer HINTS "../library/SDL2_mixer/lib/x86/")
 
 add_executable(LightShowProject
-main.h
+
 Colour.h
-CommandDataTypes.h
 CommandFactory.h
 CommandLineInterface.h
 ConsoleLight.h
