@@ -15,10 +15,6 @@ class ProgrammableLight
     virtual void OnCurrentGroupsUpdate(const Command CommandItem , std::vector<std::pair<const int, Colour>*>  CurrentGroups) = 0;
     virtual void SpecificCommand(const Command command) = 0;
     
-    void AddColour(const Colour OutputColour);
-    void SetColour(const Colour OutputColour);
-    void RemoveColour(const Colour OutputColour);
-
   private:
    
 };

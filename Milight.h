@@ -20,21 +20,14 @@ class Milight: public ProgrammableLight
     Milight();
    
     void EmitColour(const Command CommandItem , const std::vector<std::pair<const int, Colour>*> ExpectedOutput);
-   
-    void SetColourForCurrentGroups(const Colour OutputColour);
+	void OnCurrentGroupsUpdate(const Command CommandItem, std::vector<std::pair<const int, Colour>*>  CurrentGroups);
     void SpecificCommand(const Command command);
    
-    void AddColour(const Colour OutputColour); 
-    void SetColour(const Colour OutputColour);
-    void RemoveColour(const Colour OutputColour);
+	private: 
     
-    void OnCurrentGroupsUpdate(const Command CommandItem , std::vector<std::pair<const int, Colour>*>  CurrentGroups);
     MilightGroupIDs GetGroupEnum(int GroupNumber);
     uint8_t GetGroupHexByte(int GroupNumber);
 
-    void SetColourForCurrentGroups(const uint8_t ColourPacket[]);
-    void SetWhiteForCurrentGroups();
-    void TurnCurrentGroupsOff();
     std::vector<uint8_t> CurrentGroupBytes;
 
     void SendHue (const Colour OutputColour);

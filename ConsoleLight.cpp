@@ -2,7 +2,7 @@
 #include "ConsoleLight.h"
 #include <iostream>
 #include "GroupManager.h"
-bool PostedNewGroups = false;
+
 
 ConsoleLight::ConsoleLight() {
     std::cout << "All commands will print to console" << std::endl;

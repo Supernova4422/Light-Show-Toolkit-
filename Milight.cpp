@@ -303,8 +303,8 @@ void Milight::SendGroupOFF()
     if (LastGroupPacketSent == 0x42) {
             PacketSender->SendHexPackets(0x41);
             LastGroupPacketSent = LastGroupPacketSent - 1;
-        }
-        else {
+    }
+    else {
             LastGroupPacketSent = LastGroupPacketSent + 1;
             PacketSender->SendHexPackets(LastGroupPacketSent + 1);
     }

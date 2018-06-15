@@ -1,5 +1,12 @@
  
 // my first program in C++
+
+
+#define HAVE_STRUCT_TIMESPEC
+#define STRUCT_TIMESPEC_HAS_TV_SEC
+#define STRUCT_TIMESPEC_HAS_TV_NSEC
+
+
 #include <stdint.h>
 #include <iostream>
 #include <vector>
@@ -14,13 +21,17 @@
 #include "SongPlayer.h"
 #include "GroupManager.h"
 #include "CommandLineInterface.h"
-
+#include "BinaryLight.h"
+#include "BinaryLightController.h"
+#include "GPIO_PI.h"
 #include <chrono>
 int main()
 {
+
 	GroupManager manager;
 	manager.AddLight(new Milight());
 	manager.AddLight(new ConsoleLight());
+	manager.AddLight(new BinaryLight(0, new GPIO_PI()));
 
     SongPlayer Player = SongPlayer(manager);
     CommandLineInterface CLI(Player);
