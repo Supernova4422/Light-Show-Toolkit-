@@ -11,13 +11,21 @@ find_library(SDL2_net NAME SDL2_net HINTS "../library/SDL2_net/lib/x86/")
 find_path(SDL2_MIXER_INCLUDE_DIR NAME SDL_mixer.h HINTS "../library/SDL2_mixer/include")
 find_library(SDL2_mixer NAME SDL2_mixer HINTS "../library/SDL2_mixer/lib/x86/")
 
-find_path(pigpio NAME pigpio.h HINTS "../library/pigpio")
-find_library(pigpio_lib NAME pigpio_lib HINTS "../library/PThread/lib/x86/")
-
-find_path(PThread_Include NAME pthread.h HINTS "../library/PThread/include/")
-find_library(PThread NAME pthreadVC2 HINTS "../library/PThread/lib/x86/")
-
 add_executable(LightShowProject
+main.h
+Colour.h
+CommandDataTypes.h
+CommandFactory.h
+CommandLineInterface.h
+ConsoleLight.h
+FileParserHandler.h
+GroupManager.h
+LightShowFileReader.h
+Milight.h
+SDL_TCPSender.h
+SDL_UDPSender.h
+SongPlayer.h
+
 main.cpp
 Colour.cpp
 CommandDataTypes.cpp
@@ -31,22 +39,12 @@ Milight.cpp
 SDL_TCPSender.cpp
 SDL_UDPSender.cpp
 SongPlayer.cpp
-BinaryLight.h
 BinaryLight.cpp
-GPIO_PI.h
 GPIO_PI.cpp
+BinLight_SYSFS.cpp
 )
 
-add_definitions("-DHAVE_STRUCT_TIMESPEC")
-SET(GCC_COVERAGE_COMPILE_FLAGS "-DHAVE_STRUCT_TIMESPEC")
 target_include_directories (LightShowProject PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-target_include_directories (LightShowProject PUBLIC ${WiringPi_IncludeDir})
-
-include_directories(LightShowProject ${PThread_Include})
-target_link_libraries(LightShowProject ${PThread}) 
-
-find_library(pigpio_lib wiringPi)
-include_directories(LightShowProject ${pigpio})
 
 include_directories(LightShowProject ${SDL2_INCLUDE_DIR})
 target_link_libraries(LightShowProject ${SDL2_LIBRARY})    
