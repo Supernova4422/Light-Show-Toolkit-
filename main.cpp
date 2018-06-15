@@ -29,9 +29,10 @@ int main()
 {
 
 	GroupManager manager;
-	manager.AddLight(new Milight());
+	int threshhold = 10;
+	manager.AddLight(new Milight(threshhold));
 	manager.AddLight(new ConsoleLight());
-	manager.AddLight(new BinaryLight(0, new GPIO_PI()));
+	manager.AddLight(new BinaryLight(threshhold, new GPIO_PI()));
 
     SongPlayer Player = SongPlayer(manager);
     CommandLineInterface CLI(Player);

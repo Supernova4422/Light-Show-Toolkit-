@@ -17,14 +17,14 @@ class Milight: public ProgrammableLight
     public: 
     NetworkPacketSender* PacketSender;
     CanUseByteForALLGROUPS CheckIfCanUseByteForALLGROUPS (const std::vector<std::pair<const int, Colour>*> Collection);
-    Milight();
+    Milight(int BrightnessThreshhold);
    
     void EmitColour(const Command CommandItem , const std::vector<std::pair<const int, Colour>*> ExpectedOutput);
 	void OnCurrentGroupsUpdate(const Command CommandItem, std::vector<std::pair<const int, Colour>*>  CurrentGroups);
     void SpecificCommand(const Command command);
    
 	private: 
-    
+	int BrightnessThreshhold;
     MilightGroupIDs GetGroupEnum(int GroupNumber);
     uint8_t GetGroupHexByte(int GroupNumber);
 

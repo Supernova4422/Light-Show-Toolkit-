@@ -14,7 +14,8 @@
 SDL_TCPSender TCPSender;
 SDL_UDPSender UDPSender;
 
-Milight::Milight() {
+Milight::Milight(int BrightnessThreshhold) {
+	this->BrightnessThreshhold = BrightnessThreshhold;
     std::cout << "MiLight" << std::endl;
     std::ifstream myfile("MiLightSettings.txt");
     
@@ -334,7 +335,7 @@ void Milight::SendHue(const Colour OutputColour)
 
 void Milight::SendBrightness(const Colour OutputColour)
 {
-    int BrightnessThreshhold = 10;
+    
     if (OutputColour.Brightness < BrightnessThreshhold)
     {
         std::cout << "Milight is turning off the lights" << std::endl;
