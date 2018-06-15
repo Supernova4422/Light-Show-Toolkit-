@@ -1,0 +1,4 @@
+/sys/class/gpio/
+/export
+/value
+/direction

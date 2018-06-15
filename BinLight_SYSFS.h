@@ -1,11 +1,14 @@
 #pragma once
 #include "BinaryLightController.h"
-
+#include <fstream>
+#include <cstdlib>
+#include <iomanip>
+#include <string>
+#include <iostream>
 class BinLight_SYSFS : public BinaryLightController
 {
 public:
-	BinLight_SYSFS(std::string directory = "/sys/class/gpio/", std::string exp_append = "/export", std::string val_append = "/value", std::string dir_append = "/direction")
-		: directory(directory), exp_append(exp_append), val_append(val_append), dir_append(dir_append) {};
+	BinLight_SYSFS();
 
 	~BinLight_SYSFS();
 	void initialise();

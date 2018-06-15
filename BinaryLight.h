@@ -10,11 +10,12 @@
 class BinaryLight : public ProgrammableLight
 {
 public:
-	BinaryLight(int upperlimit , BinaryLightController* light, int group_offset) : threshhold(threshhold) , light(light) {
+	BinaryLight(BinaryLightController* light, int upperlimit = 1,  int group_offset = 0) : threshhold(threshhold) , light(light), group_offset(group_offset) {
+		std::cout << std::endl << "Binary Light loaded" << std::endl;
 		std::cout << "All commands will print to console, focusing on turning off and on" << std::endl;
 		std::cout << "Upper limit set to: " << upperlimit << std::endl;
 
-		std::cout << "FileController" << std::endl;
+		
 		light->initialise();
 	};
 
@@ -24,8 +25,8 @@ public:
 	void SpecificCommand(const Command command) {};
 private: 
 	BinaryLightController* light;
-	int threshhold;
-	int group_offset;
+	int threshhold = 0;
+	int group_offset = 0;
 	bool PostedNewGroups = false;
 };
 

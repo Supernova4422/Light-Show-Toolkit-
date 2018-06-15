@@ -4,7 +4,7 @@
 
 #define HAVE_STRUCT_TIMESPEC
 #define STRUCT_TIMESPEC_HAS_TV_SEC
-#define STRUCT_TIMESPEC_HAS_TV_NSEC
+
 
 
 #include <stdint.h>
@@ -23,7 +23,7 @@
 #include "CommandLineInterface.h"
 #include "BinaryLight.h"
 #include "BinaryLightController.h"
-#include "GPIO_PI.h"
+#include "BinLight_SYSFS.h"
 #include <chrono>
 int main()
 {
@@ -32,7 +32,7 @@ int main()
 	int threshhold = 10;
 	manager.AddLight(new Milight(threshhold));
 	manager.AddLight(new ConsoleLight());
-	manager.AddLight(new BinaryLight(threshhold, new GPIO_PI(), 0));
+	manager.AddLight(new BinaryLight(new BinLight_SYSFS(), threshhold, 0));
 
     SongPlayer Player = SongPlayer(manager);
     CommandLineInterface CLI(Player);

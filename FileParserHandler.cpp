@@ -5,7 +5,6 @@
 #include <iostream>
 #include "FileParserHandler.h"
 #include "CommandDataTypes.cpp"
-#include "pigpio.h"
 
 std::map<std::string, std::vector<Command>> FileParserHandler::ParseFile (std::string FileToParse) {
     std::cout << "Parsing: " << FileToParse <<std::endl;
