@@ -26,7 +26,8 @@
 #include "BinLight_SYSFS.h"
 #include <chrono>
 
-#ifdef RF24_SENDER_H
+#ifdef __arm__
+	#warning Compiling for Raspberry PI, errors may occur on other platforms
 	#include "RF24.h"
 	#include "MiLightRadio.h"
 	#include "PL1167_nRF24.h"
@@ -41,7 +42,8 @@ int main()
 {
 	GroupManager manager;
 	int threshhold = 10;
-#ifdef RF24_SENDER_H
+#ifdef __arm__
+	#warning Injecting GPIO based lights into program, sudo will be needed to run
 	manager.AddLight(new RF24_Sender());
 	manager.AddLight(new BinaryLight(new BinLight_SYSFS(), threshhold, 0));
 #endif 
