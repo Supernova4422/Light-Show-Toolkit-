@@ -1,4 +1,4 @@
- 
+
 // my first program in C++
 
 
@@ -25,19 +25,35 @@
 #include "BinaryLightController.h"
 #include "BinLight_SYSFS.h"
 #include <chrono>
+
+#ifdef RF24_SENDER_H
+	#include "RF24.h"
+	#include "MiLightRadio.h"
+	#include "PL1167_nRF24.h"
+	#include "RF24_Sender.h"
+	#include "utility/RPi/spi.h"
+#endif
+
+
+
+
 int main()
 {
-
 	GroupManager manager;
 	int threshhold = 10;
+#ifdef RF24_SENDER_H
+	manager.AddLight(new RF24_Sender());
+	manager.AddLight(new BinaryLight(new BinLight_SYSFS(), threshhold, 0));
+#endif 
 	manager.AddLight(new Milight(threshhold));
 	manager.AddLight(new ConsoleLight());
-	manager.AddLight(new BinaryLight(new BinLight_SYSFS(), threshhold, 0));
+
+	
 
     SongPlayer Player = SongPlayer(manager);
     CommandLineInterface CLI(Player);
-    
+
     int num;
     std::cin >> num;
-    
+
 }

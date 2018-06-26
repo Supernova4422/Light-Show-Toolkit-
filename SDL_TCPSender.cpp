@@ -4,6 +4,7 @@
 #include <iostream>
 #include "SDL_TCPSender.h"
 #include <chrono>
+#include "SDL.h"
 #include "SDL_net.h"
 #include <string.h>
 #include <stdio.h>
