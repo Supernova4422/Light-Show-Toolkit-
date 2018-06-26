@@ -80,9 +80,14 @@ MiLightSettings.txt holds the settings for LimitlessLED/MiLight.
 * The third line is UDP or TCP (Protocol to use)
 * The forth line is the "wait" timer after each packet is sent (During the "Wait" command in this program, the wait time factors in time spent waiting to ensure no desynchronisation occurs)
 
+### LimitlesLed/Milight RF24 Settings
+* The first byte is the group number (in hex)
+* The next two bytes are the Remote ID
+* The final byte is the GroupID
+
 ## Currently Supports: 
 ### Currently Supported Light-Systems: 
-* Milight/LimitlessLED -Supports both UDP and TCP
+* Milight/LimitlessLED -Supports both UDP and TCP, and RF24 through an NRF2.4 module.
 
 ### Adding your own lighting system
 You may be interested in including your own lighting system with this program (Such as HUE). Essentially you would develop a class that overrides the "ProgrammableLight" class and implements each virtual function. 
@@ -111,15 +116,23 @@ Side note: In this repository i'll happily accept additions
 ## Compiling
 ### Windows
 
-* Ensure you have SDL2, SDL_mixer, SDL_net development files 
+* Ensure you have SDL2, SDL_mixer, SDL_net development files
 
-* Run Compile.bat with G++ installed, or use it as a reference for your compiler of choice  
+* Use Cmake to compile and link libraries
 
-* You may need to make the following changes if using compile.bat: -IC:\mingw_dev_lib\include change this directory to point to the folder containing a folder named "SDL2" which contains the following files: SDL.h, SDL_net.h and SDL2_mixer.h 
-
-* Likewise for -LC:\mingw_dev_lib\lib and the necessary .a files.
+* You will get errors regarding openmilight and RF24 missing, this is fine. 
 
 * Upon compiling, drop in the DLLS necessary until no more errors occur at launch
 
 ### Linux
 Get the necessary libraries (libsdl2-dev, libsdl2-net-dev, libSDL2-Mixer-dev, libsdl2) and then run compile.sh
+
+### Raspberry Pi (RF24)
+
+* If you are looking to use the RF24 module, you will need to download openmilight https://github.com/henryk/openmili and https://github.com/nRF24/RF24 and link them with Cmake
+
+* You also need to use RF24_Config.txt in the build directory
+
+* If you do not intend to use these, you need to remove the macros from main.cpp (parts between #ifdef __arm__ and #endif) 
+
+* Other than that, compiling is the same as Linux
