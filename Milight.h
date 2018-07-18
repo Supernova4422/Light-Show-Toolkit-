@@ -16,11 +16,11 @@ class Milight: public ProgrammableLight
 {
     public: 
     NetworkPacketSender* PacketSender;
-    CanUseByteForALLGROUPS CheckIfCanUseByteForALLGROUPS (const std::vector<std::pair<const int, Colour>*> Collection);
+    CanUseByteForALLGROUPS CheckIfCanUseByteForALLGROUPS (const std::vector<std::pair<const int, colour_combiner>*> Collection);
     Milight(int BrightnessThreshhold);
    
-    void EmitColour(const Command CommandItem , const std::vector<std::pair<const int, Colour>*> ExpectedOutput);
-	void OnCurrentGroupsUpdate(const Command CommandItem, std::vector<std::pair<const int, Colour>*>  CurrentGroups);
+    void EmitColour(const Command CommandItem , const std::vector<std::pair<const int, colour_combiner>*> ExpectedOutput);
+	void OnCurrentGroupsUpdate(const Command CommandItem, std::vector<std::pair<const int, colour_combiner>*>  CurrentGroups);
     void SpecificCommand(const Command command);
    
 	private: 

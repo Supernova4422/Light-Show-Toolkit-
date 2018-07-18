@@ -1,13 +1,14 @@
 #include <stdint.h>
 
 #include "BinaryLight.h"
+#include "Color_Combiner.cpp"
 
-void BinaryLight::EmitColour(const Command CommandItem, const std::vector<std::pair<const int, Colour>*> ExpectedOutput)
+void BinaryLight::EmitColour(const Command CommandItem, const std::vector<std::pair<const int, colour_combiner>*> ExpectedOutput)
 {
 	for (auto pair : ExpectedOutput)
 	{
 		int group = pair->first + group_offset;
-		bool shouldturnon = (pair->second.Brightness > threshhold);
+		bool shouldturnon = (pair->second.get_colour().Brightness > threshhold);
 		std::cout << "Group: " << group << " will be made " << shouldturnon << std::endl;
 		
 		if (shouldturnon)

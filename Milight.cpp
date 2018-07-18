@@ -74,13 +74,13 @@ Milight::Milight(int BrightnessThreshhold) {
     std::cout <<  std::endl <<  std::endl;
 }
 
-void Milight::EmitColour(const Command CommandItem , const std::vector<std::pair<const int, Colour>*> ExpectedOutput) {
+void Milight::EmitColour(const Command CommandItem , const std::vector<std::pair<const int, colour_combiner>*> ExpectedOutput) {
     
     CanUseByteForALLGROUPS CanSendAllGroupByte = CheckIfCanUseByteForALLGROUPS(ExpectedOutput);
     if (ExpectedOutput.size() > 0) {
 
         //COLOUR MUST ALWAYS BE SENT FIRST
-        Colour FirstEntryColour = ExpectedOutput[0]->second;
+        Colour FirstEntryColour = ExpectedOutput[0]->second.get_colour();
 
         switch (CanSendAllGroupByte)
         {
@@ -104,12 +104,12 @@ void Milight::EmitColour(const Command CommandItem , const std::vector<std::pair
             SendHue(FirstEntryColour);
             
             //Individually send brightness 
-            for (std::pair<const int, Colour>* entry : ExpectedOutput ) {
+            for (std::pair<const int, colour_combiner>* entry : ExpectedOutput ) {
                 if ((entry->first < 5) && (entry->first > 0)) {
                     
                     SendGroupOn(GetGroupEnum(entry->first));
                     
-                    SendBrightness( entry->second);
+                    SendBrightness( entry->second.get_colour());
                 }
             }
 
@@ -118,12 +118,12 @@ void Milight::EmitColour(const Command CommandItem , const std::vector<std::pair
             case ForBrightness:
 
             //Individually send Hue 
-            for (std::pair<const int, Colour>* entry : ExpectedOutput ) {
+            for (std::pair<const int, colour_combiner>* entry : ExpectedOutput ) {
                 if ((entry->first < 5) && (entry->first > 0)) {
                     
                     SendGroupOn(GetGroupEnum(entry->first));
 
-                    SendHue( entry->second);
+                    SendHue( entry->second.get_colour());
                 }
             }
             //Send GroupByte
@@ -135,13 +135,13 @@ void Milight::EmitColour(const Command CommandItem , const std::vector<std::pair
             break;
             case ForNeither:
             //Individually send Hue, then Brightness
-            for (std::pair<const int, Colour>* entry : ExpectedOutput ) {
+            for (std::pair<const int, colour_combiner>* entry : ExpectedOutput ) {
                 if ((entry->first < 5) && (entry->first > 0)) {
                     
                     SendGroupOn(GetGroupEnum(entry->first));
 
-                    SendHue( entry->second);
-                    SendBrightness( entry->second);
+                    SendHue( entry->second.get_colour());
+                    SendBrightness( entry->second.get_colour());
                 }
             }
 
@@ -153,7 +153,7 @@ void Milight::EmitColour(const Command CommandItem , const std::vector<std::pair
 
 bool UpdatedCurrentGroup = false;
 
-CanUseByteForALLGROUPS Milight::CheckIfCanUseByteForALLGROUPS (const std::vector<std::pair<const int, Colour>*> Collection) {
+CanUseByteForALLGROUPS Milight::CheckIfCanUseByteForALLGROUPS (const std::vector<std::pair<const int, colour_combiner>*> Collection) {
     
     bool AllHuesAreSame = false;
     bool AllBrightnessAreSame = false;
@@ -169,7 +169,7 @@ CanUseByteForALLGROUPS Milight::CheckIfCanUseByteForALLGROUPS (const std::vector
     bool ContainsGroup3 = false;
     bool ContainsGroup4 = false;
     
-    for (std::pair<const int, Colour>* item : Collection) {
+    for (std::pair<const int, colour_combiner>* item : Collection) {
         if ((item->first == 1) && (ContainsGroup1 == false))  {
             ContainsGroup1 = true;
             NumberOfUniqueGroups++;
@@ -187,14 +187,14 @@ CanUseByteForALLGROUPS Milight::CheckIfCanUseByteForALLGROUPS (const std::vector
             NumberOfUniqueGroups++;
         }
         if (NumberOfUniqueGroups == 1 ) {
-            Hue = item->second.Hue;
-            Brightness = item->second.Brightness;
+            Hue = item->second.get_colour().Hue;
+            Brightness = item->second.get_colour().Brightness;
         }
         if (NumberOfUniqueGroups > 1) {
-            if (item->second.Hue != Hue) {
+            if (item->second.get_colour().Hue != Hue) {
                 ret = (CanUseByteForALLGROUPS) (ret & ~ForHue);  //Performs bitwise subtraction
             }
-            if (item->second.Brightness != Brightness) {
+            if (item->second.get_colour().Brightness != Brightness) {
                 ret = (CanUseByteForALLGROUPS) (ret & ~ForBrightness); //Performs bitwise subtraction
                 AllBrightnessAreSame = false;
             }

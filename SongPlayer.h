@@ -24,13 +24,8 @@ class SongPlayer
     
     void WaitMilliseconds(int milliseconds);
     
-    
-	
-    
-    
     std::map<std::string, std::vector<Command>> MainFile;
     
-
     std::vector<ProgrammableLight*> GroupChangeEventListiners;
     
     void AddFunctionToSupportFile(std::string, std::vector<Command>);

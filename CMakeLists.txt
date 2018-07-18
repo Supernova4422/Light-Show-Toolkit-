@@ -44,6 +44,7 @@ ProgrammableLight.h
 
 main.cpp
 Colour.cpp
+Color_Combiner.cpp
 CommandDataTypes.cpp
 CommandFactory.cpp
 CommandLineInterface.cpp
@@ -58,15 +59,10 @@ SongPlayer.cpp
 BinaryLight.cpp
 GPIO_PI.cpp
 BinLight_SYSFS.cpp
-
-
-
-
-
 )
 
 if(NOT IS_DIRECTORY ${OpenMilight})
-	message("OpenMilight was not found. OpenMilight can be downloaded at: https://github.com/henryk/openmili however if you are not compiling to windows, set the folder to dummy/openmilight")
+	message("OpenMilight was not found. OpenMilight can be downloaded at: https://github.com/henryk/openmili however if you are not compiling to RPI this can be ignored")
 elseif(IS_DIRECTORY ${OpenMilight})
 	message("OpenMilight has been found")
 	INCLUDE_DIRECTORIES(LightShowProject ${OpenMilight} ) 
@@ -74,7 +70,7 @@ elseif(IS_DIRECTORY ${OpenMilight})
 endif(NOT IS_DIRECTORY ${OpenMilight})
 
 if(NOT IS_DIRECTORY ${RF24})
-	message("RF24 was not found. RF24 can be downloaded at: https://github.com/nRF24/RF24 however if you are not compiling to windows, set the folder to dummy/rf24")
+	message("RF24 was not found. RF24 can be downloaded at: https://github.com/nRF24/RF24 however if you are not compiling to RPI this can be ignored")
 elseif(IS_DIRECTORY ${RF24})
 	message("RF24 has been found")
 	INCLUDE_DIRECTORIES(LightShowProject ${RF24}) 

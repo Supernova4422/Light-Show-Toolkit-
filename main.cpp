@@ -50,8 +50,6 @@ int main()
 	manager.AddLight(new Milight(threshhold));
 	manager.AddLight(new ConsoleLight());
 
-	
-
     SongPlayer Player = SongPlayer(manager);
     CommandLineInterface CLI(Player);
 

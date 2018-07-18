@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <errno.h>
 #include "BinaryLightController.h"
+#include "Color_Combiner.cpp"
 
 class BinaryLight : public ProgrammableLight
 {
@@ -20,8 +21,8 @@ public:
 	};
 
 	void SetColourForCurrentGroups(const Colour OutputColour) {};
-	void EmitColour(const Command CommandItem, const std::vector<std::pair<const int, Colour>*> ExpectedOutput);
-	void OnCurrentGroupsUpdate(const Command CommandItem, std::vector<std::pair<const int, Colour>*>  CurrentGroups) {};
+	void EmitColour(const Command CommandItem, const std::vector<std::pair<const int, colour_combiner>*> ExpectedOutput);
+	void OnCurrentGroupsUpdate(const Command CommandItem, std::vector<std::pair<const int, colour_combiner>*>  CurrentGroups) {};
 	void SpecificCommand(const Command command) {};
 private: 
 	BinaryLightController* light;

@@ -80,8 +80,6 @@ void SongPlayer::RunFunction(std::string FunctionToPlay , CommandOperation Opera
 } 
 void SongPlayer::RunCommand(Command item ) {
     
-    
-    
     //Make into seperate function to make recursive
     if (item.type == CommandType::Wait) {
         double timetowait = std::atof(item.value.c_str());
@@ -106,6 +104,7 @@ void SongPlayer::RunCommand(Command item ) {
 
         if (item.type == CommandType::ColourChange) {
             Colour Newcolour(item.value);
+			Manager.u
             if (item.Operation == add) {
                 Manager.AddColour(Newcolour, item);
             }

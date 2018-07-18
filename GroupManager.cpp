@@ -85,40 +85,18 @@ std::pair<const int, Colour> *GroupManager::GetGroupByID(const int ID)
 }
 
 
-void GroupManager::AddColour(const Colour OutputColour , Command item)
-{
-    for (std::pair<const int, Colour> *group : CurrentlySelectedGroups)
-    {
-        group->second += OutputColour;
-    }
-    
-    for (ProgrammableLight* light : ListeningLights) {
-        light->EmitColour(item, CurrentlySelectedGroups);
-    }
-}
-void GroupManager::RemoveColour(const Colour OutputColour , Command item)
-{
-    for (std::pair<const int, Colour> *group : CurrentlySelectedGroups)
-    {
-        group->second -= OutputColour;
-    }
-    for (ProgrammableLight* light : ListeningLights) {
-        light->EmitColour(item, CurrentlySelectedGroups);
-    }
-}
-void GroupManager::SetColour(const Colour OutputColour, Command item)
-{
-    for (std::pair<const int, Colour> *group : CurrentlySelectedGroups)
-    {
-        group->second = OutputColour;
-    }
-    
 
-    for (ProgrammableLight* light : ListeningLights) {
-        light->EmitColour(item, CurrentlySelectedGroups);
-    }
+void GroupManager::UpdateColour(const Colour OutputColour, Command item) {
+	for (std::pair<const int, colour_combiner> *group : CurrentlySelectedGroups)
+	{
+		group->second.set_new(OutputColour, item.Operation);
+	}
 
+	for (ProgrammableLight* light : ListeningLights) {
+		light->EmitColour(item, CurrentlySelectedGroups);
+	}
 }
+
 void GroupManager::SpecificCommand(const Command command){
     for (ProgrammableLight* light : ListeningLights) {
         light->SpecificCommand(command);
