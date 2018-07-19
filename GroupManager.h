@@ -21,11 +21,11 @@ class GroupManager
 
 	void AddLight(ProgrammableLight* light);
     
-    std::pair<const int, Colour> *GetGroupByID(const int ID);
+    std::pair<const int, colour_combiner> *GetGroupByID(const int ID);
     std::vector<std::pair<const int, colour_combiner>*> CurrentlySelectedGroups;
   private:
-    std::map<int, Colour> AllGroups;
-    Colour CurrentSelectedColour;
+    std::map<int, colour_combiner> AllGroups;
+	colour_combiner CurrentSelectedColour;
     std::vector<ProgrammableLight*> ListeningLights;
     
 };

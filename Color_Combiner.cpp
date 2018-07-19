@@ -1,3 +1,4 @@
+#pragma once
 #include "Colour.h"
 #include "CommandDataTypes.cpp"
 class colour_combiner
@@ -6,25 +7,25 @@ public:
 	CommandOperation command;
 	bool hue_changed() {
 		if (colour_change.Hue != 0 |
-			(command == CommandOperation::set && next_colour.Hue != currentColour.Hue));
+			(command == CommandOperation::set && colour_change.Hue != currentColour.Hue));
 	}
 
 	bool sat_changed() { 
 		if (colour_change.Saturation != 0 |
-			(command == CommandOperation::set && next_colour.Saturation != currentColour.Saturation));
+			(command == CommandOperation::set && colour_change.Saturation != currentColour.Saturation));
 	}
 	bool brightness_changed() { 
 		if (colour_change.Brightness != 0 |
-			(command == CommandOperation::set && next_colour.Brightness != currentColour.Brightness)); 
+			(command == CommandOperation::set && colour_change.Brightness != currentColour.Brightness));
 	}
 
 	bool red_changed() {
 		if (colour_change.red != 0 |
-			(command == CommandOperation::set && next_colour.red != currentColour.red));
+			(command == CommandOperation::set && colour_change.red != currentColour.red));
 	}
 	bool green_changed() {
 		if (colour_change.green != 0 |
-			(command == CommandOperation::set && next_colour.green != currentColour.green));
+			(command == CommandOperation::set && colour_change.green != currentColour.green));
 	}
 	bool blue_changed() {
 		if (colour_change.blue != 0 |
@@ -32,18 +33,18 @@ public:
 	}
 
 	Colour get_colour() {
+		Colour result = currentColour;
 		switch (command) {
 		case set:
 			return colour_change;
 			break;
 		case add:
-			Colour result = currentColour;
 			result += colour_change;
 			return result;
 			break;
 		case Remove:
-			Colour result = currentColour;
 			result -= colour_change;
+			return result;
 			break;
 		}
 	}

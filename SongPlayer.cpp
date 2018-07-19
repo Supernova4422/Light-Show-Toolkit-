@@ -104,16 +104,7 @@ void SongPlayer::RunCommand(Command item ) {
 
         if (item.type == CommandType::ColourChange) {
             Colour Newcolour(item.value);
-			Manager.u
-            if (item.Operation == add) {
-                Manager.AddColour(Newcolour, item);
-            }
-            if (item.Operation == Remove) {
-                Manager.RemoveColour(Newcolour, item);
-            }
-            if (item.Operation == set) {
-                Manager.SetColour(Newcolour , item);
-            }
+			Manager.UpdateColour(Newcolour, item);
         }
     }
 }

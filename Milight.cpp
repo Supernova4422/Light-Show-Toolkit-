@@ -206,7 +206,7 @@ CanUseByteForALLGROUPS Milight::CheckIfCanUseByteForALLGROUPS (const std::vector
 
     return ret;
 }
-void Milight::OnCurrentGroupsUpdate(const Command CommandItem , std::vector<std::pair<const int, Colour>*>  CurrentGroups) {
+void Milight::OnCurrentGroupsUpdate(const Command CommandItem , std::vector<std::pair<const int, colour_combiner>*>  CurrentGroups) {
     
     
     //These bools allow us to ensure no doubles occur, and question if all are in
@@ -219,7 +219,7 @@ void Milight::OnCurrentGroupsUpdate(const Command CommandItem , std::vector<std:
     bool ContainsGroup4 = false;
         
 
-    for (std::pair<const int, Colour>* item : CurrentGroups) {
+    for (std::pair<const int, colour_combiner>* item : CurrentGroups) {
         if ((item->first == 1) && (ContainsGroup1 == false))  {
             ContainsGroup1 = true;
         }
