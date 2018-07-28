@@ -28,11 +28,9 @@
 
 #ifdef __arm__
 	#warning Compiling for Raspberry PI, errors may occur on other platforms
-	#include "RF24.h"
-	#include "MiLightRadio.h"
-	#include "PL1167_nRF24.h"
-	#include "RF24_Sender.h"
-	#include "utility/RPi/spi.h"
+	#define RaspberryPi
+	#include "RF24_Factory.h"
+    #include "Factory_433.h"
 #endif
 
 
@@ -44,9 +42,12 @@ int main()
 	int threshhold = 10;
 #ifdef __arm__
 	#warning Injecting GPIO based lights into program, sudo will be needed to run
-	manager.AddLight(new RF24_Sender());
-	manager.AddLight(new BinaryLight(new BinLight_SYSFS(), threshhold, 0));
-#endif 
+	RF24_Factory factory;
+	Factory_433 factory_rf;
+	manager.AddLight(factory.get_light());
+	//manager.AddLight(new BinaryLight(new BinLight_SYSFS(), threshhold, 0));
+	manager.AddLight(factory_rf.get_light());
+#endif
 	manager.AddLight(new Milight(threshhold));
 	manager.AddLight(new ConsoleLight());
 
