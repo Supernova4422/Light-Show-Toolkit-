@@ -1,0 +1,9 @@
+[submodule "openmili"]
+	path = openmili
+	url = https://github.com/Fantasmos/openmili.git
+[submodule "RF24"]
+	path = RF24
+	url = https://github.com/nRF24/RF24
+[submodule "esp8266_milight_hub"]
+	path = esp8266_milight_hub
+	url = https://github.com/Fantasmos/esp8266_milight_hub

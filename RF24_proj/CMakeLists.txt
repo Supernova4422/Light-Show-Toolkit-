@@ -9,7 +9,7 @@ elseif(IS_DIRECTORY ${RF24})
 	
 	find_path(V6_Encoding NAME V2RFEncoding.h)
 	find_path(OpenMilight NAME MiLightRadio.h)
-	
+
 	target_link_libraries(LightShowProject RF24_proj)
 
 	add_library(RF24_proj
@@ -30,7 +30,7 @@ elseif(IS_DIRECTORY ${RF24})
 	find_path(OpenMilight NAME MiLightRadio.h)
 
 	if(NOT IS_DIRECTORY ${V6_Encoding})
-		message("V6_Encoding was not found. V6_Encoding can be downloaded at: https://github.com/sidoh/esp8266_milight_hub however if you are not compiling to RPI this can be ignored")
+		message("V6_Encoding was not found. A modified version V6_Encoding can be downloaded at: https://github.com/Fantasmos/esp8266_milight_hub/ however if you are not compiling to RPI this can be ignored")
 	elseif(IS_DIRECTORY ${V6_Encoding})
 		message("V6_Encoding has been found")
 		INCLUDE_DIRECTORIES(RF24_proj ${V6_Encoding}) 
@@ -38,7 +38,7 @@ elseif(IS_DIRECTORY ${RF24})
 	endif(NOT IS_DIRECTORY ${V6_Encoding})
 
 	if(NOT IS_DIRECTORY ${OpenMilight})
-		message("OpenMilight was not found. OpenMilight can be downloaded at: https://github.com/henryk/openmili however if you are not compiling to RPI this can be ignored")
+		message("OpenMilight was not found. A modified version of OpenMilight needs to be downloaded at: https://github.com/Fantasmos/openmili however if you are not compiling to RPI this can be ignored")
 	elseif(IS_DIRECTORY ${OpenMilight})
 		message("OpenMilight has been found")
 		INCLUDE_DIRECTORIES(RF24_proj ${OpenMilight} ) 
