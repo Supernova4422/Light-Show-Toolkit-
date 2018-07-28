@@ -41,7 +41,7 @@ void GroupManager::SetGroups(const int Group, Command CommandItem)
         AddToCurrentGroups(Group);
         break;
     case Remove:
-        std::pair<const int, Colour> *Entry = GetGroupByID(Group);
+        std::pair<const int, colour_combiner> *Entry = GetGroupByID(Group);
 
         CurrentlySelectedGroups.erase(std::remove(CurrentlySelectedGroups.begin(),
                                                   CurrentlySelectedGroups.end(),
@@ -56,7 +56,7 @@ void GroupManager::SetGroups(const int Group, Command CommandItem)
     }
 
     std::cout << "Current Groups are now: ";
-    for (const std::pair<const int, Colour>* group : CurrentlySelectedGroups) {
+    for (const std::pair<const int, colour_combiner>* group : CurrentlySelectedGroups) {
             std::cout << group->first << ", ";
     }
     std::cout << std::endl;
@@ -67,7 +67,7 @@ void GroupManager::SetGroups(const int Group, Command CommandItem)
 void GroupManager::AddToCurrentGroups(const int GroupToAdd)
 {
     Colour empty;
-    std::pair<const int, Colour>* Entry = GetGroupByID(GroupToAdd);
+    std::pair<const int, colour_combiner>* Entry = GetGroupByID(GroupToAdd);
     //A pointer is used to ensure that the group is kept track of
     
     const int *PointerToGroupID = &Entry->first; //Redundant?
@@ -75,50 +75,28 @@ void GroupManager::AddToCurrentGroups(const int GroupToAdd)
     CurrentlySelectedGroups.push_back(GetGroupByID(GroupToAdd));
 }
 
-std::pair<const int, Colour> *GroupManager::GetGroupByID(const int ID)
+std::pair<const int, colour_combiner> *GroupManager::GetGroupByID(const int ID)
 {
-    Colour empty;
-    std::pair<const int, Colour> *Entry;
+	colour_combiner empty;
+    std::pair<const int, colour_combiner> *Entry;
     //If ID already exists, that one is returned instead
-    Entry = &*(AllGroups.insert(std::pair<int, Colour>(ID, empty)).first);
+    Entry = &*(AllGroups.insert(std::pair<int, colour_combiner>(ID, empty)).first);
     return Entry;
 }
 
 
-void GroupManager::AddColour(const Colour OutputColour , Command item)
-{
-    for (std::pair<const int, Colour> *group : CurrentlySelectedGroups)
-    {
-        group->second += OutputColour;
-    }
-    
-    for (ProgrammableLight* light : ListeningLights) {
-        light->EmitColour(item, CurrentlySelectedGroups);
-    }
-}
-void GroupManager::RemoveColour(const Colour OutputColour , Command item)
-{
-    for (std::pair<const int, Colour> *group : CurrentlySelectedGroups)
-    {
-        group->second -= OutputColour;
-    }
-    for (ProgrammableLight* light : ListeningLights) {
-        light->EmitColour(item, CurrentlySelectedGroups);
-    }
-}
-void GroupManager::SetColour(const Colour OutputColour, Command item)
-{
-    for (std::pair<const int, Colour> *group : CurrentlySelectedGroups)
-    {
-        group->second = OutputColour;
-    }
-    
 
-    for (ProgrammableLight* light : ListeningLights) {
-        light->EmitColour(item, CurrentlySelectedGroups);
-    }
+void GroupManager::UpdateColour(const Colour OutputColour, Command item) {
+	for (std::pair<const int, colour_combiner> *group : CurrentlySelectedGroups)
+	{
+		group->second.set_new(OutputColour, item.Operation);
+	}
 
+	for (ProgrammableLight* light : ListeningLights) {
+		light->EmitColour(item, CurrentlySelectedGroups);
+	}
 }
+
 void GroupManager::SpecificCommand(const Command command){
     for (ProgrammableLight* light : ListeningLights) {
         light->SpecificCommand(command);

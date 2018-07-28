@@ -9,13 +9,13 @@ ConsoleLight::ConsoleLight() {
     std::cout << std::endl;
 }
 
-void ConsoleLight::EmitColour(const Command CommandItem , const std::vector<std::pair<const int, Colour>*> ExpectedOutput) {
+void ConsoleLight::EmitColour(const Command CommandItem , const std::vector<std::pair<const int, colour_combiner>*> ExpectedOutput) {
 
     if (PostedNewGroups == false)
     {
         std::cout << "Sending to groups: ";
 
-        for (const std::pair<const int, Colour>* group : ExpectedOutput) {
+        for (const std::pair<const int, colour_combiner>* group : ExpectedOutput) {
             std::cout << group->first << ", ";
         }
 
@@ -50,7 +50,7 @@ void ConsoleLight::SetColourForCurrentGroups(const Colour OutputColour) {
 
 
 
-void ConsoleLight::OnCurrentGroupsUpdate(const Command CommandItem , std::vector<std::pair<const int, Colour>*>  CurrentGroups) {
+void ConsoleLight::OnCurrentGroupsUpdate(const Command CommandItem , std::vector<std::pair<const int, colour_combiner>*>  CurrentGroups) {
     PostedNewGroups = false;
 }
 
