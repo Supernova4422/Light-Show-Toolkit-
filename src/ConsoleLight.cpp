@@ -23,7 +23,6 @@ void ConsoleLight::EmitColour(const Command CommandItem , const std::vector<std:
 
         std::cout << std::endl;
     }
-	std::cout << "Printing has been disabled in consolelightcpp" << std::endl;
     
     Colour NewColour(CommandItem.value , CommandItem.type == ColourChange_RGB);
     
