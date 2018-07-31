@@ -102,10 +102,14 @@ void SongPlayer::RunCommand(Command item ) {
                 }
         }
 
-        if (item.type == CommandType::ColourChange) {
-            Colour Newcolour(item.value);
+        if (item.type == CommandType::ColourChange_RGB) {
+            Colour Newcolour(item.value,true);
 			Manager.UpdateColour(Newcolour, item);
         }
+		if (item.type == CommandType::ColourChange_HSV) {
+			Colour Newcolour(item.value,false);
+			Manager.UpdateColour(Newcolour, item);
+		}
     }
 }
 std::chrono::high_resolution_clock::time_point SongStartTime;

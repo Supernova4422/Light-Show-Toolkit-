@@ -5,14 +5,17 @@
 #include <vector> 
 #include <utility> 
 #include <map>
-
+#include <stdlib.h> 
+#include <math.h> 
 struct Colour
 {
     Colour();
-    Colour (std::string HexString);
+	//If true, the string is RGB
+	//if false the string is HSB
+    Colour (std::string HexString, const bool rgb);
     
     void UpdateHSBColours();
-   
+	void UpdateRGBColours();
     uint8_t red = 0;
     uint8_t green = 0;
     uint8_t blue = 0;

@@ -23,8 +23,9 @@ void ConsoleLight::EmitColour(const Command CommandItem , const std::vector<std:
 
         std::cout << std::endl;
     }
+	std::cout << "Printing has been disabled in consolelightcpp" << std::endl;
     
-    Colour NewColour(CommandItem.value);
+    Colour NewColour(CommandItem.value , CommandItem.type == ColourChange_RGB);
     
     switch (CommandItem.Operation)
     {
@@ -42,6 +43,7 @@ void ConsoleLight::EmitColour(const Command CommandItem , const std::vector<std:
     std::cout << "R: " << (int) NewColour.red << " G: " << (int) NewColour.green << " B: " << (int) NewColour.blue << std::endl;
     std::cout << "H: " << (int) NewColour.Hue << " S: " << (int) NewColour.Saturation << " B: " << (int) NewColour.Brightness << std::endl;
     std::cout << std::endl;
+	
 }
 
 void ConsoleLight::SetColourForCurrentGroups(const Colour OutputColour) {

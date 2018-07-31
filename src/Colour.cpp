@@ -57,15 +57,71 @@ void Colour::UpdateHSBColours () {
             Hue = (uint8_t)(HueHolder);
         }
     }
-
-    
 }
 
-Colour::Colour (std::string HexString) {
-        red = (uint8_t) std::stoi(HexString.substr(0,2), nullptr , 16);
-        green = (uint8_t) std::stoi(HexString.substr(2,2), nullptr , 16);
-        blue = (uint8_t) std::stoi(HexString.substr(4,2), nullptr , 16);
-        UpdateHSBColours();
+void Colour::UpdateRGBColours() {
+
+
+	float hue_resized = float(Hue) * (360.0F / 255.0F);
+	float sat_resized = float(Saturation) / 255.0f;
+	float b_resized = float(Brightness) / 255.0f;
+
+
+	double chroma = b_resized * sat_resized;
+	double x = chroma * (1.0f -
+		abs(
+		(
+			fmod(hue_resized / 60.0f, 2) - 1.0f)
+		)
+		);
+
+	float m = b_resized - chroma;
+
+	if (0 <= hue_resized && hue_resized <= 60) {
+		red = (chroma + m) * 255;
+		green = (x + m) * 255;
+		blue = m * 255;
+	}
+	else if (60 <= hue_resized && hue_resized <= 120) {
+		red = (x + m) * 255;
+		green = (chroma + m) * 255;
+		blue = m * 255;
+	}
+	else if (120 <= hue_resized && hue_resized <= 180) {
+		red = m * 255;
+		green = (chroma + m) * 255;
+		blue = (x + m) * 255;
+	}
+	else if (180 <= hue_resized && hue_resized <= 240) {
+		red = m * 255;
+		green = (x + m) * 255;
+		blue = (chroma + m) * 255;
+	}
+	else if (240 <= hue_resized && hue_resized <= 300) {
+		red = (x + m) * 255;
+		green = m * 255;
+		blue = (chroma + m) * 255;
+	}
+	else if (300 <= hue_resized && hue_resized <= 360) {
+		red = (chroma + m) * 255;
+		green = m * 255;
+		blue = (x + m) * 255;
+	}
+}
+//If true, the string is RGB
+//If false, the string is HSB
+Colour::Colour (std::string HexString, const bool rgb) {
+	if (rgb) {
+		red = (uint8_t)std::stoi(HexString.substr(0, 2), nullptr, 16);
+		green = (uint8_t)std::stoi(HexString.substr(2, 2), nullptr, 16);
+		blue = (uint8_t)std::stoi(HexString.substr(4, 2), nullptr, 16);
+		UpdateHSBColours();
+	} else {
+		Hue = (uint8_t)std::stoi(HexString.substr(0, 2), nullptr, 16);
+		Saturation = (uint8_t)std::stoi(HexString.substr(2, 2), nullptr, 16);
+		Brightness = (uint8_t)std::stoi(HexString.substr(4, 2), nullptr, 16);
+		UpdateRGBColours();
+	}
 }
 Colour::Colour (){ }
 

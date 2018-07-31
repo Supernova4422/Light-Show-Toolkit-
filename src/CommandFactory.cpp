@@ -53,8 +53,12 @@ Command CommandFactory::ParseCommand(string CommandInput) {
         }
         else if (CommandInput[0] == '#') { 
             value = CommandInput.erase(0,1); 
-            CurrentCommandType = CommandType::ColourChange; 
-        } else if (CommandInput.compare(0,GroupIdentifier.size(),GroupIdentifier) == 0) {
+            CurrentCommandType = CommandType::ColourChange_RGB; 
+        } else if (CommandInput[0] == '$') {
+			value = CommandInput.erase(0, 1);
+			CurrentCommandType = CommandType::ColourChange_HSV;
+		}
+		else if (CommandInput.compare(0,GroupIdentifier.size(),GroupIdentifier) == 0) {
             value = CommandInput.erase(0,GroupIdentifier.size());
             CurrentCommandType = CommandType::Group;
         } else if (isdigit(CommandInput[0])) {

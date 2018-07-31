@@ -16,7 +16,9 @@ Play {
 	-Group1  		//When using a '-' it is considered a REMOVE, in this case, "2" is now the only "Currently Selected Group" 
 	Group3  		//When nothing is used, it is considered a SET, in this case, "3" is now the only "Currently Selected Group"
 	
-	#0000FF  		//When a '#' is used infront of a number, it is considered a HEX colour, and will be sent to the "Currently Selected Groups"
+	#0000FF  		//When a '#' is used infront of a number, it is considered an RGB colour, and will be sent to the "Currently Selected Groups"
+	$FF7F7F         //A $ signifies a HSV colour, but it is still Hex (first two chars are Hue, next two saturation, next two brightness.) 
+	                //255 = 360 for hue, 255 = 100% for brightness and saturation
 	+#00FF00		//Similarly, + and - will ADD and SUBTRACT the current colour for each light INDIVIDUALLY. 
 	-#FF00FF
 
