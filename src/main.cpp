@@ -38,9 +38,6 @@
 
 int main()
 {
-	std::cout << "Hello" << std::endl;
-	Colour col = Colour("867F7F", false);
-	std::cout << "Hello" << std::endl;
 	GroupManager manager;
 	int threshhold = 10;
 #ifdef __arm__
