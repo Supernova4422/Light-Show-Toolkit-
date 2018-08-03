@@ -25,6 +25,7 @@
 #include "BinaryLightController.h"
 #include "BinLight_SYSFS.h"
 #include <chrono>
+#include "SDL_Light.h"
 
 #ifdef __arm__
 	#warning Compiling for Raspberry PI, errors may occur on other platforms
@@ -36,7 +37,7 @@
 
 
 
-int main()
+int main(int argc, char* argv[])
 {
 	GroupManager manager;
 	int threshhold = 10;
@@ -45,11 +46,11 @@ int main()
 	RF24_Factory factory;
 	Factory_433 factory_rf;
 	manager.AddLight(factory.get_light());
-	//manager.AddLight(new BinaryLight(new BinLight_SYSFS(), threshhold, 0));
 	manager.AddLight(factory_rf.get_light());
 #endif
 	manager.AddLight(new Milight(threshhold));
 	manager.AddLight(new ConsoleLight());
+    manager.AddLight(new SDL_Light());
 
     SongPlayer Player = SongPlayer(manager);
     CommandLineInterface CLI(Player);

@@ -111,6 +111,7 @@ void Colour::UpdateRGBColours() {
 //If true, the string is RGB
 //If false, the string is HSB
 Colour::Colour (std::string HexString, const bool rgb) {
+    rgb_built = rgb;
 	if (rgb) {
 		red = (uint8_t)std::stoi(HexString.substr(0, 2), nullptr, 16);
 		green = (uint8_t)std::stoi(HexString.substr(2, 2), nullptr, 16);
