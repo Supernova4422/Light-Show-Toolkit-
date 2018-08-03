@@ -57,5 +57,5 @@ int main(int argc, char* argv[])
 
     int num;
     std::cin >> num;
-
+	return 0;
 }
