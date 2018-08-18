@@ -6,8 +6,10 @@
 class CommandLineInterface
 {
     public: 
-        CommandLineInterface(SongPlayer& Player);
-        void ParseLine (std::string Line);
+        CommandLineInterface(SongPlayer* Player);
+        
+		void Run();
     private: 
         SongPlayer* Player;
+		void ParseLine(std::string Line);
 };

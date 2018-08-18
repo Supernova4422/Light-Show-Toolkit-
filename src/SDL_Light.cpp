@@ -23,9 +23,6 @@ if (renderer == NULL) {
             }
         }
     }
-    
-   
-    
 }
 
 
@@ -55,13 +52,16 @@ void SDL_Light::EmitColour(const Command CommandItem , const std::vector<std::pa
         int i = 0;
         for (std::map<int, colour_combiner>::iterator it = groups.begin(); it != groups.end(); it++) {
             SDL_SetRenderDrawColor(renderer, it->second.get_colour().red, it->second.get_colour().green, it->second.get_colour().blue, 255);
-            SDL_Rect light_rect = {divisions * (i), 0, divisions, 480};
+            SDL_Rect light_rect = {divisions * (i) + gap, 0, divisions - gap, 480};
             SDL_RenderFillRect(renderer,&light_rect);
             i++;
         }
         SDL_RenderPresent(renderer);
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
+			if (event.type == SDL_QUIT) {
+				SDL_DestroyWindow(MainWindow);
+			}
         }
     }
     

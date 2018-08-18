@@ -23,7 +23,7 @@
 
 std::map <std::string, std::vector<Command>> Dictionary;
 
-SongPlayer::SongPlayer (GroupManager Manager) {
+SongPlayer::SongPlayer (GroupManager* Manager) {
     //Initialize SDL for audio playback
     if( SDL_Init( SDL_INIT_AUDIO ) < 0 )
     {
@@ -89,11 +89,11 @@ void SongPlayer::RunCommand(Command item ) {
     else {
 
         if (item.type == CommandType::SpecificCommand) {
-            Manager.SpecificCommand(item);
+            Manager->SpecificCommand(item);
         }
 
         if (item.type == CommandType::Group) {
-            Manager.SetGroups(atoi(item.value.c_str()), item);
+            Manager->SetGroups(atoi(item.value.c_str()), item);
             
         } 
         if (item.type == CommandType::FunctionName){
@@ -104,11 +104,11 @@ void SongPlayer::RunCommand(Command item ) {
 
         if (item.type == CommandType::ColourChange_RGB) {
             Colour Newcolour(item.value,true);
-			Manager.UpdateColour(Newcolour, item);
+			Manager->UpdateColour(Newcolour, item);
         }
 		if (item.type == CommandType::ColourChange_HSV) {
 			Colour Newcolour(item.value,false);
-			Manager.UpdateColour(Newcolour, item);
+			Manager->UpdateColour(Newcolour, item);
 		}
     }
 }

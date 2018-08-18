@@ -1,30 +1,34 @@
 #include "CommandLineInterface.h"
 #include <string>
 #include <iostream>
-
-CommandLineInterface::CommandLineInterface(SongPlayer &Player) {
-    bool Running = true;
-    this->Player = &Player;
+#include <algorithm>
+CommandLineInterface::CommandLineInterface(SongPlayer* Player) {
+    this->Player = Player;
     std::cout << "CommandLine Interface has loaded" << std::endl;
     std::cout << "Type 'Help' to get started." << std::endl;
-    while (Running) {
-        std::cout << std::endl;
-        std::cout << "Waiting on Input" << std::endl;
-        std::string Line;
-        std::getline(std::cin, Line);
-        ParseLine(Line);
-    }
-    
+}
+
+void CommandLineInterface::Run()
+{
+	bool Running = true;
+	while (Running) {
+		std::cout << std::endl;
+		std::cout << "Waiting on Input" << std::endl;
+		std::string Line;
+		std::getline(std::cin, Line);
+		ParseLine(Line);
+	}
 }
 
 
 void CommandLineInterface::ParseLine (std::string Line) {
-    std::string LoadMainCommand = "LoadMain";
-    std::string LoadSupportCommand = "LoadSupport";
-    std::string RunCommand = "Run";
-    std::string PrintMainDataCommand = "PrintMainData";
-    std::string PrintSupportDataCommand = "PrintSupportData";
-    std::string Help = "Help";
+    std::string LoadMainCommand = "loadmain";
+    std::string LoadSupportCommand = "loadsupport";
+	std::string MP3ShowCommand = "mp3show";
+    std::string RunCommand = "run";
+    std::string PrintMainDataCommand = "printMainData";
+    std::string PrintSupportDataCommand = "printSupportData";
+    std::string Help = "help";
     
     
     std::string BeforeSpace = "";
@@ -41,12 +45,14 @@ void CommandLineInterface::ParseLine (std::string Line) {
             {
                 EncounteredFirstSpace = true;
             } else {
-                BeforeSpace = BeforeSpace + c;
+				
+				BeforeSpace = BeforeSpace + char(::tolower(c));
+				
             }
         }
     }
+	
     std::cout << std::endl;
-    
     if (BeforeSpace == LoadMainCommand) {
         Player->LoadMainFile(AfterSpace);
         std::cout << "Loaded Main File" << std::endl;
@@ -56,6 +62,13 @@ void CommandLineInterface::ParseLine (std::string Line) {
         Player->AddSupportFile(AfterSpace);
         std::cout << "Loaded Support File" << std::endl;
     }
+	if (BeforeSpace == MP3ShowCommand)
+	{
+		std::cout << "Loading file and mp3" << std::endl;
+		Player->LoadMainFile(AfterSpace + ".ls");
+		Player->StartPlaying(AfterSpace + ".mp3");
+		std::cout << "Finished Playing" << std::endl;
+	}
     if (BeforeSpace == RunCommand)
     {
         std::cout << "Starting Song" << std::endl;

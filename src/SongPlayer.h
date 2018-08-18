@@ -16,8 +16,8 @@
 class SongPlayer
 {
     public: 
-	SongPlayer(GroupManager manager);
-	GroupManager Manager;
+	SongPlayer(GroupManager* manager);
+	GroupManager* Manager;
     void RunCommand(Command item);
 
     FileParserHandler Parser;
