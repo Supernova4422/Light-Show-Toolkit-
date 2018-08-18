@@ -60,16 +60,16 @@ CommandLineInterface* makeInterface() {
 int main(int argc, char* argv[])
 {
 	if (argc >= 2) {
-		std::cout << "Loading file: " << argv[0] << std::endl;
+		std::cout << "Loading file: " << argv[1] << std::endl;
 		SongPlayer* Player = makePlayer();
-		Player->LoadMainFile(argv[0]);
-		for (int i = 2; i < argc; i++) {
+		Player->LoadMainFile(argv[1]);
+		for (int i = 3; i < argc; i++) {
 			int support_file_iter = i;
 			Player->AddSupportFile(argv[i]);
 			std::cout << "Loading support file: " << argv[i] << std::endl;
 		}
-		std::cout << "Playing song:" << argv[1] << std::endl;
-		Player->PlaySong(argv[1]);
+		std::cout << "Playing song:" << argv[2] << std::endl;
+		Player->StartPlaying(argv[2]);
 	} else {
 		CommandLineInterface* cli = makeInterface();
 		cli->Run();
