@@ -127,12 +127,12 @@ void SongPlayer::WaitMilliseconds (int milliseconds) {
     std::cout << "Finished Waiting" << std::endl;
 }
 
-void SongPlayer::StartPlaying(std::string SongToPlay , std::string FunctionToPlay ) {
+void SongPlayer::StartPlaying(std::string SongToPlay , int start_time, std::string FunctionToPlay) {
     bool SongIsPlaying;
     SongIsPlaying = PlaySong(SongToPlay);
 
     if (SongIsPlaying) {
-        SongStartTime = std::chrono::high_resolution_clock::now();
+        SongStartTime = std::chrono::high_resolution_clock::now() - std::chrono::seconds(start_time);
         WaitTimeTotalInMilli = 0;
         RunFunction(FunctionToPlay);
         StopSong();
@@ -148,7 +148,7 @@ bool loadMedia()
 //The music that will be played
 Mix_Music *gMusic = NULL;
 
-bool SongPlayer::PlaySong(std::string SongToPlay) {
+bool SongPlayer::PlaySong(std::string SongToPlay, int start_at) {
     
     bool success = true;
     gMusic = Mix_LoadMUS( SongToPlay.c_str() );
@@ -157,7 +157,8 @@ bool SongPlayer::PlaySong(std::string SongToPlay) {
         printf( "Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError() );
         success = false;
     } else {
-        Mix_PlayMusic( gMusic, 1 ); //Play the music once        
+        Mix_PlayMusic( gMusic, 1 ); //Play the music once     
+        Mix_SetMusicPosition(start_at);
     }  
           
     return success; 

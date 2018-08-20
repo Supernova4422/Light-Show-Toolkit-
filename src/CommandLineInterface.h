@@ -11,5 +11,6 @@ class CommandLineInterface
 		void Run();
     private: 
         SongPlayer* Player;
+        int delay = 0;
 		void ParseLine(std::string Line);
 };

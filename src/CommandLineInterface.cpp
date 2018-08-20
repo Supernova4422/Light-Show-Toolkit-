@@ -23,6 +23,7 @@ void CommandLineInterface::Run()
 
 void CommandLineInterface::ParseLine (std::string Line) {
     std::string LoadMainCommand = "loadmain";
+    std::string delayCommand = "delay";
     std::string LoadSupportCommand = "loadsupport";
 	std::string MP3ShowCommand = "mp3show";
     std::string RunCommand = "run";
@@ -53,6 +54,10 @@ void CommandLineInterface::ParseLine (std::string Line) {
     }
 	
     std::cout << std::endl;
+    if (BeforeSpace == delayCommand) {
+        delay = std::stoi(AfterSpace);
+        std::cout << "Added Delay" << std::endl;
+    } 
     if (BeforeSpace == LoadMainCommand) {
         Player->LoadMainFile(AfterSpace);
         std::cout << "Loaded Main File" << std::endl;
@@ -66,13 +71,13 @@ void CommandLineInterface::ParseLine (std::string Line) {
 	{
 		std::cout << "Loading file and mp3" << std::endl;
 		Player->LoadMainFile(AfterSpace + ".ls");
-		Player->StartPlaying(AfterSpace + ".mp3");
+		Player->StartPlaying(AfterSpace + ".mp3",delay);
 		std::cout << "Finished Playing" << std::endl;
 	}
     if (BeforeSpace == RunCommand)
     {
         std::cout << "Starting Song" << std::endl;
-        Player->StartPlaying(AfterSpace);
+        Player->StartPlaying(AfterSpace, delay);
         std::cout << "Finished Playing" << std::endl;
     }
     if (BeforeSpace == PrintMainDataCommand) {
