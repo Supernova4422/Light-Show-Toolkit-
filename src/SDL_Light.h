@@ -2,16 +2,16 @@
 #define SDL_LIGHT_H
 #include "SDL.h"
 #include "ProgrammableLight.h"
-class SDL_Light : public ProgrammableLight
+#include "Tick_Listener.h"
+class SDL_Light : public ProgrammableLight, public Tick_Listener
 {
     public: 
     SDL_Light();
     void SetColourForCurrentGroups(const colour_combiner OutputColour){};
     void EmitColour(const Command CommandItem , const std::vector<std::pair<const int, colour_combiner>*> ExpectedOutput);
     void SpecificCommand(const Command command){};
-
     void OnCurrentGroupsUpdate(const Command CommandItem , std::vector<std::pair<const int, colour_combiner>*>  CurrentGroups){};
-    
+	void On_Tick();
 private: 
     std::map<int, colour_combiner> groups;
     bool started = false;

@@ -35,6 +35,8 @@ class SongPlayer
     bool PlaySong(std::string SongToPlay, int start_at = 0);
     void StopSong();
 
+	void On_Tick();
+
     void LoadMainFile(std::string FileName);
     void AddSupportFile(std::string FileName); 
     

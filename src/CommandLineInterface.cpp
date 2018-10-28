@@ -8,8 +8,7 @@ CommandLineInterface::CommandLineInterface(SongPlayer* Player) {
     std::cout << "Type 'Help' to get started." << std::endl;
 }
 
-void CommandLineInterface::Run()
-{
+void CommandLineInterface::Run() {
 	bool Running = true;
 	while (Running) {
 		std::cout << std::endl;
@@ -17,6 +16,7 @@ void CommandLineInterface::Run()
 		std::string Line;
 		std::getline(std::cin, Line);
 		ParseLine(Line);
+		Player->On_Tick();
 	}
 }
 

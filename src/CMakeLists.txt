@@ -40,7 +40,9 @@ GPIO_PI.h
 BinLight_SYSFS.h
 ProgrammableLight.h
 SDL_Light.h
+Tick_Listener.h
 
+Tick_Listener.cpp
 main.cpp
 BinaryLightController.cpp
 Colour.cpp

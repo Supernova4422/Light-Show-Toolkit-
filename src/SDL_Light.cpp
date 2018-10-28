@@ -1,7 +1,6 @@
 #include "SDL_Light.h"
 #include "SDL.h"
-SDL_Light::SDL_Light()
-{
+SDL_Light::SDL_Light() {
 if (renderer == NULL) {
         if  (SDL_Init(SDL_INIT_VIDEO) < 0){
             std::cout << "error 0" << std::endl;
@@ -56,14 +55,19 @@ void SDL_Light::EmitColour(const Command CommandItem , const std::vector<std::pa
             SDL_RenderFillRect(renderer,&light_rect);
             i++;
         }
-        SDL_RenderPresent(renderer);
-        SDL_Event event;
-        while (SDL_PollEvent(&event)) {
-			if (event.type == SDL_QUIT) {
-				SDL_DestroyWindow(MainWindow);
-			}
-        }
+        
     }
     
+}
+
+void SDL_Light::On_Tick() {
+	SDL_RenderPresent(renderer);
+	SDL_Event event;
+
+	while (SDL_PollEvent(&event)) {
+		if (event.type == SDL_QUIT) {
+			SDL_DestroyWindow(MainWindow);
+		}
+	}
 }
 
