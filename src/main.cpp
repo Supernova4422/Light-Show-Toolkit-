@@ -46,7 +46,6 @@ SongPlayer* makePlayer() {
 #endif
 		manager->AddLight(new Milight(threshhold));
 		manager->AddLight(new ConsoleLight());
-		manager->AddLight(new SDL_Light());
 
 		SongPlayer* Player = new SongPlayer(manager);
 		return Player;

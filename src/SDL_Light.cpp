@@ -2,7 +2,6 @@
 #include "SDL.h"
 SDL_Light::SDL_Light() {
 	if (renderer == NULL) {
-		opened = true;
 		if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 			std::cout << "error 0" << std::endl;
 		}
@@ -28,7 +27,7 @@ SDL_Light::SDL_Light() {
 
 
 void SDL_Light::EmitColour(const Command CommandItem , const std::vector<std::pair<const int, colour_combiner>*> ExpectedOutput) {
-	Initialise();
+	
     
     for (std::pair<const int, colour_combiner>* it : ExpectedOutput ) {
         groups[it->first] = it->second;
