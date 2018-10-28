@@ -30,7 +30,7 @@ void CommandLineInterface::ParseLine (std::string Line) {
     std::string RunCommand = "run";
     std::string PrintMainDataCommand = "printMainData";
     std::string PrintSupportDataCommand = "printSupportData";
-	std::string loadSdlCommand = "loadSDL";
+	std::string loadSdlCommand = "sdlload";
     std::string Help = "help";
     
     
