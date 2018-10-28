@@ -9,7 +9,6 @@ class SDL_Light : public ProgrammableLight
     void SetColourForCurrentGroups(const colour_combiner OutputColour){};
     void EmitColour(const Command CommandItem , const std::vector<std::pair<const int, colour_combiner>*> ExpectedOutput);
     void SpecificCommand(const Command command){};
-
     void OnCurrentGroupsUpdate(const Command CommandItem , std::vector<std::pair<const int, colour_combiner>*>  CurrentGroups){};
     
 private: 
