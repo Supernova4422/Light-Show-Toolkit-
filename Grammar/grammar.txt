@@ -1,0 +1,110 @@
+<f> ::= <firstThenText> { <command> }
+<y> ::= <text>
+<integer> ::= 1<n>
+| 2<n>
+| 3<n>
+| 4<n>
+| 5<n>
+| 6<n>
+| 7<n>
+| 8<n>
+| 9<n>
+| 0<n>
+<n> ::= 1<n>
+| 2<n>
+| 3<n>
+| 4<n>
+| 5<n>
+| 6<n>
+| 7<n>
+| 8<n>
+| 9<n>
+| 0<n>
+| e
+<firstThenText> ::= A<text>
+| B<text>
+| C<text>
+| D<text>
+| E<text>
+| F<text>
+| G<text>
+| H<text>
+| U<text>
+| J<text>
+| K<text>
+| L<text>
+| M<text>
+| N<text>
+| O<text>
+| P<text>
+| Q<text>
+| R<text>
+| S<text>
+| T<text>
+| V<text>
+| W<text>
+| X<text>
+| Y<text>
+| Z<text>
+
+<text> ::= A<text>
+| B<text>
+| C<text>
+| D<text>
+| E<text>
+| F<text>
+| G<text>
+| H<text>
+| U<text>
+| J<text>
+| K<text>
+| L<text>
+| M<text>
+| N<text>
+| O<text>
+| P<text>
+| Q<text>
+| R<text>
+| S<text>
+| T<text>
+| V<text>
+| W<text>
+| X<text>
+| Y<text>
+| Z<text>
+| e
+<group> ::= group<integer>
+<delimeter> ::= :
+<command> ::= <command_option> <d>
+<num> ::= <n><decimal>
+<decimal> ::= .<n> 
+| e
+<command_option> ::= <group>
+| <num>
+| <firstThenText>
+| <hex>
+<d> ::= <delimeter> <command>
+| e
+<optional_modifier> ::= + 
+| - 
+| e
+<h> ::= A
+| B
+| C
+| D 	
+| E
+| F
+| 1
+| 2
+| 3
+| 4
+| 5
+| 6
+| 7
+| 8
+| 9
+| 0
+<color_type> ::= #
+| $
+<hex> ::= <optional_modifier><color_type><h><h><h><h><h><h>
+
