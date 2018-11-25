@@ -1,6 +1,7 @@
+
 cmake_minimum_required(VERSION 3.7)
 project(LightShowProject)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++0x -DRPI -lwiringPi")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++0x")
 set(CMAKE_BUILD_TYPE Debug)
 
 INCLUDE(FindPkgConfig)
@@ -40,9 +41,13 @@ GPIO_PI.h
 BinLight_SYSFS.h
 ProgrammableLight.h
 SDL_Light.h
+ProxyMaker.h
+
 Tick_Listener.h
 
 Tick_Listener.cpp
+
+ProxyMaker.cpp
 main.cpp
 BinaryLightController.cpp
 Colour.cpp
@@ -94,10 +99,8 @@ if(NOT IS_DIRECTORY ${RF24})
 	message("RF24 was not found. Not going to attempt to link projects")
 elseif(IS_DIRECTORY ${RF24})
 	target_link_libraries(LightShowProject RF24_proj)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRPI -lwiringPi")
 endif(NOT IS_DIRECTORY ${RF24})
 
 target_link_libraries(LightShowProject  ${SDLMAIN_LIBRARIES} ${SDL2_LIBRARIES} ${SDL_NET_LIBRARIES} ${SDL_MIXER_LIBRARIES})
 target_include_directories (LightShowProject PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-
-
-

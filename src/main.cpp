@@ -44,8 +44,9 @@ SongPlayer* makePlayer() {
 		manager->AddLight(factory.get_light());
 		manager->AddLight(factory_rf.get_light());
 #endif
-		manager->AddLight(new Milight(threshhold));
+		//manager->AddLight(new Milight(threshhold));
 		manager->AddLight(new ConsoleLight());
+
 		SDL_Light* sdl_window = new SDL_Light();
 		manager->AddLight(sdl_window);
 		manager->AddTickListener(sdl_window);

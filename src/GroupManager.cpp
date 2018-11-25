@@ -15,9 +15,7 @@
 
 
 
-GroupManager::GroupManager ()
-{
-
+GroupManager::GroupManager() {
 }
 
 void GroupManager::AddLight(ProgrammableLight* light)
