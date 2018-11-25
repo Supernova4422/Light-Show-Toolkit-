@@ -26,11 +26,11 @@ void CommandLineInterface::ParseLine (std::string Line) {
     std::string LoadMainCommand = "loadmain";
     std::string delayCommand = "delay";
     std::string LoadSupportCommand = "loadsupport";
-	std::string MP3ShowCommand = "mp3show";
+    std::string MP3ShowCommand = "mp3show";
     std::string RunCommand = "run";
     std::string PrintMainDataCommand = "printMainData";
     std::string PrintSupportDataCommand = "printSupportData";
-	std::string loadSdlCommand = "sdlload";
+    std::string loadSdlCommand = "sdlload";
     std::string Help = "help";
     
     
@@ -61,7 +61,9 @@ void CommandLineInterface::ParseLine (std::string Line) {
         std::cout << "Added Delay" << std::endl;
     } 
 	if (BeforeSpace == loadSdlCommand) {
-		Player->Manager->AddLight(new SDL_Light());
+		SDL_Light* sdl_window = new SDL_Light();
+		Player->Manager->AddLight(sdl_window);
+		Player->Manager->AddTickListener(sdl_window);
 		std::cout << "Loaded SDL" << std::endl;
 	}
     if (BeforeSpace == LoadMainCommand) {

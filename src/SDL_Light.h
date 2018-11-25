@@ -3,6 +3,7 @@
 #include "SDL.h"
 #include "ProgrammableLight.h"
 #include "ProxyMaker.h"
+#include "Tick_Listener.h"
 class SDL_Light : public ProgrammableLight, public Tick_Listener
 {
     public: 
