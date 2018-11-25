@@ -4,6 +4,17 @@
 #include <iostream>
 #include <sstream>
 #include "ProxyMaker.h"
+void SDL_Light::On_Tick() {
+	SDL_RenderPresent(renderer);
+	SDL_Event event;
+
+	while (SDL_PollEvent(&event)) {
+		if (event.type == SDL_QUIT) {
+			SDL_DestroyWindow(MainWindow);
+		}
+	}
+}
+
 SDL_Light::SDL_Light() {
 	proxies = ProxyMaker::proxy_filereader("proxy.txt");
 	ProxyMaker::print_proxies(proxies);
@@ -69,8 +80,6 @@ void SDL_Light::EmitColour(const Command CommandItem , const std::vector<std::pa
 			if (event.type == SDL_QUIT) {
 				SDL_DestroyWindow(MainWindow);
 			}
-        }
     }
-    
+  }  
 }
-

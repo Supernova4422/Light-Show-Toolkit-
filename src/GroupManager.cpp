@@ -24,9 +24,20 @@ void GroupManager::AddLight(ProgrammableLight* light)
 
 }
 
+void GroupManager::AddTickListener(Tick_Listener * listener)
+{
+	TickListeners.push_back(listener);
+}
+
+void GroupManager::On_Tick()
+{
+	for (auto listener : TickListeners) {
+		listener->On_Tick();
+	}
+}
+
 void GroupManager::SetGroups(const int Group, Command CommandItem)
 {
-
     Colour empty;
     std::pair<std::map<int, Colour>::iterator, bool> ret;
 

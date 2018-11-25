@@ -111,6 +111,7 @@ void SongPlayer::RunCommand(Command item ) {
 			Manager->UpdateColour(Newcolour, item);
 		}
     }
+	Manager->On_Tick();
 }
 std::chrono::high_resolution_clock::time_point SongStartTime;
 int WaitTimeTotalInMilli;
@@ -170,4 +171,9 @@ void SongPlayer::StopSong() {
         gMusic = NULL;
         Mix_Quit(); 
     }
+}
+
+void SongPlayer::On_Tick()
+{
+	Manager->On_Tick();
 }
