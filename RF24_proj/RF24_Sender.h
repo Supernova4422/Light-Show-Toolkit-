@@ -23,6 +23,7 @@ public:
     void OnCurrentGroupsUpdate(const Command CommandItem , std::vector<std::pair<const int, colour_combiner>*>  CurrentGroups);
 
 private:
+    std::map<std::set<int>, int, cmpBySetSize> proxies;
     RF24 radio = RF24(RPI_V2_GPIO_P1_22, RPI_V2_GPIO_P1_24, BCM2835_SPI_SPEED_1MHZ);
     PL1167_nRF24 prf = PL1167_nRF24(radio);
     MiLightRadio mlr= MiLightRadio(prf);

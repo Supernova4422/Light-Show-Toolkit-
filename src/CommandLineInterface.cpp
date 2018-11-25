@@ -2,6 +2,7 @@
 #include <string>
 #include <iostream>
 #include <algorithm>
+#include "SDL_Light.h"
 CommandLineInterface::CommandLineInterface(SongPlayer* Player) {
     this->Player = Player;
     std::cout << "CommandLine Interface has loaded" << std::endl;
@@ -29,6 +30,7 @@ void CommandLineInterface::ParseLine (std::string Line) {
     std::string RunCommand = "run";
     std::string PrintMainDataCommand = "printMainData";
     std::string PrintSupportDataCommand = "printSupportData";
+	std::string loadSdlCommand = "sdlload";
     std::string Help = "help";
     
     
@@ -58,6 +60,10 @@ void CommandLineInterface::ParseLine (std::string Line) {
         delay = std::stoi(AfterSpace);
         std::cout << "Added Delay" << std::endl;
     } 
+	if (BeforeSpace == loadSdlCommand) {
+		Player->Manager->AddLight(new SDL_Light());
+		std::cout << "Loaded SDL" << std::endl;
+	}
     if (BeforeSpace == LoadMainCommand) {
         Player->LoadMainFile(AfterSpace);
         std::cout << "Loaded Main File" << std::endl;
