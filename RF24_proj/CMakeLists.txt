@@ -10,8 +10,7 @@ elseif(IS_DIRECTORY ${RF24})
 	find_path(V6_Encoding NAME V2RFEncoding.h)
 	find_path(OpenMilight NAME MiLightRadio.h)
 
-	target_link_libraries(LightShowProject RF24_proj)
-
+	
 	add_library(RF24_proj
 		RF24_Sender.cpp 
 		RF24_Sender.h
