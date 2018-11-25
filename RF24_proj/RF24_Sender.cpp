@@ -13,6 +13,7 @@
 #include "V2RFEncoding.h"
 RF24_Sender::RF24_Sender(MILIGHT_VERSION version)
 {
+	proxies = ProxyMaker::proxy_filereader("proxy_rf24.txt");
 	
     std::ifstream input_file;
     input_file.open("RF24_Config.txt");
@@ -78,8 +79,10 @@ void RF24_Sender::EmitColour
 (const Command CommandItem,
  const std::vector<std::pair<const int, colour_combiner>*> ExpectedOutput)
 {
+	auto proxiedOutput = ProxyMaker::proxy_maker(ExpectedOutput, proxies);
+	
 
-    for (std::pair<const int, colour_combiner>* entry : ExpectedOutput )
+    for (std::pair<const int, colour_combiner>* entry : proxiedOutput )
     {
         std::map<int, std::pair<MILIGHT_VERSION,std::vector<uint8_t>>>::iterator it = Groups.find(entry->first);
 
@@ -87,8 +90,6 @@ void RF24_Sender::EmitColour
         {
             if (version == MILIGHT_VERSION::V6)
             {
-                //TODO Improve here
-                //TODO not use encoded info here
                 uint8_t msg[9]  =
                 {
                     0x00, //Key, no utility in varying it
@@ -160,6 +161,9 @@ void RF24_Sender::EmitColour
                     0xB8,it->second.second[0],it->second.second[1],
                     0x00,0x00,0x00,++seq_num
                 };
+				
+				//msg[5] = it->second.second[2]; //Why NOT do it now?
+				
 				std::pair<uint8_t,uint8_t> remote_pair = {msg[1], msg[2]};
 
                 //Hue 0x1B is solid Red
@@ -167,6 +171,7 @@ void RF24_Sender::EmitColour
 
                 uint8_t middle_point = 0x90;
                 uint8_t brightness = middle_point;
+				
 				if (entry->second.brightness_changed()) {
 					std::cout << "Brightness Changed" << '\n';
 					if (entry->second.get_colour().Brightness > 144) {
@@ -175,6 +180,7 @@ void RF24_Sender::EmitColour
 					else {
 						brightness -= (entry->second.get_colour().Brightness);
 					}
+					
 					int br = ((brightness + 0x08/2)/0x08)*0x08;
 					msg[4]  = uint8_t(br);
 					
@@ -198,7 +204,8 @@ void RF24_Sender::EmitColour
                     }
 					std::cout << "Making light white" << '\n';
 					msg[5] = it->second.second[2] + 16;
-                    send_V5(msg); //Send Brightness off/on command
+					send_V5(msg); //Send white command
+					msg[5] = it->second.second[2]; 
                 }
                 else if (
 					entry->second.hue_changed() | 
@@ -215,6 +222,7 @@ void RF24_Sender::EmitColour
 						msg[5]  = 0x0F; //Set Hue CMD
 						send_V5(msg); //Send Hue
 					}
+					
 				if (entry->second.brightness_changed())
                 {
 					if (last_group[remote_pair] != msg[5]) {
@@ -228,7 +236,7 @@ void RF24_Sender::EmitColour
 						entry->second.get_colour().Brightness < entry->second.prev_colour().Brightness - 16 ) 
 						{
 							std::cout << "Send Brightness" << '\n';
-							msg[5]  = 0x0E; //Set Brightness B
+							msg[5]  = 0x0E; //Set Brightness Byte
 							send_V5(msg); //Send Brightness
 						}
 				}

@@ -1,6 +1,12 @@
 #include "SDL_Light.h"
 #include "SDL.h"
+#include <fstream>
+#include <iostream>
+#include <sstream>
+#include "ProxyMaker.h"
 SDL_Light::SDL_Light() {
+	proxies = ProxyMaker::proxy_filereader("proxy.txt");
+	ProxyMaker::print_proxies(proxies);
 	if (renderer == NULL) {
 		if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 			std::cout << "error 0" << std::endl;
@@ -26,10 +32,12 @@ SDL_Light::SDL_Light() {
 }
 
 
+
 void SDL_Light::EmitColour(const Command CommandItem , const std::vector<std::pair<const int, colour_combiner>*> ExpectedOutput) {
 	
+	auto proxiedOutput = ProxyMaker::proxy_maker(ExpectedOutput, proxies);
     
-    for (std::pair<const int, colour_combiner>* it : ExpectedOutput ) {
+    for (std::pair<const int, colour_combiner>* it : proxiedOutput) {
         groups[it->first] = it->second;
     }
     
@@ -45,7 +53,7 @@ void SDL_Light::EmitColour(const Command CommandItem , const std::vector<std::pa
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-        for (std::pair<const int, colour_combiner>* it : ExpectedOutput ) {
+        for (std::pair<const int, colour_combiner>* it : proxiedOutput) {
         }
         
         int i = 0;

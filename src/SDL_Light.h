@@ -2,6 +2,7 @@
 #define SDL_LIGHT_H
 #include "SDL.h"
 #include "ProgrammableLight.h"
+#include "ProxyMaker.h"
 class SDL_Light : public ProgrammableLight
 {
     public: 
@@ -12,6 +13,7 @@ class SDL_Light : public ProgrammableLight
     void OnCurrentGroupsUpdate(const Command CommandItem , std::vector<std::pair<const int, colour_combiner>*>  CurrentGroups){};
     
 private: 
+	std::map<std::set<int>, int, cmpBySetSize> proxies;
     std::map<int, colour_combiner> groups;
     bool started = false;
     SDL_Renderer* renderer = NULL;
