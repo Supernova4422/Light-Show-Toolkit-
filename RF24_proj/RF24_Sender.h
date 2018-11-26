@@ -10,7 +10,10 @@
 #include "ProgrammableLight.h"
 #include "GroupManager.h"
 #include "Color_Combiner.cpp"
+#include "ProxyMaker.h"
 #include <vector>
+#include <set>
+
 enum MILIGHT_VERSION {V5, V6};
 class RF24_Sender : public ProgrammableLight
 {
