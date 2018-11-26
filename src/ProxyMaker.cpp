@@ -8,7 +8,7 @@
 #include <fstream>
 #include <set>
 #include "ProxyMaker.h"
-
+#include <algorithm>
 void ProxyMaker::print_proxies(std::map<std::set<int>, int, cmpBySetSize> proxies) {
 	
 	for (auto proxy : proxies) {

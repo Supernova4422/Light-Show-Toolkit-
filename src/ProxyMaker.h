@@ -7,18 +7,20 @@
 #include "Color_Combiner.cpp"
 #include <fstream>
 #include <set>
+#include <cstddef>
+#include <cstdio>
 
 struct cmpBySetSize {
 	bool operator()(const std::set<int>& a, const std::set<int>& b) const {
 		if (a.size() == b.size()) {
-			for (auto item : a) { //See if each element of the set is the same
-				if (std::find(b.begin(), b.end(), item) == b.end()) {
+			for (int item : a) { //See if each element of the set is the same
+				if (b.find(item) == b.end()) {
 					return true;
 				}
 			}
 			return false;
 		}
-		return a.size() < b.size();
+		return a.size() > b.size();
 	}
 };
 
