@@ -46,9 +46,7 @@ SDL_Light::SDL_Light() {
 
 void SDL_Light::EmitColour(const Command CommandItem , const std::vector<std::pair<const int, colour_combiner>*> ExpectedOutput) {
 	
-	auto proxiedOutput = ProxyMaker::proxy_maker(ExpectedOutput, proxies);
-    
-    for (std::pair<const int, colour_combiner>* it : proxiedOutput) {
+    for (std::pair<const int, colour_combiner>* it : ExpectedOutput) {
         groups[it->first] = it->second;
     }
     
@@ -64,8 +62,6 @@ void SDL_Light::EmitColour(const Command CommandItem , const std::vector<std::pa
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-        for (std::pair<const int, colour_combiner>* it : proxiedOutput) {
-        }
         
         int i = 0;
         for (std::map<int, colour_combiner>::iterator it = groups.begin(); it != groups.end(); it++) {
@@ -75,11 +71,5 @@ void SDL_Light::EmitColour(const Command CommandItem , const std::vector<std::pa
             i++;
         }
         SDL_RenderPresent(renderer);
-        SDL_Event event;
-        while (SDL_PollEvent(&event)) {
-			if (event.type == SDL_QUIT) {
-				SDL_DestroyWindow(MainWindow);
-			}
-    }
   }  
 }
