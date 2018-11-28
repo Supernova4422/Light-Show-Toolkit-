@@ -5,7 +5,8 @@
 
 void BinaryLight::EmitColour(const Command CommandItem, const std::vector<std::pair<const int, colour_combiner>*> ExpectedOutput)
 {
-	for (auto pair : ExpectedOutput)
+    auto proxiedOutput = ProxyMaker::proxy_maker(ExpectedOutput, proxies);
+	for (auto pair : proxiedOutput)
 	{
 		//if (pair->second.brightness_changed()) {
 			int group = pair->first + group_offset;

@@ -70,8 +70,8 @@ RF24_Sender::RF24_Sender(MILIGHT_VERSION version)
     {
         mlr.begin(CHANNELS_V6,0x7236,0x1809, 10);
     }
-	std::cout << "Setting data rate was: " << radio.setDataRate(RF24_250KBPS) << '\n';
-	//radio.powerUp();
+	std::cout << "Setting data rate was: " << radio.setDataRate(RF24_1MBPS) << '\n';
+	radio.powerUp();
 	
 
 }
@@ -221,6 +221,7 @@ void RF24_Sender::EmitColour
 						std::cout << "Send Hue" << '\n';
 						msg[5]  = 0x0F; //Set Hue CMD
 						send_V5(msg); //Send Hue
+						
 					}
 					
 				if (entry->second.brightness_changed())
