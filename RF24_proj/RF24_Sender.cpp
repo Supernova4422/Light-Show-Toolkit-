@@ -156,103 +156,76 @@ void RF24_Sender::EmitColour
             }
             if (version == MILIGHT_VERSION::V5)
             {
+                const uint8_t middle_point = 0x90;
+                uint8_t brightness = middle_point;
+                
+                if (entry->second.get_colour().Brightness > 144) {
+					brightness += (entry->second.get_colour().Brightness - middle_point);
+				}
+				else {
+					brightness -= (entry->second.get_colour().Brightness);
+				}
+
                 uint8_t msg[7]  =
                 {
-                    0xB0,it->second.second[0],it->second.second[1],
-                    0x00,0x00,0x00,++seq_num
+                    0xB0,
+                    it->second.second[0],
+                    it->second.second[1],
+                    0x00, //Hue byte
+                    0x00, //Brightness byte
+                    it->second.second[2], //CMD, defaults to GROUPON
+                    ++seq_num
                 };
 				//Should msg[0] be b0 or b8
-				//msg[5] = it->second.second[2]; //Why NOT do it now?
 				
 				std::pair<uint8_t,uint8_t> remote_pair = {msg[1], msg[2]};
 
-                //Hue 0x1B is solid Red
-                msg[3]  = ((0x1B + (entry->second.get_colour().Hue)));
-
-                uint8_t middle_point = 0x90;
-                uint8_t brightness = middle_point;
-				
-				if (entry->second.brightness_changed()) {
-					std::cout << "Brightness Changed" << '\n';
-					if (entry->second.get_colour().Brightness > 144) {
-						brightness += (entry->second.get_colour().Brightness - middle_point);
-					}
-					else {
-						brightness -= (entry->second.get_colour().Brightness);
-					}
-					
-					int br = ((brightness + 0x08/2)/0x08)*0x08;
-					msg[4]  = uint8_t(br);
-					
-                    
-                    //Redo logic here to turn on light
-                    //Decide to make it white
-                    if (entry->second.get_colour().Brightness > threshold
-                        & entry->second.prev_colour().Brightness < threshold) {
-                        std::cout << "Turning Light On" << '\n';
-                        msg[5] = it->second.second[2];
-                        send_V5(msg); //Send Group on
-                        last_group[remote_pair] = msg[5];
-                    }
-                    
-					//Decide to make it white
-					if (entry->second.get_colour().Brightness < threshold) {
+                //If we gonna do group checking, we would do it here
+                //We had this feature previously, but I don't think we need it anymore,
+                //This factoid needs to be confirmed.
+				if (entry->second.brightness_changed() && entry->second.get_colour().Brightness <= threshold) {
 						std::cout << "Turning Light Off" << '\n';
-						msg[5] = it->second.second[2] + 1;
+						msg[5]++;
 						send_V5(msg); //Send Group off
-						last_group[remote_pair] = msg[5];
 						break; //We need to stop running this chunk, light is now off!
-					}
-				}
-                if (entry->second.sat_changed() && entry->second.get_colour().Saturation < white_threshold)
-                {
-					
-					if (last_group[remote_pair] != msg[5]) {
-						std::cout << "Sending Group" << '\n';
-						last_group[remote_pair] = msg[5]; //Last Group Sent
-						msg[5] = it->second.second[2];
-						send_V5(msg); //Send Group off/on command
-                    }
-					std::cout << "Making light white" << '\n';
-					msg[5] = it->second.second[2] + 16;
-					send_V5(msg); //Send white command
-					msg[5] = it->second.second[2]; 
                 }
-                else if (
-					entry->second.hue_changed() | 
-					(entry->second.prev_colour().Saturation < white_threshold && 
-					 entry->second.get_colour().Saturation > white_threshold) 
-				)
-                {
-					if (last_group[remote_pair] != msg[5]) {
-							std::cout << "Sending Group" << '\n';
-							msg[5] = it->second.second[2];
-							send_V5(msg); //Send Group off/on command
-						}
-						std::cout << "Send Hue" << '\n';
-						msg[5]  = 0x0F; //Set Hue CMD
-						send_V5(msg); //Send Hue
-						
-					}
-					
-				if (entry->second.brightness_changed())
-                {
-					if (last_group[remote_pair] != msg[5]) {
-						std::cout << "Sending Group" << '\n';
-						msg[5] = it->second.second[2];
-						send_V5(msg); //Send Group off/on command
-					}
-					
-					//We only send brightness if we have have a proper change
-					if (entry->second.get_colour().Brightness > entry->second.prev_colour().Brightness + 16 |
-						entry->second.get_colour().Brightness < entry->second.prev_colour().Brightness - 16 ) 
-						{
-							std::cout << "Send Brightness" << '\n';
-                            msg[3]  = 0x00;
-							msg[5]  = 0x0E; //Set Brightness Byte
-							send_V5(msg); //Send Brightness
-						}
-				}
+                else if (entry->second.get_colour().Brightness > threshold) {
+
+                    if (entry->second.prev_colour().Brightness < threshold) {
+                        std::cout << "Turning Light On" << '\n';
+                        send_V5(msg);
+                    }
+
+                    if (entry->second.sat_changed() && entry->second.get_colour().Saturation < white_threshold)
+                    {
+                        std::cout << "Making light white" << '\n';
+                        msg[5] += 16;
+                        send_V5(msg); //Send white command
+                        msg[5] -= 16;
+                    } else if (
+                        entry->second.hue_changed() | 
+                        (entry->second.prev_colour().Saturation < white_threshold && 
+                        entry->second.get_colour().Saturation > white_threshold) 
+                    ) {
+                        msg[3] = 0x1B + (entry->second.get_colour().Hue);
+                        msg[5]  = 0x0F; //Set Hue CMD
+                        send_V5(msg); //Send Hue		
+                    }
+
+                    if (entry->second.brightness_changed())
+                    {
+                        //We only send brightness if we have have a proper change
+                        if (entry->second.get_colour().Brightness > entry->second.prev_colour().Brightness + 16 |
+                            entry->second.get_colour().Brightness < entry->second.prev_colour().Brightness - 16 ) 
+                            {
+                                std::cout << "Send Brightness" << '\n';
+                                msg[3]  = 0x00; //Not needed, will experiement if this is useful
+                                msg[4]  = brightness;
+                                msg[5]  = 0x0E; //Set Brightness Byte
+                                send_V5(msg); //Send Brightness
+                            }
+                    }
+                }
             }
         }
     }
@@ -272,6 +245,9 @@ void RF24_Sender::OnCurrentGroupsUpdate(
 
 void RF24_Sender::SpecificCommand(const Command command)
 {
+    if (command == "V5MAX") {
+        std::cout << "COMMAND TRIGGERED V5MAX" << '\n';
+    }
     std::cout << command.value << '\n';
 }
 
