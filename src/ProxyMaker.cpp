@@ -95,7 +95,7 @@ std::vector<std::pair<const int, colour_combiner>*> ProxyMaker::proxy_maker(std:
 				break;
 			}
 		}
-		std::cout << "Finished searches" << '\n' << '\n';
+        if (verbose ) { std::cout << "Finished searches" << '\n' << '\n';}
 
 		if (found_all) {
 			const int first_id = *(proxy.first.begin());

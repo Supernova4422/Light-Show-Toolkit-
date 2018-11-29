@@ -158,10 +158,10 @@ void RF24_Sender::EmitColour
             {
                 uint8_t msg[7]  =
                 {
-                    0xB8,it->second.second[0],it->second.second[1],
+                    0xB0,it->second.second[0],it->second.second[1],
                     0x00,0x00,0x00,++seq_num
                 };
-				
+				//Should msg[0] be b0 or b8
 				//msg[5] = it->second.second[2]; //Why NOT do it now?
 				
 				std::pair<uint8_t,uint8_t> remote_pair = {msg[1], msg[2]};
@@ -184,6 +184,17 @@ void RF24_Sender::EmitColour
 					int br = ((brightness + 0x08/2)/0x08)*0x08;
 					msg[4]  = uint8_t(br);
 					
+                    
+                    //Redo logic here to turn on light
+                    //Decide to make it white
+                    if (entry->second.get_colour().Brightness > threshold
+                        & entry->second.prev_colour().Brightness < threshold) {
+                        std::cout << "Turning Light On" << '\n';
+                        msg[5] = it->second.second[2];
+                        send_V5(msg); //Send Group on
+                        last_group[remote_pair] = msg[5];
+                    }
+                    
 					//Decide to make it white
 					if (entry->second.get_colour().Brightness < threshold) {
 						std::cout << "Turning Light Off" << '\n';
@@ -237,6 +248,7 @@ void RF24_Sender::EmitColour
 						entry->second.get_colour().Brightness < entry->second.prev_colour().Brightness - 16 ) 
 						{
 							std::cout << "Send Brightness" << '\n';
+                            msg[3]  = 0x00;
 							msg[5]  = 0x0E; //Set Brightness Byte
 							send_V5(msg); //Send Brightness
 						}

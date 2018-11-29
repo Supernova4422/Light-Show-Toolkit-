@@ -25,7 +25,7 @@ struct cmpBySetSize {
 };
 
 struct ProxyMaker {
-	static const bool verbose = true;
+	static const bool verbose = false;
 
 	static void print_proxies(std::map<std::set<int>, int, cmpBySetSize> proxies);
 	
