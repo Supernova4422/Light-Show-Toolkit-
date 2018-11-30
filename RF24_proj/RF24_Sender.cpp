@@ -158,13 +158,13 @@ void RF24_Sender::EmitColour
             {
                 const uint8_t middle_point = 0x90;
                 uint8_t brightness = middle_point;
-                
+                const int brightness_increments = 8;
                 if (entry->second.get_colour().Brightness > 144) {
                     brightness = 255;
 					brightness -= (entry->second.get_colour().Brightness - middle_point);
-                    int remainder = (brightness - 8) % 16;
-                    if (remainder > 8) {
-                        remainder -= 16;
+                    int remainder = brightness % brightness_increments;
+                    if (remainder > brightness_increments / 2) {
+                        remainder -= brightness_increments;
                     }
                     std::cout << "Rounding " << int(brightness) << " by " << int(remainder);
                     
@@ -173,9 +173,9 @@ void RF24_Sender::EmitColour
 				}
 				else {
 					brightness -= (entry->second.get_colour().Brightness);
-                    int remainder = brightness % 16;
-                    if (remainder > 8) {
-                        remainder -= 16;
+                    int remainder = brightness % brightness_increments;
+                    if (remainder > brightness_increments / 2) {
+                        remainder -= brightness_increments;
                     }
                     
                     std::cout << "Rounding " << int(brightness) << " by " << int(remainder);
@@ -203,7 +203,7 @@ void RF24_Sender::EmitColour
                 //This factoid needs to be confirmed.
 				if (entry->second.brightness_changed() && entry->second.get_colour().Brightness <= threshold) {
 						std::cout << "Turning Light Off" << '\n';
-						msg[5]++;
+						msg[5]++; //This should turn it off
 						send_V5(msg); //Send Group off
 						break; //We need to stop running this chunk, light is now off!
                 }
@@ -233,10 +233,10 @@ void RF24_Sender::EmitColour
 
                     if (entry->second.brightness_changed())
                     {
-                        std::cout << "Only brightness changes of 16 are recognised ";
+                        std::cout << "Only brightness changes of 8 are recognised. 4 then 4 is not recognised either. ";
                         //We only send brightness if we have have a proper change
-                        if (entry->second.get_colour().Brightness >= entry->second.prev_colour().Brightness + 16 |
-                            entry->second.get_colour().Brightness <= entry->second.prev_colour().Brightness - 16 )
+                        if (entry->second.get_colour().Brightness >= entry->second.prev_colour().Brightness + brightness_increments |
+                            entry->second.get_colour().Brightness <= entry->second.prev_colour().Brightness - brightness_increments )
                             {
                                 std::cout << "Sending brightness packet" << '\n';
                                 msg[3]  = 0x00; //Not needed, will experiement if this is useful
