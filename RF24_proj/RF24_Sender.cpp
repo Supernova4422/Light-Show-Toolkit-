@@ -160,8 +160,8 @@ void RF24_Sender::EmitColour
                 uint8_t brightness = middle_point;
                 
                 if (entry->second.get_colour().Brightness > 144) {
-                    
-					brightness += (entry->second.get_colour().Brightness - middle_point);
+                    brightness = 255;
+					brightness -= (entry->second.get_colour().Brightness - middle_point);
                     int remainder = (brightness - 8) % 16;
                     if (remainder > 8) {
                         remainder -= 16;
