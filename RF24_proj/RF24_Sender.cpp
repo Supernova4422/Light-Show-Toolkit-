@@ -160,11 +160,29 @@ void RF24_Sender::EmitColour
                 uint8_t brightness = middle_point;
                 
                 if (entry->second.get_colour().Brightness > 144) {
+                    
 					brightness += (entry->second.get_colour().Brightness - middle_point);
+                    int remainder = (brightness - 8) % 16;
+                    if (remainder > 8) {
+                        remainder -= 16;
+                    }
+                    std::cout << "Rounding " << int(brightness) << " by " << int(remainder);
+                    
+                    brightness -= remainder; //Brightness must be a multiple of 16
+                    std::cout << " to " << int(brightness) << '\n';
 				}
 				else {
 					brightness -= (entry->second.get_colour().Brightness);
+                    int remainder = brightness % 16;
+                    if (remainder > 8) {
+                        remainder -= 16;
+                    }
+                    
+                    std::cout << "Rounding " << int(brightness) << " by " << int(remainder);
+                    brightness -= remainder; //Brightness must be a multiple of 16
+                    std::cout << " to " << int(brightness) << '\n';
 				}
+                
 
                 uint8_t msg[7]  =
                 {
@@ -207,6 +225,7 @@ void RF24_Sender::EmitColour
                         (entry->second.prev_colour().Saturation < white_threshold && 
                         entry->second.get_colour().Saturation > white_threshold) 
                     ) {
+                        std::cout << "Sending brightness packet" << '\n';
                         msg[3] = 0x1B + (entry->second.get_colour().Hue);
                         msg[5]  = 0x0F; //Set Hue CMD
                         send_V5(msg); //Send Hue		
@@ -214,11 +233,12 @@ void RF24_Sender::EmitColour
 
                     if (entry->second.brightness_changed())
                     {
+                        std::cout << "Only brightness changes of 16 are recognised ";
                         //We only send brightness if we have have a proper change
-                        if (entry->second.get_colour().Brightness > entry->second.prev_colour().Brightness + 16 |
-                            entry->second.get_colour().Brightness < entry->second.prev_colour().Brightness - 16 ) 
+                        if (entry->second.get_colour().Brightness >= entry->second.prev_colour().Brightness + 16 |
+                            entry->second.get_colour().Brightness <= entry->second.prev_colour().Brightness - 16 )
                             {
-                                std::cout << "Send Brightness" << '\n';
+                                std::cout << "Sending brightness packet" << '\n';
                                 msg[3]  = 0x00; //Not needed, will experiement if this is useful
                                 msg[4]  = brightness;
                                 msg[5]  = 0x0E; //Set Brightness Byte
@@ -245,9 +265,7 @@ void RF24_Sender::OnCurrentGroupsUpdate(
 
 void RF24_Sender::SpecificCommand(const Command command)
 {
-    if (command == "V5MAX") {
-        std::cout << "COMMAND TRIGGERED V5MAX" << '\n';
-    }
+    //Expand this to additional cmds
     std::cout << command.value << '\n';
 }
 
