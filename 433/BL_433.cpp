@@ -9,8 +9,8 @@
 BL_433::BL_433()
 {
     
-	std::cout << std::endl << "Loading the 433mhz Codes" << std::endl;
-	std::ifstream myfile("BL_433_Codes.txt");
+    std::cout << std::endl << "Loading the 433mhz Codes" << std::endl;
+    std::ifstream myfile("BL_433_Codes.txt");
 
     int read_value = 0x00;
     std::cout << "Begin Reading" << std::endl;
@@ -30,12 +30,27 @@ BL_433::BL_433()
     if (wiringPiSetup() != -1) {
         mySwitch.enableTransmit(0);
         std::cout << "Initialised WiringPi, 433 Transmitter as well" << std::endl;
-		turnon(5);
-        turnoff(5);
     }
-
+    std::string line;
+    int repeats = 3;
+    int pulselength = 350; 
+    std::ifstream infile("bl433_settings.txt");
+    if (infile.is_open()) {
+        std::getline(infile, line);
+        repeats = std::stoi(line);
+        std::getline(infile, line);
+        pulselength = std::stoi(line);
+        std::cout << "Configuring transmitter based on file: " << '\n';
+        std::cout << '\t' << "Repeats: " << repeats << '\n';
+        
+        std::cout << '\t' << "PulseLength: " << repeats << '\n';
+    } else {
+        std::cout << "Error finding file for configuring transmitter" << '\n';
+        
+    }
 	mySwitch.disableReceive();
-	mySwitch.setRepeatTransmit(3);
+	mySwitch.setRepeatTransmit(repeats);
+	mySwitch.setPulseLength(pulselength);
 
 }
 
