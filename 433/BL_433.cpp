@@ -42,8 +42,7 @@ BL_433::BL_433()
         pulselength = std::stoi(line);
         std::cout << "Configuring transmitter based on file: " << '\n';
         std::cout << '\t' << "Repeats: " << repeats << '\n';
-        
-        std::cout << '\t' << "PulseLength: " << repeats << '\n';
+        std::cout << '\t' << "PulseLength: " << pulselength << '\n';
     } else {
         std::cout << "Error finding file for configuring transmitter" << '\n';
         
