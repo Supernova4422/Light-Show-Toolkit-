@@ -45,7 +45,6 @@ int main(int argc, char* argv[])
 		Player->LoadMainFile(argv[1]);
 
 		for (int i = 3; i < argc; i++) {
-			int support_file_iter = i;
 			Player->AddSupportFile(argv[i]);
 			std::cout << "Loading support file: " << argv[i] << std::endl;
 		}

@@ -1,4 +1,3 @@
-#pragma once
 #include <map>
 #include <vector>
 #include <string>
@@ -10,7 +9,7 @@
 #include "ProxyMaker.h"
 #include <algorithm>
 void ProxyMaker::print_proxies(std::map<std::set<int>, int, cmpBySetSize> proxies) {
-	
+
 	for (auto proxy : proxies) {
 		std::cout << proxy.second << ": ";
 		for (auto key_part : proxy.first) {
@@ -22,7 +21,7 @@ void ProxyMaker::print_proxies(std::map<std::set<int>, int, cmpBySetSize> proxie
 std::map<std::set<int>, int, cmpBySetSize> ProxyMaker::proxy_filereader(std::string filename) {
 	std::string line;
 	std::ifstream infile(filename);
-	
+
 	std::map<std::set<int>, int, cmpBySetSize> output;
 	if (verbose) { std::cout << "Begin" << '\n'; }
 
@@ -43,7 +42,7 @@ std::map<std::set<int>, int, cmpBySetSize> ProxyMaker::proxy_filereader(std::str
 			if (verbose) {std::cout << '\n';}
 			output[input_ids] = converted_id;
 		}
-		
+
 	}
 	return output;
 }
@@ -61,21 +60,21 @@ bool ProxyMaker::colors_equal (colour_combiner c1, colour_combiner c2) {
 	//There's an extremely rare chance two having different operations make the same result, so we don't
 	//care about the command
 	//if (c1.command != c2.command) { return false; }
-	
+
 	auto Colour1 = c1.get_colour();
 	auto Colour2 = c2.get_colour();
-	
+
 	if (Colour1.red != Colour2.red | Colour1.blue != Colour2.blue | Colour1.green != Colour2.green) {
 		return false;
 	}
-	
+
 	return true;
 }
 
 std::vector<std::pair<const int, colour_combiner>*> ProxyMaker::proxy_maker(std::vector<std::pair<const int, colour_combiner>*> input, std::map<std::set<int>, int, cmpBySetSize> proxies) {
 
 	std::vector<int> Groups;
-	
+
 	for (auto item : (input)) {
 		Groups.push_back(item->first);
 	}
@@ -84,10 +83,10 @@ std::vector<std::pair<const int, colour_combiner>*> ProxyMaker::proxy_maker(std:
 
 	for (auto proxy : proxies) {
 		bool found_all = proxy.first.size() > 0;
-		
+
 		if (verbose) { std::cout << "Beginning searches for: " << proxy.second << '\n';}
 		for (auto group : proxy.first) {
-			
+
 			if (verbose) { std::cout << '\t' << "Searching for: " << std::to_string(group) << '\n'; }
 			if (std::find(Groups.begin(), Groups.end(), group) == Groups.end()) {
 				found_all = false;
@@ -100,10 +99,10 @@ std::vector<std::pair<const int, colour_combiner>*> ProxyMaker::proxy_maker(std:
 		if (found_all) {
 			const int first_id = *(proxy.first.begin());
 			if (verbose) { std::cout << '\n' << "Proxy Detected for: " << std::to_string(proxy.second) << '\n'; }
-			
+
 			auto new_setting = get_from_data(first_id, input);
 			if (verbose) { std::cout << '\t' << "Ensuring all equal to: " << std::to_string(first_id) << '\n';}
-			
+
 			bool valid_proxy = true;
 			for (auto entry : proxy.first) {
 				if (colors_equal(new_setting, get_from_data(entry ,input)) == false) {
@@ -114,12 +113,12 @@ std::vector<std::pair<const int, colour_combiner>*> ProxyMaker::proxy_maker(std:
 			}
 			if (valid_proxy == false) {
 				break;
-			} else if (verbose) { 
+			} else if (verbose) {
 				std::cout << '\n' << '\t' << "Proxy verified for: " << std::to_string(first_id) << '\n';
 			}
-			
-			int ID; 
-			
+
+			int ID;
+
 			for (auto groupID : proxy.first) {
 				if (verbose) { std::cout << '\t' << '\t' << "Removing " << std::to_string(groupID) << '\n'; }
 				ID = groupID;
@@ -129,7 +128,7 @@ std::vector<std::pair<const int, colour_combiner>*> ProxyMaker::proxy_maker(std:
 			for (auto pair : input) {
 				if (pair->first == ID) {
 					if (verbose) { std::cout << '\t' << "Proxy group is: " << std::to_string(proxy.second) << " Using data from: " << std::to_string(ID) << '\n' <<'\n'; }
-					std::pair<const int, colour_combiner>* updated_pair = 
+					std::pair<const int, colour_combiner>* updated_pair =
 						new std::pair<const int, colour_combiner>(proxy.second, pair->second);
 					output.push_back(updated_pair);
 					break;
@@ -137,7 +136,7 @@ std::vector<std::pair<const int, colour_combiner>*> ProxyMaker::proxy_maker(std:
 			}
 		}
 	}
-	
+
 	if (verbose) { std::cout << "Ensuring non-proxied groups are kept: " << '\n'; }
 	for (auto remaining : Groups) {
 		if(verbose) { std::cout << '\t' << "Keeping: " << std::to_string(remaining) << '\n'; };
@@ -147,8 +146,8 @@ std::vector<std::pair<const int, colour_combiner>*> ProxyMaker::proxy_maker(std:
 			}
 		}
 	}
-	
+
 	if (verbose) { std::cout << '\n'; }
-	
+
 	return output;
 }

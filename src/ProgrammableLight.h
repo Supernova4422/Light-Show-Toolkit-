@@ -17,9 +17,7 @@ class ProgrammableLight
     virtual void OnCurrentGroupsUpdate(const Command CommandItem , const std::map<int, colour_combiner>  CurrentGroups) = 0;
 
     virtual void SpecificCommand(const Command command) = 0;
-
-  private:
-
+    virtual ~ProgrammableLight() = default;
 };
 
 #endif

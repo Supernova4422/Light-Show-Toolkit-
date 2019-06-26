@@ -1,7 +1,7 @@
 
 cmake_minimum_required(VERSION 3.7)
 project(LightShowProject)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++0x")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++17")
 set(CMAKE_BUILD_TYPE Debug)
 set (CMAKE_CXX_STANDARD 14)
 
@@ -50,7 +50,6 @@ Tick_Listener.cpp
 
 ProxyMaker.cpp
 main.cpp
-BinaryLightController.cpp
 Colour.cpp
 Color_Combiner.cpp
 CommandDataTypes.cpp

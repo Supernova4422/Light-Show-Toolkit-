@@ -25,19 +25,17 @@ public:
 	};
 
 	void SetColourForCurrentGroups(const Colour OutputColour) {};
-
-	void OnCurrentGroupsUpdate(const Command CommandItem, std::vector<std::pair<const int, colour_combiner>*>  CurrentGroups) {};
 	void SpecificCommand(const Command command) {};
 
-	void EmitColour(const Command CommandItem, const std::vector<std::pair<const int, colour_combiner> *> ExpectedOutput)
+	void EmitColour(const Command CommandItem, const std::map<int, colour_combiner> ExpectedOutput)
 	{
 		auto proxiedOutput = ProxyMaker::proxy_maker(ExpectedOutput, proxies);
 		for (auto pair : proxiedOutput)
 		{
-			//if (pair->second.brightness_changed()) {
-			int group = pair->first + group_offset;
-			bool shouldturnon = (pair->second.get_colour().Brightness > threshhold);
+			int group = pair.first + group_offset;
+			bool shouldturnon = (pair.second.get_colour().Brightness > threshhold);
 			std::cout << "Group: " << group << " will be made " << shouldturnon << std::endl;
+
 			if (shouldturnon)
 			{
 				light->turnon(group);
@@ -46,7 +44,6 @@ public:
 			{
 				light->turnoff(group);
 			}
-			//}
 		}
 		std::cout << std::endl;
 	}
@@ -54,6 +51,6 @@ public:
 private:
     std::map<std::set<int>, int, cmpBySetSize> proxies;
 	T light;
-	int threshhold = 0;
+	unsigned int threshhold = 0;
 	int group_offset = 0;
 };

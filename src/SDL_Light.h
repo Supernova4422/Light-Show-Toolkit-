@@ -16,7 +16,6 @@ class SDL_Light : public ProgrammableLight, public Tick_Listener
 private:
 	std::map<std::set<int>, int, cmpBySetSize> proxies;
     std::map<int, colour_combiner> groups;
-    bool started = false;
     SDL_Renderer* renderer = NULL;
     SDL_Window* MainWindow = NULL;
 };

@@ -1,14 +1,14 @@
 #include "Colour.h"
-#include <iostream>  
-#include <string> 
-#include <vector> 
-#include <utility> 
+#include <iostream>
+#include <string>
+#include <vector>
+#include <utility>
 #include <map>
-#include <algorithm> 
+#include <algorithm>
 
 
 void Colour::UpdateHSBColours () {
-    
+
     float HighestValue = std::max(std::max(red,green),blue);
     float LowestValue = std::min(std::min(red,green),blue);
 
@@ -33,9 +33,9 @@ void Colour::UpdateHSBColours () {
             float high = HighestValue / 255;
             float low = LowestValue / 255;
             delta = high - low;
-        
-            float HueHolder;
-            
+
+            float HueHolder = 0.0f;
+
             if (red == HighestValue) {
                 HueHolder = (g-b) / delta;
             }
@@ -60,12 +60,9 @@ void Colour::UpdateHSBColours () {
 }
 
 void Colour::UpdateRGBColours() {
-
-
 	float hue_resized = float(Hue) * (360.0F / 255.0F);
 	float sat_resized = float(Saturation) / 255.0f;
 	float b_resized = float(Brightness) / 255.0f;
-
 
 	double chroma = b_resized * sat_resized;
 	double x = chroma * (1.0f -
@@ -108,6 +105,7 @@ void Colour::UpdateRGBColours() {
 		blue = (x + m) * 255;
 	}
 }
+
 //If true, the string is RGB
 //If false, the string is HSB
 Colour::Colour (std::string HexString, const bool rgb) {
@@ -124,5 +122,5 @@ Colour::Colour (std::string HexString, const bool rgb) {
 		UpdateRGBColours();
 	}
 }
-Colour::Colour (){ }
 
+Colour::Colour (){ }

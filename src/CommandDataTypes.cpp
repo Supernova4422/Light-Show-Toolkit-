@@ -1,9 +1,5 @@
 #ifndef LightShowCommands
 #define LightShowCommands
- 
-// Header code goes here
- 
-
 #include <string>
 
 enum CommandType {ColourChange_RGB,ColourChange_HSV, Wait, Group, FunctionName, SpecificCommand};
@@ -14,16 +10,8 @@ struct Command {
   CommandType type;
   std::string value;
   CommandOperation Operation;
-  int TimesToExecute = 1; 
+  int TimesToExecute;
   Command(){}
-  Command(CommandType type, std::string value, CommandOperation operation, int TimesToExecute) {
-    this->type = type;
-    this->value = value;
-    this->Operation = operation;
-    this->TimesToExecute = TimesToExecute;
-  }
+  Command(CommandType type, std::string value, CommandOperation operation, int TimesToExecute) : type(type), value(value), Operation(operation), TimesToExecute(TimesToExecute){}
 };
-
-
-
 #endif

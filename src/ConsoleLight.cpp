@@ -48,9 +48,6 @@ void ConsoleLight::EmitColour(const Command CommandItem , const std::map<int, co
 void ConsoleLight::SetColourForCurrentGroups(const Colour OutputColour) {
 }
 
-
-
-
 void ConsoleLight::OnCurrentGroupsUpdate(const Command CommandItem ,const  std::map<int, colour_combiner>  CurrentGroups) {
     PostedNewGroups = false;
 }

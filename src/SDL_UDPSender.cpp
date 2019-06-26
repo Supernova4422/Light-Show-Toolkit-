@@ -6,18 +6,16 @@
 #include "SDL_net.h"
 #include <string.h>
 
-
-
 void SDL_UDPSender::InitialiseConnection (const char * IPAddress , unsigned short Port, NetworkProtocal Protocal ) {
-   
+
     if(SDL_Init(0)==-1) {
         printf("SDL_Init: %s\n", SDL_GetError());
     }
-    
+
     if(SDLNet_Init() == -1) {
         printf("SDLNet_Init: %s\n", SDLNet_GetError());
     }
-    
+
     if(SDLNet_ResolveHost(&address,IPAddress,Port) == -1)
 	{
 		printf("SDLNet_ResolveHost: %s\n",SDLNet_GetError());
@@ -32,13 +30,13 @@ void SDL_UDPSender::SendHexPackets (uint8_t buffer) {
 }
 
 void SDL_UDPSender::SendHexPackets (uint8_t buffer[]) {
-    
+
     udpsock = SDLNet_UDP_Open(8900);
 
     if(!udpsock) {
         printf("SDLNet_UDP_Open: %s\n", SDLNet_GetError());
     }
-    
+
     UDPpacket packet;
     packet.address = address;
     packet.data = buffer;
@@ -52,9 +50,4 @@ void SDL_UDPSender::SendHexPackets (uint8_t buffer[]) {
     SDLNet_UDP_Close(udpsock);
 
     SDL_Delay(DelayAfterPacketMS);
-}
-
-SDL_UDPSender::~SDL_UDPSender() {
-    SDLNet_UDP_Close(udpsock);
-    udpsock=NULL;
 }

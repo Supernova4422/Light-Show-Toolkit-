@@ -11,8 +11,7 @@
 #include "SDL_TCPSender.h"
 
 
-SDL_TCPSender TCPSender;
-SDL_UDPSender UDPSender;
+
 
 Milight::Milight(int BrightnessThreshhold) {
 	this->BrightnessThreshhold = BrightnessThreshhold;
@@ -55,20 +54,19 @@ Milight::Milight(int BrightnessThreshhold) {
     switch (Protocal)
     {
         case TCP:
-            TCPSender.DelayAfterPacketMS = DelayAfterPacketMS;
-            PacketSender = &TCPSender;
+            PacketSender = std::make_unique<SDL_TCPSender>();
+            PacketSender->DelayAfterPacketMS = DelayAfterPacketMS;
             std::cout << "TCP" << std::endl;
-            TCPSender.InitialiseConnection(IPAddress.c_str(), Port, Protocal);
         break;
 
         case UDP:
-            UDPSender.DelayAfterPacketMS = DelayAfterPacketMS;
-            PacketSender = &UDPSender;
+            PacketSender = std::make_unique<SDL_UDPSender>();
             std::cout << "UDP" << std::endl;
-            std::cout << "  Delay after each packet:" << DelayAfterPacketMS << "MS" << std::endl;
-            UDPSender.InitialiseConnection(IPAddress.c_str(), Port, Protocal);
-        break;
+            break;
     }
+    std::cout << "  Delay after each packet:" << DelayAfterPacketMS << "MS" << std::endl;
+    PacketSender->DelayAfterPacketMS = DelayAfterPacketMS;
+    PacketSender->InitialiseConnection(IPAddress.c_str(), Port, Protocal);
     std::cout << "  Networking Initialised" << std::endl;
 
     std::cout <<  std::endl <<  std::endl;
@@ -156,10 +154,7 @@ bool UpdatedCurrentGroup = false;
 
 CanUseByteForALLGROUPS Milight::CheckIfCanUseByteForALLGROUPS (const std::map<int, colour_combiner> Collection) {
 
-    bool AllHuesAreSame = false;
     bool AllBrightnessAreSame = false;
-
-
     int NumberOfUniqueGroups = 0;
     CanUseByteForALLGROUPS ret = ForBoth;
     uint8_t Hue = 0;
@@ -255,7 +250,7 @@ void Milight::OnCurrentGroupsUpdate(const Command CommandItem, const std::map<in
         }
     }
 }
-MilightGroupIDs Milight::GetGroupEnum(int GroupNumber) {
+MilightGroupIDs Milight::GetGroupEnum(int GroupNumber) const {
     MilightGroupIDs GroupIDEnum;
     if (GroupNumber == 1) {
         GroupIDEnum = Group1;
@@ -273,7 +268,7 @@ MilightGroupIDs Milight::GetGroupEnum(int GroupNumber) {
     return GroupIDEnum;
 }
 
-uint8_t  Milight::GetGroupHexByte(int GroupNumber) {
+uint8_t  Milight::GetGroupHexByte(int GroupNumber) const {
     //Group 1 ALL ON is 0x45, Group 2 ALL ON is 0x47, and so on
 
     uint8_t GroupHex = 0x43; //If group is 1, this will increment to 1 on execute

@@ -4,11 +4,6 @@
 #include <iostream>
 #include <sstream>
 
-
-
-
-
-
 BinLight_SYSFS::BinLight_SYSFS()
 {
 	std::cout << std::endl << "Lading the file_editor binary light" << std::endl;
@@ -32,9 +27,8 @@ void BinLight_SYSFS::initialise()
 
 void BinLight_SYSFS::turnon(int group)
 {
-
 	std::string setval_filepath = directory + "gpio" + std::to_string(group) + val_append;
-	std::ofstream setval_file;  
+	std::ofstream setval_file;
 	setval_file.open(setval_filepath.c_str());
 	setval_file << 1;
 	setval_file.close();
