@@ -18,10 +18,7 @@
 #include "SDL_mixer.h"
 #include "SDL_net.h"
 #include "GroupManager.h"
-
-
-
-std::map <std::string, std::vector<Command>> Dictionary;
+#include "SDL_Light.h"
 
 SongPlayer::SongPlayer () {
     //Initialize SDL for audio playback
@@ -37,23 +34,17 @@ SongPlayer::SongPlayer () {
 
 	this->manager = std::make_unique<GroupManager>();
 
-
-
 #ifdef __arm__
 #warning Injecting GPIO based lights into program, sudo will be needed to run
-    RF24_Factory factory;
-    Factory_433 factory_rf;
-    manager->AddLight(factory.get_light());
-    manager->AddLight(factory_rf.get_light());
+    manager->AddLight<BL_433>(14, 0);
+    manager->AddLight<RF24_Sender>(MILIGHT_VERSION::V5);
 #endif
-
-    int threshhold = 10;
-    //manager->AddLight(new Milight(threshhold));
+    manager->AddLight<Milight>(10); //10 is arbitrarily chosen
     manager->AddLight<ConsoleLight>();
 
-    //SDL_Light* sdl_window = new SDL_Light();
-    //manager->AddLight(sdl_window);
+    manager->AddLight<SDL_Light>();
     //manager->AddTickListener(sdl_window);
+    //manager->AddTickListener<SDL_Light>(); //Used to be shared with the light listener.
 }
 
 void SongPlayer::LoadMainFile(std::string FileName) {
@@ -68,7 +59,7 @@ void SongPlayer::AddFunctionToSupportFile(std::string FunctionName, std::vector<
 }
 
 void SongPlayer::AddParsedFileToSupportFile(std::map<std::string, std::vector<Command>> ParsedFile) {
-    for (std::pair<std::string, std::vector<Command>> item : ParsedFile ) {
+    for (auto item : ParsedFile ) {
         AddFunctionToSupportFile(item.first,item.second);
     }
 }

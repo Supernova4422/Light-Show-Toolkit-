@@ -64,7 +64,6 @@ Milight.cpp
 SDL_TCPSender.cpp
 SDL_UDPSender.cpp
 SongPlayer.cpp
-BinaryLight.cpp
 GPIO_PI.cpp
 BinLight_SYSFS.cpp
 SDL_Light.cpp

@@ -14,16 +14,16 @@ enum CanUseByteForALLGROUPS {
 enum MilightGroupIDs {Invalid = 0,  Group1 = 1, Group2 = 2, Group3 = 3, Group4 = 4, ALLGROUPS = 5};
 class Milight: public ProgrammableLight
 {
-    public: 
+    public:
     NetworkPacketSender* PacketSender;
-    CanUseByteForALLGROUPS CheckIfCanUseByteForALLGROUPS (const std::vector<std::pair<const int, colour_combiner>*> Collection);
+    CanUseByteForALLGROUPS CheckIfCanUseByteForALLGROUPS(const std::map<int, colour_combiner> Collection);
     Milight(int BrightnessThreshhold);
-   
-    void EmitColour(const Command CommandItem , const std::vector<std::pair<const int, colour_combiner>*> ExpectedOutput);
-	void OnCurrentGroupsUpdate(const Command CommandItem, std::vector<std::pair<const int, colour_combiner>*>  CurrentGroups);
+
+    void EmitColour(const Command CommandItem , const std::map<int, colour_combiner> ExpectedOutput);
+	void OnCurrentGroupsUpdate(const Command CommandItem, std::map< int, colour_combiner>  CurrentGroups);
     void SpecificCommand(const Command command);
-   
-	private: 
+
+	private:
 	int BrightnessThreshhold;
     MilightGroupIDs GetGroupEnum(int GroupNumber);
     uint8_t GetGroupHexByte(int GroupNumber);
@@ -34,5 +34,5 @@ class Milight: public ProgrammableLight
     void SendBrightness (const Colour OutputColour);
     void SendGroupOn (MilightGroupIDs GroupID);
     void SendGroupOFF();
-    
+
 };

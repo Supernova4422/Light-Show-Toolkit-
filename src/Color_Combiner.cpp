@@ -34,7 +34,7 @@ public:
 Colour prev_colour() {
 	return currentColour;
 }
-	Colour get_colour() {
+	Colour get_colour() const {
 		Colour result = currentColour;
 		switch (command) {
 		case set:

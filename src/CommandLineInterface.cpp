@@ -57,6 +57,7 @@ void CommandLineInterface::ParseLine (std::string Line) {
     }
 
     std::cout << std::endl;
+
     if (BeforeSpace == delayCommand) {
         delay = std::stoi(AfterSpace);
         std::cout << "Added Delay" << std::endl;

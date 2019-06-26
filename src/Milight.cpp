@@ -18,15 +18,15 @@ Milight::Milight(int BrightnessThreshhold) {
 	this->BrightnessThreshhold = BrightnessThreshhold;
     std::cout << "MiLight" << std::endl;
     std::ifstream myfile("MiLightSettings.txt");
-    
+
 	std::string IPAddress = "255.255.255.255";
     unsigned short Port = 8899;
     NetworkProtocal Protocal = NetworkProtocal::UDP;
 	int DelayAfterPacketMS = 0;
     if (myfile.is_open()) {
-        
+
 		std::cout << "Opened config for milight" << std::endl;
-        std::string IPAsString; 
+        std::string IPAsString;
         getline(myfile, IPAddress);
 		std::cout << IPAddress << std::endl;
         std::string CurrentLine;
@@ -48,20 +48,20 @@ Milight::Milight(int BrightnessThreshhold) {
 		std::cout << "Using Default config" << std::endl;
 	}
     std::cout << "Loaded with the following settings:" << std::endl;
-    std::cout << "  IP Address: " << IPAddress << std::endl;   
+    std::cout << "  IP Address: " << IPAddress << std::endl;
     std::cout << "  Port: " << Port << std::endl;
     std::cout << "  Protocal: ";
-    
+
     switch (Protocal)
     {
-        case TCP: 
+        case TCP:
             TCPSender.DelayAfterPacketMS = DelayAfterPacketMS;
             PacketSender = &TCPSender;
             std::cout << "TCP" << std::endl;
             TCPSender.InitialiseConnection(IPAddress.c_str(), Port, Protocal);
         break;
 
-        case UDP: 
+        case UDP:
             UDPSender.DelayAfterPacketMS = DelayAfterPacketMS;
             PacketSender = &UDPSender;
             std::cout << "UDP" << std::endl;
@@ -70,78 +70,79 @@ Milight::Milight(int BrightnessThreshhold) {
         break;
     }
     std::cout << "  Networking Initialised" << std::endl;
-    
+
     std::cout <<  std::endl <<  std::endl;
 }
 
-void Milight::EmitColour(const Command CommandItem , const std::vector<std::pair<const int, colour_combiner>*> ExpectedOutput) {
-    
+void Milight::EmitColour(const Command CommandItem , const std::map<int, colour_combiner> ExpectedOutput) {
+
     CanUseByteForALLGROUPS CanSendAllGroupByte = CheckIfCanUseByteForALLGROUPS(ExpectedOutput);
     if (ExpectedOutput.size() > 0) {
 
         //COLOUR MUST ALWAYS BE SENT FIRST
-        Colour FirstEntryColour = ExpectedOutput[0]->second.get_colour();
+        Colour FirstEntryColour = ExpectedOutput.begin()->second.get_colour();
 
         switch (CanSendAllGroupByte)
         {
             case ForBoth:
             //Send Group Byte
             SendGroupOn(MilightGroupIDs::ALLGROUPS);
-            
+
             //Send Hue
             SendHue(FirstEntryColour);
-            
-            //Individually send brightness 
+
+            //Individually send brightness
             SendBrightness( FirstEntryColour);
-            
+
             break;
-            
+
             case ForHue:
             //Send Group Byte
             SendGroupOn(MilightGroupIDs::ALLGROUPS);
-            
+
             //Send Hue
             SendHue(FirstEntryColour);
-            
-            //Individually send brightness 
-            for (std::pair<const int, colour_combiner>* entry : ExpectedOutput ) {
-                if ((entry->first < 5) && (entry->first > 0)) {
-                    
-                    SendGroupOn(GetGroupEnum(entry->first));
-                    
-                    SendBrightness( entry->second.get_colour());
+
+            //Individually send brightness
+            for (auto entry : ExpectedOutput ) {
+                if ((entry.first < 5) && (entry.first > 0)) {
+
+                    SendGroupOn(GetGroupEnum(entry.first));
+
+                    SendBrightness( entry.second.get_colour());
                 }
             }
 
             break;
-            
+
             case ForBrightness:
 
-            //Individually send Hue 
-            for (std::pair<const int, colour_combiner>* entry : ExpectedOutput ) {
-                if ((entry->first < 5) && (entry->first > 0)) {
-                    
-                    SendGroupOn(GetGroupEnum(entry->first));
+            //Individually send Hue
+            for (auto entry : ExpectedOutput ) {
+                if ((entry.first < 5) && (entry.first > 0))
+                {
 
-                    SendHue( entry->second.get_colour());
+                    SendGroupOn(GetGroupEnum(entry.first));
+
+                    SendHue(entry.second.get_colour());
                 }
             }
             //Send GroupByte
             SendGroupOn(MilightGroupIDs::ALLGROUPS);
-            
+
             //Send Brightness
             SendBrightness(FirstEntryColour);
 
             break;
             case ForNeither:
             //Individually send Hue, then Brightness
-            for (std::pair<const int, colour_combiner>* entry : ExpectedOutput ) {
-                if ((entry->first < 5) && (entry->first > 0)) {
-                    
-                    SendGroupOn(GetGroupEnum(entry->first));
+            for (auto entry : ExpectedOutput ) {
+                if ((entry.first < 5) && (entry.first > 0)) {
 
-                    SendHue( entry->second.get_colour());
-                    SendBrightness( entry->second.get_colour());
+                    SendGroupOn(GetGroupEnum(entry.first));
+
+                    SendHue( entry.second.get_colour());
+                    SendBrightness( entry.second.get_colour());
                 }
             }
 
@@ -153,48 +154,52 @@ void Milight::EmitColour(const Command CommandItem , const std::vector<std::pair
 
 bool UpdatedCurrentGroup = false;
 
-CanUseByteForALLGROUPS Milight::CheckIfCanUseByteForALLGROUPS (const std::vector<std::pair<const int, colour_combiner>*> Collection) {
-    
+CanUseByteForALLGROUPS Milight::CheckIfCanUseByteForALLGROUPS (const std::map<int, colour_combiner> Collection) {
+
     bool AllHuesAreSame = false;
     bool AllBrightnessAreSame = false;
 
-    
+
     int NumberOfUniqueGroups = 0;
     CanUseByteForALLGROUPS ret = ForBoth;
     uint8_t Hue = 0;
     uint8_t Brightness = 0;
-    
+
     bool ContainsGroup1 = false;
     bool ContainsGroup2 = false;
     bool ContainsGroup3 = false;
     bool ContainsGroup4 = false;
-    
-    for (std::pair<const int, colour_combiner>* item : Collection) {
-        if ((item->first == 1) && (ContainsGroup1 == false))  {
+
+    for (auto item : Collection) {
+        if ((item.first == 1) && (ContainsGroup1 == false))
+        {
             ContainsGroup1 = true;
             NumberOfUniqueGroups++;
         }
-        if ((item->first == 2) && (ContainsGroup2 == false))  {
+        if ((item.first == 2) && (ContainsGroup2 == false))
+        {
             ContainsGroup2 = true;
             NumberOfUniqueGroups++;
         }
-        if ((item->first == 3) && (ContainsGroup3 == false))  {
+        if ((item.first == 3) && (ContainsGroup3 == false))
+        {
             ContainsGroup3 = true;
             NumberOfUniqueGroups++;
         }
-        if ((item->first == 4) && (ContainsGroup4 == false))  {
+        if ((item.first == 4) && (ContainsGroup4 == false))
+        {
             ContainsGroup4 = true;
             NumberOfUniqueGroups++;
         }
         if (NumberOfUniqueGroups == 1 ) {
-            Hue = item->second.get_colour().Hue;
-            Brightness = item->second.get_colour().Brightness;
+            Hue = item.second.get_colour().Hue;
+            Brightness = item.second.get_colour().Brightness;
         }
         if (NumberOfUniqueGroups > 1) {
-            if (item->second.get_colour().Hue != Hue) {
+            if (item.second.get_colour().Hue != Hue) {
                 ret = (CanUseByteForALLGROUPS) (ret & ~ForHue);  //Performs bitwise subtraction
             }
-            if (item->second.get_colour().Brightness != Brightness) {
+            if (item.second.get_colour().Brightness != Brightness) {
                 ret = (CanUseByteForALLGROUPS) (ret & ~ForBrightness); //Performs bitwise subtraction
                 AllBrightnessAreSame = false;
             }
@@ -206,41 +211,45 @@ CanUseByteForALLGROUPS Milight::CheckIfCanUseByteForALLGROUPS (const std::vector
 
     return ret;
 }
-void Milight::OnCurrentGroupsUpdate(const Command CommandItem , std::vector<std::pair<const int, colour_combiner>*>  CurrentGroups) {
-    
-    
+void Milight::OnCurrentGroupsUpdate(const Command CommandItem, const std::map<int, colour_combiner> CurrentGroups)
+{
+
     //These bools allow us to ensure no doubles occur, and question if all are in
     //We could probably replace this with a list that ensures unique values
     //And then check for "Four" inputs at the end
-    
+
     bool ContainsGroup1 = false;
     bool ContainsGroup2 = false;
     bool ContainsGroup3 = false;
     bool ContainsGroup4 = false;
-        
 
-    for (std::pair<const int, colour_combiner>* item : CurrentGroups) {
-        if ((item->first == 1) && (ContainsGroup1 == false))  {
+
+    for (auto item : CurrentGroups) {
+        if ((item.first == 1) && (ContainsGroup1 == false))
+        {
             ContainsGroup1 = true;
         }
-        if ((item->first == 2) && (ContainsGroup2 == false))  {
+        if ((item.first == 2) && (ContainsGroup2 == false))
+        {
             ContainsGroup2 = true;
         }
-        if ((item->first == 3) && (ContainsGroup3 == false))  {
+        if ((item.first == 3) && (ContainsGroup3 == false))
+        {
             ContainsGroup3 = true;
         }
-        if ((item->first == 4) && (ContainsGroup4 == false))  {
+        if ((item.first == 4) && (ContainsGroup4 == false))
+        {
             ContainsGroup4 = true;
         }
     }
-    
+
     //We send the packet in advance, this means that the delay time can be concealed in following "WAIT" commands
     if ( ((ContainsGroup1 && ContainsGroup2) && (ContainsGroup3 && ContainsGroup4)) == true) {
         PacketSender->SendHexPackets( 0x42 );
     } else if (CurrentGroups.size() == 1) {
-        
-        const int GroupID = CurrentGroups[0]->first;
-        
+
+        const int GroupID = CurrentGroups.begin()->first;
+
         if ((GroupID > 0) && (GroupID < 5)) {
             SendGroupOn(GetGroupEnum(GroupID));
         }
@@ -272,17 +281,17 @@ uint8_t  Milight::GetGroupHexByte(int GroupNumber) {
             GroupHex++;
             GroupHex++;
     }
-    
+
     return GroupHex;
 }
 
-uint8_t LastGroupPacketSent = 0x00; 
+uint8_t LastGroupPacketSent = 0x00;
 
 void Milight::SendGroupOn(MilightGroupIDs GroupID)
 {
-    
+
     uint8_t bytes[3];
-    
+
     bytes[1] = 0x00;
     bytes[2] = 0x55;
     if (GroupID == ALLGROUPS ) {
@@ -290,7 +299,7 @@ void Milight::SendGroupOn(MilightGroupIDs GroupID)
     } else if (GroupID != Invalid) {
         bytes[0] = GetGroupHexByte(GroupID);
     }
-    
+
     if ((GroupID != Invalid) && (LastGroupPacketSent != bytes[0])) {
         LastGroupPacketSent = bytes[0];
 
@@ -316,39 +325,39 @@ void Milight::SendHue(const Colour OutputColour)
 {
     uint8_t bytes[3];
     int WhiteThreshhold = 10;
-    
+
     if (OutputColour.Saturation < WhiteThreshhold) {
         std::cout << "Milight is sending the Color: WHITE" << std::endl;
         PacketSender->SendHexPackets(LastGroupPacketSent + 128);
-        
+
     }
     else {
-        bytes[0] = 0x40; 
+        bytes[0] = 0x40;
         bytes[1] = 174 - OutputColour.Hue;
-       
+
         bytes[2] = 0x55;
         std::cout << "Milight is sending the Color: " << (int) bytes[1] << std::endl;
         PacketSender->SendHexPackets(bytes);
-        
+
     }
 }
 
 void Milight::SendBrightness(const Colour OutputColour)
 {
-    
+
     if (OutputColour.Brightness < BrightnessThreshhold)
     {
         std::cout << "Milight is turning off the lights" << std::endl;
         std::cout << "TURNING OFF: " << std::endl;
         SendGroupOFF();
-        
-        
+
+
     }  else {
         std::cout << "SETTING BRIGHTNESS: " << std::endl;
         uint8_t BrightnessBuffer[3];
         BrightnessBuffer[0] = 0x4E;
         BrightnessBuffer[1] = 2 + (( ( (float)OutputColour.Brightness) / 255) * 24);
-        BrightnessBuffer[2] = 0x55; 
+        BrightnessBuffer[2] = 0x55;
         std::cout << "Milight is sending the brightness code: " << (int) BrightnessBuffer[1] << std::endl;
         PacketSender->SendHexPackets(BrightnessBuffer);
     }
@@ -359,10 +368,3 @@ void Milight::SpecificCommand(const Command command){
         SendGroupOFF();
     }
 }
-
-
-
- 
-
-
-

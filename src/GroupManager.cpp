@@ -18,16 +18,9 @@
 GroupManager::GroupManager() {
 }
 
-
-
-void GroupManager::AddTickListener(Tick_Listener * listener)
-{
-	TickListeners.push_back(listener);
-}
-
 void GroupManager::On_Tick()
 {
-	for (auto listener : TickListeners) {
+	for (auto& listener : TickListeners) {
 		listener->On_Tick();
 	}
 }
@@ -46,23 +39,25 @@ void GroupManager::SetGroups(const int Group, Command CommandItem)
         AddToCurrentGroups(Group);
         break;
     case Remove:
-        std::pair<const int, colour_combiner> *Entry = GetGroupByID(Group);
-
-        CurrentlySelectedGroups.erase(std::remove(CurrentlySelectedGroups.begin(),
-                                                  CurrentlySelectedGroups.end(),
-                                                  Entry),
-                                                  CurrentlySelectedGroups.end());
-
+        CurrentlySelectedGroups.erase(Group);
         break;
     }
 
-    for (auto& light : ListeningLights) {
-        light->OnCurrentGroupsUpdate(CommandItem, CurrentlySelectedGroups);
+    std::map<int, colour_combiner> current_groups;
+    for (auto entry : CurrentlySelectedGroups)
+    {
+        current_groups[entry] = AllGroups[entry];
+    }
+
+    for (auto &light : ListeningLights)
+    {
+        light->OnCurrentGroupsUpdate(CommandItem, current_groups);
     }
 
     std::cout << "Current Groups are now: ";
-    for (const std::pair<const int, colour_combiner>* group : CurrentlySelectedGroups) {
-            std::cout << group->first << ", ";
+    for (auto group : current_groups)
+    {
+        std::cout << group.first << ", ";
     }
     std::cout << std::endl;
 
@@ -71,35 +66,29 @@ void GroupManager::SetGroups(const int Group, Command CommandItem)
 
 void GroupManager::AddToCurrentGroups(const int GroupToAdd)
 {
-    Colour empty;
-    std::pair<const int, colour_combiner>* Entry = GetGroupByID(GroupToAdd);
-    //A pointer is used to ensure that the group is kept track of
-
-    const int *PointerToGroupID = &Entry->first; //Redundant?
-
-    CurrentlySelectedGroups.push_back(GetGroupByID(GroupToAdd));
-}
-
-std::pair<const int, colour_combiner> *GroupManager::GetGroupByID(const int ID)
-{
-	colour_combiner empty;
-    std::pair<const int, colour_combiner> *Entry;
-    //If ID already exists, that one is returned instead
-    Entry = &*(AllGroups.insert(std::pair<int, colour_combiner>(ID, empty)).first);
-    return Entry;
+    if (std::find(CurrentlySelectedGroups.begin(), CurrentlySelectedGroups.end(), GroupToAdd) == CurrentlySelectedGroups.end())
+    {
+        CurrentlySelectedGroups.insert(GroupToAdd);
+    }
 }
 
 
 
 void GroupManager::UpdateColour(const Colour OutputColour, Command item) {
-	for (std::pair<const int, colour_combiner> *group : CurrentlySelectedGroups)
+	for (auto group : CurrentlySelectedGroups)
 	{
-		group->second.set_new(OutputColour, item.Operation);
-	}
+        AllGroups[group].set_new(OutputColour, item.Operation);
+    }
 
-	for (auto& light : ListeningLights) {
-		light->EmitColour(item, CurrentlySelectedGroups);
-	}
+    std::map<int, colour_combiner> current_groups;
+    for (auto entry : CurrentlySelectedGroups)
+    {
+        current_groups[entry] = AllGroups[entry];
+    }
+
+    for (auto& light : ListeningLights) {
+        light->EmitColour(item, current_groups);
+    }
 }
 
 void GroupManager::SpecificCommand(const Command command){

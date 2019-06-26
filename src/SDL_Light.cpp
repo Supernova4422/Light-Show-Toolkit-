@@ -4,10 +4,9 @@
 #include <iostream>
 #include <sstream>
 #include "ProxyMaker.h"
-void SDL_Light::On_Tick() {
-	SDL_RenderPresent(renderer);
-	SDL_Event event;
 
+void SDL_Light::On_Tick() {
+	SDL_Event event;
 	while (SDL_PollEvent(&event)) {
 		if (event.type == SDL_QUIT) {
 			SDL_DestroyWindow(MainWindow);
@@ -44,32 +43,34 @@ SDL_Light::SDL_Light() {
 
 
 
-void SDL_Light::EmitColour(const Command CommandItem , const std::vector<std::pair<const int, colour_combiner>*> ExpectedOutput) {
-	
-    for (std::pair<const int, colour_combiner>* it : ExpectedOutput) {
-        groups[it->first] = it->second;
+void SDL_Light::EmitColour(const Command CommandItem , const std::map<int, colour_combiner> ExpectedOutput) {
+
+    for (auto it : ExpectedOutput) {
+        groups[it.first] = it.second;
     }
-    
+
     int size = 0;
-    for (std::map<int, colour_combiner>::iterator it = groups.begin(); it != groups.end(); it++) {
+	for (auto it = groups.begin(); it != groups.end(); it++) {
         size++;
     }
+
     if (size > 0) {
         const int divisions = (640 / size);
         const int width = divisions * 0.9f;
-        const int gap = divisions * 0.1f; 
+        const int gap = divisions * 0.1f;
         std::cout << width << std::endl;
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-        
+
         int i = 0;
-        for (std::map<int, colour_combiner>::iterator it = groups.begin(); it != groups.end(); it++) {
+        for (auto it = groups.begin(); it != groups.end(); it++) {
             SDL_SetRenderDrawColor(renderer, it->second.get_colour().red, it->second.get_colour().green, it->second.get_colour().blue, 255);
             SDL_Rect light_rect = {divisions * (i) + gap, 0, divisions - gap, 480};
             SDL_RenderFillRect(renderer,&light_rect);
             i++;
         }
         SDL_RenderPresent(renderer);
-  }  
+  }
+  On_Tick();
 }

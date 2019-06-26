@@ -49,6 +49,7 @@ int main(int argc, char* argv[])
 			Player->AddSupportFile(argv[i]);
 			std::cout << "Loading support file: " << argv[i] << std::endl;
 		}
+
 		std::cout << "Playing song:" << argv[2] << std::endl;
 		Player->StartPlaying(argv[2]);
 	} else {
