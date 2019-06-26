@@ -47,6 +47,11 @@ SongPlayer::SongPlayer () {
     //manager->AddTickListener<SDL_Light>(); //Used to be shared with the light listener.
 }
 
+void SongPlayer::add_sdl()
+{
+    manager->AddLight<SDL_Light>();
+}
+
 void SongPlayer::LoadMainFile(std::string FileName) {
     MainFile = Parser.ParseFile(FileName);
 }

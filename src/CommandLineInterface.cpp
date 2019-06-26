@@ -63,7 +63,7 @@ void CommandLineInterface::ParseLine (std::string Line) {
         std::cout << "Added Delay" << std::endl;
     }
 	if (BeforeSpace == loadSdlCommand) {
-        Player->manager->AddLight<SDL_Light>();
+        Player->add_sdl();
 		std::cout << "Loaded SDL" << std::endl;
 	}
     if (BeforeSpace == LoadMainCommand) {

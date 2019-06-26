@@ -17,17 +17,8 @@ class SongPlayer
     public:
 	SongPlayer();
 
-    std::unique_ptr<GroupManager> manager;
     void RunCommand(Command item);
-
-    FileParserHandler Parser;
-
     void WaitMilliseconds(int milliseconds);
-
-    std::map<std::string, std::vector<Command> > MainFile;
-
-    std::vector<std::unique_ptr<ProgrammableLight>> GroupChangeEventListiners;
-
     void AddFunctionToSupportFile(std::string, std::vector<Command>);
     void AddParsedFileToSupportFile(std::map<std::string, std::vector<Command> > ParsedFile);
     void StartPlaying(std::string SongToPlay, int start_time_in_seconds = 0, std::string FunctionToPlay = "Play");
@@ -36,12 +27,16 @@ class SongPlayer
     void StopSong();
 
 	void On_Tick();
-
     void LoadMainFile(std::string FileName);
     void AddSupportFile(std::string FileName);
+    void add_sdl();
 
 private:
-    std::map<std::string, std::vector<Command>> SupportFile;
+    std::map<std::string, std::vector<Command> > SupportFile;
     void RunFunction(std::string FunctionToPlay , CommandOperation Operation = CommandOperation::set);
+    std::unique_ptr<GroupManager> manager;
+    std::map<std::string, std::vector<Command>> MainFile;
+    std::vector<std::unique_ptr<ProgrammableLight>> GroupChangeEventListiners;
+    FileParserHandler Parser;
 };
 #endif
