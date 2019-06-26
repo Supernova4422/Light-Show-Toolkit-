@@ -6,7 +6,7 @@
 #include "SDL_net.h"
 #include <string.h>
 
-void SDL_UDPSender::InitialiseConnection (const char * IPAddress , unsigned short Port, NetworkProtocal Protocal ) {
+void SDL_UDPSender::InitialiseConnection (const char * IPAddress , unsigned short Port ) {
 
     if(SDL_Init(0)==-1) {
         printf("SDL_Init: %s\n", SDL_GetError());
@@ -49,5 +49,5 @@ void SDL_UDPSender::SendHexPackets (uint8_t buffer[]) {
 
     SDLNet_UDP_Close(udpsock);
 
-    SDL_Delay(DelayAfterPacketMS);
+    SDL_Delay(resend_delay);
 }

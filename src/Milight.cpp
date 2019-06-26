@@ -55,20 +55,18 @@ Milight::Milight(int BrightnessThreshhold) {
     {
         case TCP:
             PacketSender = std::make_unique<SDL_TCPSender>();
-            PacketSender->DelayAfterPacketMS = DelayAfterPacketMS;
             std::cout << "TCP" << std::endl;
         break;
 
         case UDP:
-            PacketSender = std::make_unique<SDL_UDPSender>();
+        std::cout << "  Delay after each packet:" <<  DelayAfterPacketMS << "MS" << std::endl;
+            PacketSender = std::make_unique<SDL_UDPSender>(DelayAfterPacketMS);
             std::cout << "UDP" << std::endl;
             break;
     }
-    std::cout << "  Delay after each packet:" << DelayAfterPacketMS << "MS" << std::endl;
-    PacketSender->DelayAfterPacketMS = DelayAfterPacketMS;
-    PacketSender->InitialiseConnection(IPAddress.c_str(), Port, Protocal);
-    std::cout << "  Networking Initialised" << std::endl;
+    PacketSender->InitialiseConnection(IPAddress.c_str(), Port);
 
+    std::cout << "  Networking Initialised" << std::endl;
     std::cout <<  std::endl <<  std::endl;
 }
 
@@ -83,67 +81,42 @@ void Milight::EmitColour(const Command CommandItem , const std::map<int, colour_
         switch (CanSendAllGroupByte)
         {
             case ForBoth:
-            //Send Group Byte
-            SendGroupOn(MilightGroupIDs::ALLGROUPS);
-
-            //Send Hue
-            SendHue(FirstEntryColour);
-
-            //Individually send brightness
-            SendBrightness( FirstEntryColour);
-
+                SendGroupOn(MilightGroupIDs::ALLGROUPS);
+                SendHue(FirstEntryColour);
+                SendBrightness( FirstEntryColour);
             break;
 
             case ForHue:
-            //Send Group Byte
-            SendGroupOn(MilightGroupIDs::ALLGROUPS);
-
-            //Send Hue
-            SendHue(FirstEntryColour);
-
-            //Individually send brightness
-            for (auto entry : ExpectedOutput ) {
-                if ((entry.first < 5) && (entry.first > 0)) {
-
-                    SendGroupOn(GetGroupEnum(entry.first));
-
-                    SendBrightness( entry.second.get_colour());
+                SendGroupOn(MilightGroupIDs::ALLGROUPS);
+                SendHue(FirstEntryColour);
+                for (auto entry : ExpectedOutput ) {
+                    if ((entry.first < 5) && (entry.first > 0)) {
+                        SendGroupOn(GetGroupEnum(entry.first));
+                        SendBrightness( entry.second.get_colour());
+                    }
                 }
-            }
-
             break;
 
             case ForBrightness:
-
-            //Individually send Hue
-            for (auto entry : ExpectedOutput ) {
-                if ((entry.first < 5) && (entry.first > 0))
-                {
-
-                    SendGroupOn(GetGroupEnum(entry.first));
-
-                    SendHue(entry.second.get_colour());
+                for (auto entry : ExpectedOutput ) {
+                    if ((entry.first < 5) && (entry.first > 0))
+                    {
+                        SendGroupOn(GetGroupEnum(entry.first));
+                        SendHue(entry.second.get_colour());
+                    }
                 }
-            }
-            //Send GroupByte
-            SendGroupOn(MilightGroupIDs::ALLGROUPS);
-
-            //Send Brightness
-            SendBrightness(FirstEntryColour);
-
+                SendGroupOn(MilightGroupIDs::ALLGROUPS);
+                SendBrightness(FirstEntryColour);
             break;
+
             case ForNeither:
-            //Individually send Hue, then Brightness
-            for (auto entry : ExpectedOutput ) {
-                if ((entry.first < 5) && (entry.first > 0)) {
-
-                    SendGroupOn(GetGroupEnum(entry.first));
-
-                    SendHue( entry.second.get_colour());
-                    SendBrightness( entry.second.get_colour());
+                for (auto entry : ExpectedOutput ) {
+                    if ((entry.first < 5) && (entry.first > 0)) {
+                        SendGroupOn(GetGroupEnum(entry.first));
+                        SendHue( entry.second.get_colour());
+                        SendBrightness( entry.second.get_colour());
+                    }
                 }
-            }
-
             break;
         }
     }

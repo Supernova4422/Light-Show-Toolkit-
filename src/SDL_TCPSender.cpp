@@ -8,12 +8,11 @@
 #include "SDL_net.h"
 #include <string.h>
 #include <stdio.h>
-void SDL_TCPSender::InitialiseConnection (const char * IPAddress , unsigned short Port, NetworkProtocal Protocal) {
-
+void SDL_TCPSender::InitialiseConnection (const char * IPAddress , unsigned short Port) {
     if(SDL_Init(0)==-1) {
         printf("SDL_Init: %s\n", SDL_GetError());
     }
-    
+
     if(SDLNet_Init() == -1) {
         printf("SDLNet_Init: %s\n", SDLNet_GetError());
     }
@@ -33,9 +32,9 @@ void SDL_TCPSender::SendHexPackets (uint8_t buffer) {
 }
 
 void SDL_TCPSender::SendHexPackets (uint8_t buffer[]) {
-    
+
     TCPsock = SDLNet_TCP_Open(&address);
-    
+
     int len = strlen((char*)buffer);
     int result;
     if (len == 1)
@@ -45,8 +44,8 @@ void SDL_TCPSender::SendHexPackets (uint8_t buffer[]) {
     } else {
         result = SDLNet_TCP_Send(TCPsock, buffer , len);
     }
-    
+
     SDLNet_TCP_Close(TCPsock);
 
-    
+
 }
