@@ -3,8 +3,9 @@
 #include <iostream>
 #include <algorithm>
 #include "SDL_Light.h"
-CommandLineInterface::CommandLineInterface(SongPlayer* Player) {
-    this->Player = Player;
+
+CommandLineInterface::CommandLineInterface() {
+    this->Player = std::make_unique<SongPlayer>();
     std::cout << "CommandLine Interface has loaded" << std::endl;
     std::cout << "Type 'Help' to get started." << std::endl;
 }
@@ -32,13 +33,13 @@ void CommandLineInterface::ParseLine (std::string Line) {
     std::string PrintSupportDataCommand = "printSupportData";
     std::string loadSdlCommand = "sdlload";
     std::string Help = "help";
-    
-    
+
+
     std::string BeforeSpace = "";
     std::string AfterSpace = "";
 
     bool EncounteredFirstSpace = false;
-    
+
     for (char c : Line)
     {
         if (EncounteredFirstSpace) {
@@ -48,28 +49,26 @@ void CommandLineInterface::ParseLine (std::string Line) {
             {
                 EncounteredFirstSpace = true;
             } else {
-				
+
 				BeforeSpace = BeforeSpace + char(::tolower(c));
-				
+
             }
         }
     }
-	
+
     std::cout << std::endl;
     if (BeforeSpace == delayCommand) {
         delay = std::stoi(AfterSpace);
         std::cout << "Added Delay" << std::endl;
-    } 
+    }
 	if (BeforeSpace == loadSdlCommand) {
-		SDL_Light* sdl_window = new SDL_Light();
-		Player->Manager->AddLight(sdl_window);
-		Player->Manager->AddTickListener(sdl_window);
+        Player->manager->AddLight<SDL_Light>();
 		std::cout << "Loaded SDL" << std::endl;
 	}
     if (BeforeSpace == LoadMainCommand) {
         Player->LoadMainFile(AfterSpace);
         std::cout << "Loaded Main File" << std::endl;
-    } 
+    }
     if (BeforeSpace == LoadSupportCommand)
     {
         Player->AddSupportFile(AfterSpace);
@@ -89,18 +88,17 @@ void CommandLineInterface::ParseLine (std::string Line) {
         std::cout << "Finished Playing" << std::endl;
     }
     if (BeforeSpace == PrintMainDataCommand) {
-    } 
+    }
     if (BeforeSpace == PrintSupportDataCommand) {
-    }     
+    }
     if (BeforeSpace == Help) {
         std::cout << "For more information, visit: https://github.com/Fantasmos/Light-Show-Toolkit-" << std::endl << std::endl;
         std::cout << "Guide to usage:" << std::endl;
         std::cout << "  Load the Lighshow file with: LoadMain FILENAME.ls" << std::endl;
         std::cout << "  Load any secondary files with: LoadSupport FILENAME" << std::endl;
         std::cout << "  To start playing the file alongside a song, use: RUN MusicFileName" << std::endl;
-        
-    } 
-    
-   
-}
 
+    }
+
+
+}

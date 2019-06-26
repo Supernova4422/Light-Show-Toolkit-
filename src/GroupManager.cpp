@@ -4,8 +4,8 @@
 #include "Milight.h"
 
 #include <string>
-#include <vector> 
-#include <utility> 
+#include <vector>
+#include <utility>
 #include <map>
 #include <iostream>
 #include <algorithm>
@@ -18,11 +18,7 @@
 GroupManager::GroupManager() {
 }
 
-void GroupManager::AddLight(ProgrammableLight* light)
-{
-	ListeningLights.push_back(light);
 
-}
 
 void GroupManager::AddTickListener(Tick_Listener * listener)
 {
@@ -56,11 +52,11 @@ void GroupManager::SetGroups(const int Group, Command CommandItem)
                                                   CurrentlySelectedGroups.end(),
                                                   Entry),
                                                   CurrentlySelectedGroups.end());
-        
+
         break;
     }
 
-    for (ProgrammableLight* light : ListeningLights) {
+    for (auto& light : ListeningLights) {
         light->OnCurrentGroupsUpdate(CommandItem, CurrentlySelectedGroups);
     }
 
@@ -78,9 +74,9 @@ void GroupManager::AddToCurrentGroups(const int GroupToAdd)
     Colour empty;
     std::pair<const int, colour_combiner>* Entry = GetGroupByID(GroupToAdd);
     //A pointer is used to ensure that the group is kept track of
-    
+
     const int *PointerToGroupID = &Entry->first; //Redundant?
-    
+
     CurrentlySelectedGroups.push_back(GetGroupByID(GroupToAdd));
 }
 
@@ -101,13 +97,13 @@ void GroupManager::UpdateColour(const Colour OutputColour, Command item) {
 		group->second.set_new(OutputColour, item.Operation);
 	}
 
-	for (ProgrammableLight* light : ListeningLights) {
+	for (auto& light : ListeningLights) {
 		light->EmitColour(item, CurrentlySelectedGroups);
 	}
 }
 
 void GroupManager::SpecificCommand(const Command command){
-    for (ProgrammableLight* light : ListeningLights) {
+    for (auto& light : ListeningLights) {
         light->SpecificCommand(command);
     }
 }

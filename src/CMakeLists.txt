@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.7)
 project(LightShowProject)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++0x")
 set(CMAKE_BUILD_TYPE Debug)
+set (CMAKE_CXX_STANDARD 14)
 
 INCLUDE(FindPkgConfig)
 PKG_SEARCH_MODULE(SDL2 sdl2)
@@ -14,7 +15,7 @@ find_path(SDL2_INCLUDE_DIRS NAME SDL.h HINTS "../../library/SDL2/include")
 find_library(SDL2_LIBRARIES NAME SDL2 HINTS "../../library/SDL2/lib/x86")
 
 find_path(SDLMAIN_INCLUDE_DIRS NAME SDL_main.h HINTS "../../library/SDL2/include")
-find_library(SDLMAIN_LIBRARIES NAME SDL2main HINTS "../../library/SDL2/lib/x86")
+#find_library(SDLMAIN_LIBRARIES NAME SDL2main HINTS "../../library/SDL2/lib/x86")
 
 find_path(SDL_NET_INCLUDE_DIRS NAME SDL_net.h HINTS "../../library/SDL2_net/include")
 find_library(SDL_NET_LIBRARIES NAME SDL2_net HINTS "../../library/SDL2_net/lib/x86/")
@@ -69,7 +70,7 @@ BinLight_SYSFS.cpp
 SDL_Light.cpp
 )
 
-INCLUDE_DIRECTORIES(LightShowProject ${SDL2_INCLUDE_DIRS} ${SDL_MIXER_INCLUDE_DIRS} ${SDL_NET_INCLUDE_DIRS}) 
+INCLUDE_DIRECTORIES(LightShowProject ${SDL2_INCLUDE_DIRS} ${SDL_MIXER_INCLUDE_DIRS} ${SDL_NET_INCLUDE_DIRS})
 
 if(${SDL2_FOUND})
 	message("SDL2 FOUND" )
@@ -102,5 +103,5 @@ elseif(IS_DIRECTORY ${RF24})
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRPI -lwiringPi")
 endif(NOT IS_DIRECTORY ${RF24})
 
-target_link_libraries(LightShowProject  ${SDLMAIN_LIBRARIES} ${SDL2_LIBRARIES} ${SDL_NET_LIBRARIES} ${SDL_MIXER_LIBRARIES})
+target_link_libraries(LightShowProject  ${SDL2_LIBRARIES} ${SDL_NET_LIBRARIES} ${SDL_MIXER_LIBRARIES})
 target_include_directories (LightShowProject PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

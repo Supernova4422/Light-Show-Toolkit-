@@ -5,9 +5,9 @@
 #include "ConsoleLight.h"
 #include "Milight.h"
 #include <string>
-#include <vector> 
+#include <vector>
 #include <iostream>
-#include <utility> 
+#include <utility>
 #include <map>
 #include <chrono>
 #include <thread>
@@ -23,7 +23,7 @@
 
 std::map <std::string, std::vector<Command>> Dictionary;
 
-SongPlayer::SongPlayer (GroupManager* Manager) {
+SongPlayer::SongPlayer () {
     //Initialize SDL for audio playback
     if( SDL_Init( SDL_INIT_AUDIO ) < 0 )
     {
@@ -33,9 +33,27 @@ SongPlayer::SongPlayer (GroupManager* Manager) {
     if(Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
     {
         printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
-    }     
-	this->Manager = Manager;
-    
+    }
+
+	this->manager = std::make_unique<GroupManager>();
+
+
+
+#ifdef __arm__
+#warning Injecting GPIO based lights into program, sudo will be needed to run
+    RF24_Factory factory;
+    Factory_433 factory_rf;
+    manager->AddLight(factory.get_light());
+    manager->AddLight(factory_rf.get_light());
+#endif
+
+    int threshhold = 10;
+    //manager->AddLight(new Milight(threshhold));
+    manager->AddLight<ConsoleLight>();
+
+    //SDL_Light* sdl_window = new SDL_Light();
+    //manager->AddLight(sdl_window);
+    //manager->AddTickListener(sdl_window);
 }
 
 void SongPlayer::LoadMainFile(std::string FileName) {
@@ -48,18 +66,20 @@ void SongPlayer::AddSupportFile(std::string FileName) {
 void SongPlayer::AddFunctionToSupportFile(std::string FunctionName, std::vector<Command> Commands) {
     SupportFile.insert(std::pair<std::string, std::vector<Command>>(FunctionName,Commands));
 }
+
 void SongPlayer::AddParsedFileToSupportFile(std::map<std::string, std::vector<Command>> ParsedFile) {
     for (std::pair<std::string, std::vector<Command>> item : ParsedFile ) {
         AddFunctionToSupportFile(item.first,item.second);
     }
 }
+
 void SongPlayer::RunFunction(std::string FunctionToPlay , CommandOperation Operation) {
-    
+
     auto search = MainFile.find(FunctionToPlay);
 
     if (search == MainFile.end()) //Error, didn't find the function
     {
-        search = SupportFile.find(FunctionToPlay); 
+        search = SupportFile.find(FunctionToPlay);
         if (search == SupportFile.end()) { //Error didn't find the function
             return; //Return to break the cycle
         }
@@ -76,26 +96,26 @@ void SongPlayer::RunFunction(std::string FunctionToPlay , CommandOperation Opera
             }
     }
 
-  
-} 
+
+}
 void SongPlayer::RunCommand(Command item ) {
-    
+
     //Make into seperate function to make recursive
     if (item.type == CommandType::Wait) {
         double timetowait = std::atof(item.value.c_str());
-        
+
         WaitMilliseconds( (int) (timetowait * 1000) ) ;
-    } 
+    }
     else {
 
         if (item.type == CommandType::SpecificCommand) {
-            Manager->SpecificCommand(item);
+            manager->SpecificCommand(item);
         }
 
         if (item.type == CommandType::Group) {
-            Manager->SetGroups(atoi(item.value.c_str()), item);
-            
-        } 
+            manager->SetGroups(atoi(item.value.c_str()), item);
+
+        }
         if (item.type == CommandType::FunctionName){
             for (int i = 0; i < item.TimesToExecute; i++) {
                     RunFunction(item.value, item.Operation);
@@ -104,27 +124,27 @@ void SongPlayer::RunCommand(Command item ) {
 
         if (item.type == CommandType::ColourChange_RGB) {
             Colour Newcolour(item.value,true);
-			Manager->UpdateColour(Newcolour, item);
+			manager->UpdateColour(Newcolour, item);
         }
 		if (item.type == CommandType::ColourChange_HSV) {
 			Colour Newcolour(item.value,false);
-			Manager->UpdateColour(Newcolour, item);
+			manager->UpdateColour(Newcolour, item);
 		}
     }
-	//Manager->On_Tick();
+	//manager->On_Tick();
 }
 std::chrono::high_resolution_clock::time_point SongStartTime;
 int WaitTimeTotalInMilli;
 
 void SongPlayer::WaitMilliseconds (int milliseconds) {
-    
-    std::cout << "Starting wait for: " << milliseconds << " Milliseconds" << std::endl; 
+
+    std::cout << "Starting wait for: " << milliseconds << " Milliseconds" << std::endl;
     WaitTimeTotalInMilli = WaitTimeTotalInMilli + milliseconds;
-    
-    while (std::chrono::high_resolution_clock::now() < (SongStartTime + std::chrono::milliseconds((int)WaitTimeTotalInMilli) ) ) { 
+
+    while (std::chrono::high_resolution_clock::now() < (SongStartTime + std::chrono::milliseconds((int)WaitTimeTotalInMilli) ) ) {
         //Do nothing
     }
-  
+
     std::cout << "Finished Waiting" << std::endl;
 }
 
@@ -150,30 +170,30 @@ bool loadMedia()
 Mix_Music *gMusic = NULL;
 
 bool SongPlayer::PlaySong(std::string SongToPlay, int start_at) {
-    
+
     bool success = true;
     gMusic = Mix_LoadMUS( SongToPlay.c_str() );
-    
+
     if( gMusic == NULL ) {
         printf( "Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError() );
         success = false;
     } else {
-        Mix_PlayMusic( gMusic, 1 ); //Play the music once     
+        Mix_PlayMusic( gMusic, 1 ); //Play the music once
         Mix_SetMusicPosition(start_at);
-    }  
-          
-    return success; 
+    }
+
+    return success;
 }
 void SongPlayer::StopSong() {
     if( Mix_PlayingMusic() != 0 ) {
         //Free and stop the music
         Mix_FreeMusic( gMusic );
         gMusic = NULL;
-        Mix_Quit(); 
+        Mix_Quit();
     }
 }
 
 void SongPlayer::On_Tick()
 {
-	Manager->On_Tick();
+	manager->On_Tick();
 }

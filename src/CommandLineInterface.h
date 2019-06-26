@@ -2,15 +2,15 @@
 #include <string>
 #include <iostream>
 #include "SongPlayer.h"
-
+#include <memory>
 class CommandLineInterface
 {
-    public: 
-        CommandLineInterface(SongPlayer* Player);
-        
+    public:
+        CommandLineInterface();
+
 		void Run();
-    private: 
-        SongPlayer* Player;
+    private:
+        std::unique_ptr<SongPlayer> Player;
         int delay = 0;
 		void ParseLine(std::string Line);
 };
