@@ -5,12 +5,13 @@
 #include <memory>
 class CommandLineInterface
 {
-    public:
-        CommandLineInterface();
+public:
+    CommandLineInterface();
 
-		void Run();
-    private:
-        std::unique_ptr<SongPlayer> Player;
-        int delay = 0;
-		void ParseLine(std::string Line);
+    void Run();
+
+private:
+    std::unique_ptr<SongPlayer> Player;
+    int delay = 0;
+    void ParseLine(std::string Line);
 };

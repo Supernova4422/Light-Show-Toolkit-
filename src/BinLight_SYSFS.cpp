@@ -6,17 +6,20 @@
 
 BinLight_SYSFS::BinLight_SYSFS()
 {
-	std::cout << std::endl << "Lading the file_editor binary light" << std::endl;
-		std::ifstream myfile("FileSettings.txt");
-		if (myfile.is_open()) {
-			std::cout << "Opened config for BinLight, loading the directory, export_append, val_append and dir_append" << std::endl;
-			getline(myfile, directory);
-			getline(myfile, exp_append);
-			getline(myfile, val_append);
-			getline(myfile, dir_append);
-			myfile.close();
-			std::cout << "Finished loading the configuration" << std::endl << std::endl;
-		}
+	std::cout << std::endl
+			  << "Lading the file_editor binary light" << std::endl;
+	std::ifstream myfile("FileSettings.txt");
+	if (myfile.is_open())
+	{
+		std::cout << "Opened config for BinLight, loading the directory, export_append, val_append and dir_append" << std::endl;
+		getline(myfile, directory);
+		getline(myfile, exp_append);
+		getline(myfile, val_append);
+		getline(myfile, dir_append);
+		myfile.close();
+		std::cout << "Finished loading the configuration" << std::endl
+				  << std::endl;
+	}
 }
 
 void BinLight_SYSFS::initialise()
@@ -34,7 +37,6 @@ void BinLight_SYSFS::turnon(int group)
 	setval_file.close();
 }
 
-
 void BinLight_SYSFS::turnoff(int group)
 {
 	std::string setval_filepath = directory + "gpio" + std::to_string(group) + val_append;
@@ -51,7 +53,8 @@ void BinLight_SYSFS::exportPin(int group)
 		//Export the pins
 		std::string exportPin_filepath = directory + "gpio" + exp_append;
 		std::ofstream exportgpio_file(exportPin_filepath.c_str());
-		if (exportgpio_file.bad()) {
+		if (exportgpio_file.bad())
+		{
 			std::cout << " OPERATION FAILED: Unable to export GPIO" << group << " ." << std::endl;
 		}
 		exportgpio_file << group;

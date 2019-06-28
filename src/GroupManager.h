@@ -14,36 +14,36 @@
 #include <set>
 class GroupManager : public Tick_Listener
 {
-  public:
-    void SetGroups(const int Group, Command CommandItem);
-    void AddToCurrentGroups(const int GroupToAdd);
-    void UpdateColour(const Colour OutputColour , Command item);
-    void SpecificCommand(const Command command);
+public:
+  void SetGroups(const int Group, Command CommandItem);
+  void AddToCurrentGroups(const int GroupToAdd);
+  void UpdateColour(const Colour OutputColour, Command item);
+  void SpecificCommand(const Command command);
 
-    GroupManager();
+  GroupManager();
 
-    void AddTickListener(Tick_Listener* light);
-    void On_Tick();
+  void AddTickListener(Tick_Listener *light);
+  void On_Tick();
 
-    std::set<int> CurrentlySelectedGroups;
+  std::set<int> CurrentlySelectedGroups;
 
-    template <class T>
-    void AddTickListener()
-    {
-      TickListeners.push_back(std::make_unique<T>());
-    }
+  template <class T>
+  void AddTickListener()
+  {
+    TickListeners.push_back(std::make_unique<T>());
+  }
 
-    template <class T, class... _Args>
-    void AddLight(_Args&&... __args)
-    {
-      ListeningLights.push_back(std::make_unique<T>(std::forward<_Args>(__args)...));
-    }
+  template <class T, class... _Args>
+  void AddLight(_Args &&... __args)
+  {
+    ListeningLights.push_back(std::make_unique<T>(std::forward<_Args>(__args)...));
+  }
 
-  private:
+private:
   std::map<int, colour_combiner> AllGroups;
-	colour_combiner CurrentSelectedColour;
+  colour_combiner CurrentSelectedColour;
 
-  std::vector<std::unique_ptr<ProgrammableLight> > ListeningLights;
-  std::vector<std::unique_ptr<Tick_Listener> > TickListeners;
+  std::vector<std::unique_ptr<ProgrammableLight>> ListeningLights;
+  std::vector<std::unique_ptr<Tick_Listener>> TickListeners;
 };
 #endif

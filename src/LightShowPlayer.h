@@ -1,12 +1,13 @@
 
 class LightShowPlayer
 {
-  public:
+public:
   std::vector<ProgrammableLight> OutputLights;
 
   std::map<std::string, std::vector<std::string>> LightShow;
   void PlaySong();
-  
-  CommandFactory CommandParser; 
-  private:
+
+  CommandFactory CommandParser;
+
+private:
 };

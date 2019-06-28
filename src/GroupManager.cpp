@@ -13,16 +13,16 @@
 #include <iostream>
 #include <cctype>
 
-
-
-GroupManager::GroupManager() {
+GroupManager::GroupManager()
+{
 }
 
 void GroupManager::On_Tick()
 {
-	for (auto& listener : TickListeners) {
-		listener->On_Tick();
-	}
+    for (auto &listener : TickListeners)
+    {
+        listener->On_Tick();
+    }
 }
 
 void GroupManager::SetGroups(const int Group, Command CommandItem)
@@ -30,7 +30,8 @@ void GroupManager::SetGroups(const int Group, Command CommandItem)
     Colour empty;
     std::pair<std::map<int, Colour>::iterator, bool> ret;
 
-    switch (CommandItem.Operation) {
+    switch (CommandItem.Operation)
+    {
     case set:
         CurrentlySelectedGroups.clear();
         AddToCurrentGroups(Group);
@@ -72,11 +73,10 @@ void GroupManager::AddToCurrentGroups(const int GroupToAdd)
     }
 }
 
-
-
-void GroupManager::UpdateColour(const Colour OutputColour, Command item) {
-	for (auto group : CurrentlySelectedGroups)
-	{
+void GroupManager::UpdateColour(const Colour OutputColour, Command item)
+{
+    for (auto group : CurrentlySelectedGroups)
+    {
         AllGroups[group].set_new(OutputColour, item.Operation);
     }
 
@@ -86,13 +86,16 @@ void GroupManager::UpdateColour(const Colour OutputColour, Command item) {
         current_groups[entry] = AllGroups[entry];
     }
 
-    for (auto& light : ListeningLights) {
+    for (auto &light : ListeningLights)
+    {
         light->EmitColour(item, current_groups);
     }
 }
 
-void GroupManager::SpecificCommand(const Command command){
-    for (auto& light : ListeningLights) {
+void GroupManager::SpecificCommand(const Command command)
+{
+    for (auto &light : ListeningLights)
+    {
         light->SpecificCommand(command);
     }
 }

@@ -28,14 +28,14 @@ struct ProxyMaker {
 	static const bool verbose = false;
 
 	static void print_proxies(std::map<std::set<int>, int, cmpBySetSize> proxies);
-	
+
 	static std::map<std::set<int>, int, cmpBySetSize> proxy_filereader(std::string filename);
-	
+
 	//TODO MAKE OPTIONAL
 	static colour_combiner get_from_data (int id, std::vector<std::pair<const int, colour_combiner>*> input);
 	static bool colors_equal (colour_combiner c1, colour_combiner c2);
 	static std::vector<std::pair<const int, colour_combiner>*> proxy_maker(
-		std::vector<std::pair<const int, colour_combiner>*> input, 
+		std::vector<std::pair<const int, colour_combiner>*> input,
 		std::map<std::set<int>, int, cmpBySetSize> proxies);
 
 };

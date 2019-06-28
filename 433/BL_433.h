@@ -20,8 +20,7 @@ public:
 	void turnoff(int group);
 
 private:
-    std::map<int,int> on_cmds;
-    std::map<int,int> off_cmds;
-    RCSwitch mySwitch;
+	std::map<int, int> on_cmds;
+	std::map<int, int> off_cmds;
+	RCSwitch mySwitch;
 };
-

@@ -1,6 +1,5 @@
 #include "GPIO_PI.h"
 
-
 void GPIO_PI::initialise()
 {
 }

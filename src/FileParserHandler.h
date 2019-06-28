@@ -7,9 +7,10 @@
 #include "CommandFactory.h"
 class FileParserHandler
 {
-    public:
-        std::map<std::string, std::vector<Command>> ParseFile (std::string FileToParse);
-    private: 
-        LightShowFileReader* LSFormatReader = new LightShowFileReader();
-        CommandFactory* Factory = new CommandFactory(); 
+public:
+    std::map<std::string, std::vector<Command>> ParseFile(std::string FileToParse);
+
+private:
+    LightShowFileReader *LSFormatReader = new LightShowFileReader();
+    CommandFactory *Factory = new CommandFactory();
 };

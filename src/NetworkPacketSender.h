@@ -3,18 +3,21 @@
 #define NETWORKPACKETSENDER_H
 #include <ctime>
 #include <iomanip>
-enum NetworkProtocal { TCP, UDP};
+enum NetworkProtocal
+{
+	TCP,
+	UDP
+};
 
-class NetworkPacketSender {
+class NetworkPacketSender
+{
 
 public:
 	virtual ~NetworkPacketSender() = default;
-	virtual void InitialiseConnection (const char * IPAddress , unsigned short Port) = 0;
+	virtual void InitialiseConnection(const char *IPAddress, unsigned short Port) = 0;
 
-	virtual void SendHexPackets (uint8_t buffer) = 0;
-	virtual void SendHexPackets (uint8_t buffer[]) = 0;
+	virtual void SendHexPackets(uint8_t buffer) = 0;
+	virtual void SendHexPackets(uint8_t buffer[]) = 0;
 };
-
-
 
 #endif

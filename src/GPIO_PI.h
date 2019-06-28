@@ -7,4 +7,3 @@ public:
 	void turnon(int group);
 	void turnoff(int group);
 };
-

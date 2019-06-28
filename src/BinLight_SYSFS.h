@@ -14,7 +14,7 @@ public:
 	void initialise();
 	void turnon(int group);
 	void turnoff(int group);
-private: 
+private:
 	bool pin_initialised[40];
 	void exportPin(int group);
 	std::string directory = "/sys/class/gpio/";
