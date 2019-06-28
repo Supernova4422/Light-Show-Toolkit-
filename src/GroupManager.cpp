@@ -13,10 +13,6 @@
 #include <iostream>
 #include <cctype>
 
-GroupManager::GroupManager()
-{
-}
-
 void GroupManager::On_Tick()
 {
     for (auto &listener : TickListeners)
@@ -25,19 +21,16 @@ void GroupManager::On_Tick()
     }
 }
 
-void GroupManager::SetGroups(const int Group, Command CommandItem)
+void GroupManager::SetGroups(const int Group, const Command CommandItem)
 {
-    Colour empty;
-    std::pair<std::map<int, Colour>::iterator, bool> ret;
-
     switch (CommandItem.Operation)
     {
     case set:
         CurrentlySelectedGroups.clear();
-        AddToCurrentGroups(Group);
+        CurrentlySelectedGroups.insert(Group);
         break;
     case add:
-        AddToCurrentGroups(Group);
+        CurrentlySelectedGroups.insert(Group);
         break;
     case Remove:
         CurrentlySelectedGroups.erase(Group);
@@ -61,19 +54,9 @@ void GroupManager::SetGroups(const int Group, Command CommandItem)
         std::cout << group.first << ", ";
     }
     std::cout << std::endl;
-
-    //Send CUrrently selected groups to each light
 }
 
-void GroupManager::AddToCurrentGroups(const int GroupToAdd)
-{
-    if (std::find(CurrentlySelectedGroups.begin(), CurrentlySelectedGroups.end(), GroupToAdd) == CurrentlySelectedGroups.end())
-    {
-        CurrentlySelectedGroups.insert(GroupToAdd);
-    }
-}
-
-void GroupManager::UpdateColour(const Colour OutputColour, Command item)
+void GroupManager::UpdateColour(const Colour OutputColour, const Command item)
 {
     for (auto group : CurrentlySelectedGroups)
     {

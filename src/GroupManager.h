@@ -15,17 +15,12 @@
 class GroupManager : public Tick_Listener
 {
 public:
-  void SetGroups(const int Group, Command CommandItem);
+  GroupManager(){};
+  void SetGroups(const int Group, const Command CommandItem);
   void AddToCurrentGroups(const int GroupToAdd);
-  void UpdateColour(const Colour OutputColour, Command item);
+  void UpdateColour(const Colour OutputColour, const Command item);
   void SpecificCommand(const Command command);
-
-  GroupManager();
-
-  void AddTickListener(Tick_Listener *light);
   void On_Tick();
-
-  std::set<int> CurrentlySelectedGroups;
 
   template <class T>
   void AddTickListener()
@@ -41,6 +36,7 @@ public:
 
 private:
   std::map<int, colour_combiner> AllGroups;
+  std::set<int> CurrentlySelectedGroups;
   colour_combiner CurrentSelectedColour;
 
   std::vector<std::unique_ptr<ProgrammableLight>> ListeningLights;

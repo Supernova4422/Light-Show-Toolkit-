@@ -6,25 +6,24 @@
 #include <utility>
 #include <cctype>
 #include "LightShowFileReader.h"
-using namespace std;
 
-std::map<std::string, std::vector<std::string>> LightShowFileReader::ProcessFile(const string &FilePath)
+std::map<std::string, std::vector<std::string>> LightShowFileReader::ProcessFile(const std::string &FilePath)
 {
-	ifstream myfile(FilePath);
+	std::ifstream myfile(FilePath);
 	bool ReadingForFunction = true;
 
-	string CurrentLine;
-	vector<string> Commands;
+	std::string CurrentLine;
+	std::vector<std::string> Commands;
 
-	string CurrentWord;
+	std::string CurrentWord;
 
-	string CurrentFunctionName;
-	vector<string> CurrentCommandList;
+	std::string CurrentFunctionName;
+	std::vector<std::string> CurrentCommandList;
 	bool NewLine = false;
 	const char ForwardSlash = '/';
 	char PreviousChar = 0;
 
-	std::map<string, vector<string>> FunctionsWithCommands;
+	std::map<std::string, std::vector<std::string>> FunctionsWithCommands;
 	if (myfile.is_open())
 	{
 		while (getline(myfile, CurrentLine))
@@ -58,7 +57,7 @@ std::map<std::string, std::vector<std::string>> LightShowFileReader::ProcessFile
 						{
 							CurrentCommandList.push_back(CurrentWord);
 							//TODO THROW ERROR IF FUNCTIONNAME STARTS WITH NUMBER
-							FunctionsWithCommands.insert(std::pair<string, vector<string>>(CurrentFunctionName, CurrentCommandList));
+							FunctionsWithCommands.insert(std::pair<std::string, std::vector<std::string>>(CurrentFunctionName, CurrentCommandList));
 							//Lets see if we can change this to be the object that's edited later
 
 							CurrentCommandList.clear();
@@ -100,15 +99,15 @@ std::map<std::string, std::vector<std::string>> LightShowFileReader::ProcessFile
 	return FunctionsWithCommands;
 }
 
-vector<string> LightShowFileReader::SplitLineIntoCommands(const string &Line)
+std::vector<std::string> LightShowFileReader::SplitLineIntoCommands(const std::string &Line)
 {
-	vector<string> CommandsOnLine;
+	std::vector<std::string> CommandsOnLine;
 
-	string Command;
+	std::string Command;
 	const char Delimeter = ':';
 
 	bool ReadingLine = true;
-	string CommentsOnLine; //We may use this later, lets keep it
+	std::string CommentsOnLine; //We may use this later, lets keep it
 
 	for (const char c : Line)
 	{
@@ -130,8 +129,8 @@ vector<string> LightShowFileReader::SplitLineIntoCommands(const string &Line)
 	return CommandsOnLine;
 }
 
-vector<string> LightShowFileReader::CleanUpCommands(const vector<string> &StringVector)
+std::vector<std::string> LightShowFileReader::CleanUpCommands(const std::vector<std::string> &stringvector)
 {
-	//vector<string> CleanedCommands = RemoveTrailingWhiteSpace(StringVector);
-	return StringVector;
+	//std::vector<std::string> CleanedCommands = RemoveTrailingWhiteSpace(std::stringstd::vector);
+	return stringvector;
 }

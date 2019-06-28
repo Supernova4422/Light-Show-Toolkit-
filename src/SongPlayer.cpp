@@ -57,6 +57,7 @@ void SongPlayer::LoadMainFile(std::string FileName)
 {
     MainFile = Parser.ParseFile(FileName);
 }
+
 void SongPlayer::AddSupportFile(std::string FileName)
 {
     AddParsedFileToSupportFile(Parser.ParseFile(FileName));
