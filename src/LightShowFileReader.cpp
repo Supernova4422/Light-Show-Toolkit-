@@ -46,7 +46,7 @@ std::map<std::string, std::vector<std::string>> LightShowFileReader::ProcessFile
 					CurrentFunctionName = CurrentWord;
 					if (CurrentFunctionName[0] < 'a' || CurrentFunctionName[0] > 'Z')
 					{
-						throw "Invalid File";
+						//throw "Invalid File";
 					}
 					CurrentWord = "";
 					outsideFunction = false;
