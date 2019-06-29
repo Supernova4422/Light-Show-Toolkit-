@@ -17,23 +17,23 @@ class SongPlayer
 public:
     SongPlayer();
 
-    void RunCommand(Command item);
-    void WaitMilliseconds(int milliseconds);
-    void AddFunctionToSupportFile(std::string, std::vector<Command>);
+    void RunCommand(const Command item);
+    void WaitMilliseconds(const int milliseconds);
+    void AddFunctionToSupportFile(const std::string, const std::vector<Command>);
     void AddParsedFileToSupportFile(std::map<std::string, std::vector<Command>> ParsedFile);
-    void StartPlaying(std::string SongToPlay, int start_time_in_seconds = 0, std::string FunctionToPlay = "Play");
+    void StartPlaying(const std::string SongToPlay, const int start_time_in_seconds = 0, const std::string FunctionToPlay = "Play");
 
-    bool PlaySong(std::string SongToPlay, int start_at = 0);
+    bool PlaySong(const std::string SongToPlay, const int start_at = 0);
     void StopSong();
 
     void On_Tick();
-    void LoadMainFile(std::string FileName);
-    void AddSupportFile(std::string FileName);
+    void LoadMainFile(const std::string FileName);
+    void AddSupportFile(const std::string FileName);
     void add_sdl();
 
 private:
     std::map<std::string, std::vector<Command>> SupportFile;
-    void RunFunction(std::string FunctionToPlay, CommandOperation Operation = CommandOperation::set);
+    void RunFunction(const std::string FunctionToPlay, const CommandOperation Operation = CommandOperation::set);
     std::unique_ptr<GroupManager> manager;
     std::map<std::string, std::vector<Command>> MainFile;
     std::vector<std::unique_ptr<ProgrammableLight>> GroupChangeEventListiners;

@@ -53,17 +53,17 @@ void SongPlayer::add_sdl()
     manager->AddLight<SDL_Light>();
 }
 
-void SongPlayer::LoadMainFile(std::string FileName)
+void SongPlayer::LoadMainFile(const std::string FileName)
 {
     MainFile = Parser.ParseFile(FileName);
 }
 
-void SongPlayer::AddSupportFile(std::string FileName)
+void SongPlayer::AddSupportFile(const std::string FileName)
 {
     AddParsedFileToSupportFile(Parser.ParseFile(FileName));
 }
 
-void SongPlayer::AddFunctionToSupportFile(std::string FunctionName, std::vector<Command> Commands)
+void SongPlayer::AddFunctionToSupportFile(const std::string FunctionName, const std::vector<Command> Commands)
 {
     SupportFile.insert(std::pair<std::string, std::vector<Command>>(FunctionName, Commands));
 }
@@ -76,7 +76,7 @@ void SongPlayer::AddParsedFileToSupportFile(std::map<std::string, std::vector<Co
     }
 }
 
-void SongPlayer::RunFunction(std::string FunctionToPlay, CommandOperation Operation)
+void SongPlayer::RunFunction(const std::string FunctionToPlay, const CommandOperation Operation)
 {
 
     auto search = MainFile.find(FunctionToPlay);
@@ -105,19 +105,16 @@ void SongPlayer::RunFunction(std::string FunctionToPlay, CommandOperation Operat
         }
     }
 }
-void SongPlayer::RunCommand(Command item)
+void SongPlayer::RunCommand(const Command item)
 {
-
     //Make into seperate function to make recursive
     if (item.type == CommandType::Wait)
     {
         double timetowait = std::atof(item.value.c_str());
-
         WaitMilliseconds((int)(timetowait * 1000));
     }
     else
     {
-
         if (item.type == CommandType::SpecificCommand)
         {
             manager->SpecificCommand(item);
@@ -127,9 +124,10 @@ void SongPlayer::RunCommand(Command item)
         {
             manager->SetGroups(atoi(item.value.c_str()), item);
         }
+
         if (item.type == CommandType::FunctionName)
         {
-            for (int i = 0; i < item.TimesToExecute; i++)
+            for (size_t i = 0; i < item.TimesToExecute; i++)
             {
                 RunFunction(item.value, item.Operation);
             }
@@ -140,6 +138,7 @@ void SongPlayer::RunCommand(Command item)
             Colour Newcolour(item.value, true);
             manager->UpdateColour(Newcolour, item);
         }
+
         if (item.type == CommandType::ColourChange_HSV)
         {
             Colour Newcolour(item.value, false);
@@ -151,7 +150,7 @@ void SongPlayer::RunCommand(Command item)
 std::chrono::high_resolution_clock::time_point SongStartTime;
 int WaitTimeTotalInMilli;
 
-void SongPlayer::WaitMilliseconds(int milliseconds)
+void SongPlayer::WaitMilliseconds(const int milliseconds)
 {
 
     std::cout << "Starting wait for: " << milliseconds << " Milliseconds" << std::endl;
@@ -165,17 +164,18 @@ void SongPlayer::WaitMilliseconds(int milliseconds)
     std::cout << "Finished Waiting" << std::endl;
 }
 
-void SongPlayer::StartPlaying(std::string SongToPlay, int start_time, std::string FunctionToPlay)
+void SongPlayer::StartPlaying(const std::string SongToPlay, const int start_time, const std::string FunctionToPlay)
 {
-    bool SongIsPlaying;
-    SongIsPlaying = PlaySong(SongToPlay);
+    bool SongIsPlaying = PlaySong(SongToPlay);
 
     if (SongIsPlaying)
     {
         SongStartTime = std::chrono::high_resolution_clock::now() - std::chrono::seconds(start_time);
         WaitTimeTotalInMilli = 0;
+        manager->OnStart();
         RunFunction(FunctionToPlay);
         StopSong();
+        manager->OnEnd();
     }
     else
     {
@@ -183,16 +183,11 @@ void SongPlayer::StartPlaying(std::string SongToPlay, int start_time, std::strin
     }
 }
 
-bool loadMedia()
-{
-    return true;
-}
 //The music that will be played
 Mix_Music *gMusic = NULL;
 
-bool SongPlayer::PlaySong(std::string SongToPlay, int start_at)
+bool SongPlayer::PlaySong(const std::string SongToPlay, const int start_at)
 {
-
     bool success = true;
     gMusic = Mix_LoadMUS(SongToPlay.c_str());
 

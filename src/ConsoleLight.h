@@ -7,12 +7,18 @@ class ConsoleLight : public ProgrammableLight
 public:
     ConsoleLight();
 
-    void SetColourForCurrentGroups(const Colour OutputColour);
-    void EmitColour(const Command CommandItem, const std::map<int, colour_combiner> ExpectedOutput);
-    void SpecificCommand(const Command command);
+    void SetColourForCurrentGroups(const Colour OutputColour,
+                                   const std::map<int, colour_combiner> CurrentGroups);
+    void EmitColour(const Command CommandItem,
+                    const std::map<int, colour_combiner> ExpectedOutput) override ;
 
-    void OnCurrentGroupsUpdate(const Command CommandItem, std::map<int, colour_combiner> CurrentGroups);
+    void SpecificCommand(const Command command,
+                         const std::map<int, colour_combiner> CurrentGroups) override;
 
+    void OnCurrentGroupsUpdate(const Command CommandItem, const std::map<int, colour_combiner> CurrentGroups) override;
+
+    void OnStart() override {};
+    void OnEnd() override {};
 private:
     bool PostedNewGroups = false;
 };

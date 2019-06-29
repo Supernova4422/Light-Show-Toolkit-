@@ -14,8 +14,8 @@ std::map<std::string, std::vector<Command>> CommandFactory::CreateFunctionHolder
     {
         auto CleanedCommands = CleanupCommands(it->second); //TODO do this at a more appropriate time
 
-        vector<Command> Commands;
-        for (string Entry : CleanedCommands)
+        std::vector<Command> Commands;
+        for (const auto Entry : CleanedCommands)
         {
             Commands.push_back(ParseCommand(Entry));
         }
@@ -25,9 +25,9 @@ std::map<std::string, std::vector<Command>> CommandFactory::CreateFunctionHolder
     return FunctionsToPlay;
 }
 
-Command CommandFactory::ParseCommand(string CommandInput) const
+Command CommandFactory::ParseCommand(std::string CommandInput) const
 {
-    std::pair<CommandType, string> ReturningObject;
+    std::pair<CommandType, std::string> ReturningObject;
     std::string GroupIdentifier = "Group";
     std::string value = "";
     CommandType CurrentCommandType;
@@ -104,14 +104,14 @@ Command CommandFactory::ParseCommand(string CommandInput) const
     return Command(CurrentCommandType, value, CurrentOperation, TimesToExecute);
 }
 
-vector<string> CommandFactory::CleanupCommands(const vector<string> &StringVector) const
+std::vector<std::string> CommandFactory::CleanupCommands(const std::vector<std::string> &StringVector) const
 {
-    vector<string> CommandsOnLine;
+    std::vector<std::string> CommandsOnLine;
 
-    for (const string &Entry : StringVector)
+    for (const std::string &Entry : StringVector)
     {
 
-        string CleanedCommand;
+        std::string CleanedCommand;
         CleanedCommand = RemoveTrailingWhiteSpace(Entry);
 
         CommandsOnLine.push_back(CleanedCommand);
@@ -119,20 +119,20 @@ vector<string> CommandFactory::CleanupCommands(const vector<string> &StringVecto
     return CommandsOnLine;
 }
 
-string CommandFactory::RemoveTrailingWhiteSpace(const string &StringToFix) const
+std::string CommandFactory::RemoveTrailingWhiteSpace(const std::string &StringToFix) const
 {
-    vector<string> CommandsOnLine;
+    std::vector<std::string> CommandsOnLine;
 
     bool SplittingStart = true;
 
-    string StringWithoutTrailing;
-    string TempString;
+    std::string StringWithoutTrailing;
+    std::string TempString;
 
     for (const char c : StringToFix)
     {
         if (IsWhiteSpace(c) && SplittingStart)
         {
-            //Do Nothing
+            continue;
         }
         else if (IsWhiteSpace(c))
         {
@@ -149,7 +149,7 @@ string CommandFactory::RemoveTrailingWhiteSpace(const string &StringToFix) const
     return StringWithoutTrailing;
 }
 
-bool CommandFactory::IsWhiteSpace(char c) const
+bool CommandFactory::IsWhiteSpace(const char c) const
 {
     if (c == ' ')
     {
@@ -162,17 +162,5 @@ bool CommandFactory::IsWhiteSpace(char c) const
     else
     {
         return false;
-    }
-}
-
-void CommandFactory::PrintAll(std::map<string, vector<string>> FunctionsWithCommands)
-{
-    for (auto it = FunctionsWithCommands.begin(); it != FunctionsWithCommands.end(); ++it)
-    {
-        cout << "Function Name:" << it->first << endl;
-        for (string item : it->second)
-        {
-            cout << "Command Name:" << item << endl;
-        }
     }
 }

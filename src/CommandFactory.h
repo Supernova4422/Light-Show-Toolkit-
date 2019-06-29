@@ -6,18 +6,17 @@
 #include <utility>
 #include <map>
 #include "CommandDataTypes.cpp"
-using namespace std;
 
 class CommandFactory
 {
 public:
     std::map<std::string, std::vector<Command>> CreateFunctionHolder(std::map<std::string, std::vector<std::string>> IntermediateFile) const;
-    Command ParseCommand(std::string CommandInput) const;
+
+    Command ParseCommand(const std::string CommandInput) const;
 
 private:
-    vector<string> CleanupCommands(const vector<string> &StringVector) const;
-    string RemoveTrailingWhiteSpace(const string &StringToFix) const;
-    bool IsWhiteSpace(char c) const;
-    void PrintAll(std::map<string, vector<string>> FunctionsWithCommands);
+    std::vector<std::string> CleanupCommands(const std::vector<std::string> &StringVector) const;
+    std::string RemoveTrailingWhiteSpace(const std::string &StringToFix) const;
+    bool IsWhiteSpace(const char c) const;
 };
 #endif

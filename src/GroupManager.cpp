@@ -77,8 +77,14 @@ void GroupManager::UpdateColour(const Colour OutputColour, const Command item)
 
 void GroupManager::SpecificCommand(const Command command)
 {
+    std::map<int, colour_combiner> current_groups;
+    for (auto entry : CurrentlySelectedGroups)
+    {
+        current_groups[entry] = AllGroups[entry];
+    }
+
     for (auto &light : ListeningLights)
     {
-        light->SpecificCommand(command);
+        light->SpecificCommand(command, current_groups);
     }
 }

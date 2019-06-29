@@ -12,6 +12,8 @@
 #include "Color_Combiner.cpp"
 #include "Tick_Listener.h"
 #include <set>
+#include "ProgrammableLight_Async.h"
+
 class GroupManager : public Tick_Listener
 {
 public:
@@ -31,7 +33,25 @@ public:
   template <class T, class... _Args>
   void AddLight(_Args &&... __args)
   {
-    ListeningLights.push_back(std::make_unique<T>(std::forward<_Args>(__args)...));
+    std::unique_ptr<ProgrammableLight> make = std::make_unique<ProgrammableLight_Async<T, _Args...>>(std::forward<_Args>(__args)...);
+
+    ListeningLights.push_back(std::move(make));
+  }
+
+  void OnStart()
+  {
+    for (auto& light : ListeningLights)
+    {
+      light->OnStart();
+    }
+  }
+
+  void OnEnd()
+  {
+    for (auto& light : ListeningLights)
+    {
+      light->OnEnd();
+    }
   }
 
 private:

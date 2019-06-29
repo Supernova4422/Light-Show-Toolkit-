@@ -10,7 +10,7 @@
 #include "SDL_UDPSender.h"
 #include "SDL_TCPSender.h"
 
-Milight::Milight(int BrightnessThreshhold)
+Milight::Milight(const int BrightnessThreshhold)
 {
     this->BrightnessThreshhold = BrightnessThreshhold;
     std::cout << "MiLight" << std::endl;
@@ -22,7 +22,6 @@ Milight::Milight(int BrightnessThreshhold)
     int DelayAfterPacketMS = 0;
     if (myfile.is_open())
     {
-
         std::cout << "Opened config for milight" << std::endl;
         std::string IPAsString;
         getline(myfile, IPAddress);
@@ -74,11 +73,9 @@ Milight::Milight(int BrightnessThreshhold)
 
 void Milight::EmitColour(const Command CommandItem, const std::map<int, colour_combiner> ExpectedOutput)
 {
-
     CanUseByteForALLGROUPS CanSendAllGroupByte = CheckIfCanUseByteForALLGROUPS(ExpectedOutput);
     if (ExpectedOutput.size() > 0)
     {
-
         //COLOUR MUST ALWAYS BE SENT FIRST
         Colour FirstEntryColour = ExpectedOutput.begin()->second.get_colour();
 
@@ -135,7 +132,6 @@ bool UpdatedCurrentGroup = false;
 
 CanUseByteForALLGROUPS Milight::CheckIfCanUseByteForALLGROUPS(const std::map<int, colour_combiner> Collection)
 {
-
     bool AllBrightnessAreSame = false;
     int NumberOfUniqueGroups = 0;
     CanUseByteForALLGROUPS ret = ForBoth;
@@ -196,7 +192,6 @@ CanUseByteForALLGROUPS Milight::CheckIfCanUseByteForALLGROUPS(const std::map<int
 }
 void Milight::OnCurrentGroupsUpdate(const Command CommandItem, const std::map<int, colour_combiner> CurrentGroups)
 {
-
     //These bools allow us to ensure no doubles occur, and question if all are in
     //We could probably replace this with a list that ensures unique values
     //And then check for "Four" inputs at the end
@@ -265,7 +260,7 @@ MilightGroupIDs Milight::GetGroupEnum(int GroupNumber) const
     return GroupIDEnum;
 }
 
-uint8_t Milight::GetGroupHexByte(int GroupNumber) const
+uint8_t Milight::GetGroupHexByte(const int GroupNumber) const
 {
     //Group 1 ALL ON is 0x45, Group 2 ALL ON is 0x47, and so on
 
@@ -279,13 +274,9 @@ uint8_t Milight::GetGroupHexByte(int GroupNumber) const
     return GroupHex;
 }
 
-uint8_t LastGroupPacketSent = 0x00;
-
-void Milight::SendGroupOn(MilightGroupIDs GroupID)
+void Milight::SendGroupOn(const MilightGroupIDs GroupID)
 {
-
     uint8_t bytes[3];
-
     bytes[1] = 0x00;
     bytes[2] = 0x55;
     if (GroupID == ALLGROUPS)
@@ -334,7 +325,6 @@ void Milight::SendHue(const Colour OutputColour)
     {
         bytes[0] = 0x40;
         bytes[1] = 174 - OutputColour.Hue;
-
         bytes[2] = 0x55;
         std::cout << "Milight is sending the Color: " << (int)bytes[1] << std::endl;
         PacketSender->SendHexPackets(bytes);
@@ -362,7 +352,7 @@ void Milight::SendBrightness(const Colour OutputColour)
     }
 }
 
-void Milight::SpecificCommand(const Command command)
+void Milight::SpecificCommand(const Command command, const std::map<int, colour_combiner> CurrentGroups)
 {
     if (command.value == "OFF")
     {
