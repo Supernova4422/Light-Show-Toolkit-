@@ -2,8 +2,6 @@
 #include "CommandDataTypes.cpp"
 #include "ProgrammableLight.h"
 #include "SongPlayer.h"
-#include "ConsoleLight.h"
-#include "Milight.h"
 #include <string>
 #include <vector>
 #include <iostream>
@@ -15,7 +13,7 @@
 #include <iomanip>
 #include <chrono>
 #include <fstream>
-#include "SDL_mixer.h"
+
 #include "SDL_net.h"
 #include "GroupManager.h"
 #include "SDL_Light.h"
@@ -34,18 +32,6 @@ SongPlayer::SongPlayer()
     }
 
     this->manager = std::make_unique<GroupManager>();
-
-#ifdef __arm__
-#warning Injecting GPIO based lights into program, sudo will be needed to run
-    manager->AddLight<BL_433>(14, 0);
-    manager->AddLight<RF24_Sender>(MILIGHT_VERSION::V5);
-#endif
-    manager->AddLight<Milight>(10); //10 is arbitrarily chosen
-    manager->AddLight<ConsoleLight>();
-
-    manager->AddLight<SDL_Light>();
-    //manager->AddTickListener(sdl_window);
-    //manager->AddTickListener<SDL_Light>(); //Used to be shared with the light listener.
 }
 
 void SongPlayer::add_sdl()
@@ -147,8 +133,7 @@ void SongPlayer::RunCommand(const Command item)
     }
     //manager->On_Tick();
 }
-std::chrono::high_resolution_clock::time_point SongStartTime;
-int WaitTimeTotalInMilli;
+
 
 void SongPlayer::WaitMilliseconds(const int milliseconds)
 {
@@ -182,9 +167,6 @@ void SongPlayer::StartPlaying(const std::string SongToPlay, const int start_time
         std::cout << "There was an error loading the song!" << std::endl;
     }
 }
-
-//The music that will be played
-Mix_Music *gMusic = NULL;
 
 bool SongPlayer::PlaySong(const std::string SongToPlay, const int start_at)
 {

@@ -9,8 +9,7 @@
 std::map<std::string, std::vector<Command>> FileParserHandler::ParseFile(std::string FileToParse)
 {
     std::cout << "Parsing: " << FileToParse << std::endl;
-    std::map<std::string, std::vector<std::string>> IntermediateFile;
-    IntermediateFile = LSFormatReader->ProcessFile(FileToParse);
+    auto IntermediateFile = LSFormatReader->ProcessFile(FileToParse);
 
     if (IntermediateFile.empty())
     {

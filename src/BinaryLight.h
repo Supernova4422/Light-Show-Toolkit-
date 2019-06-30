@@ -17,8 +17,7 @@ class BinaryLight : public ProgrammableLight
 public:
 	BinaryLight(int upperlimit = 1, int group_offset = 0) : threshhold(upperlimit), group_offset(group_offset), light()
 	{
-		std::cout << std::endl
-				  << "Binary Light loaded" << std::endl;
+		std::cout << std::endl << "Binary Light loaded" << std::endl;
 		std::cout << "All commands will print to console, focusing on turning off and on" << std::endl;
 		std::cout << "Upper limit set to: " << upperlimit << std::endl;
 		proxies = ProxyMaker::proxy_filereader("proxy_binarylight.txt");

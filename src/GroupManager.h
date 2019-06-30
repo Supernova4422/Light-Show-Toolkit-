@@ -13,11 +13,27 @@
 #include "Tick_Listener.h"
 #include <set>
 #include "ProgrammableLight_Async.h"
-
+#include "Milight.h"
+#include "ConsoleLight.h"
+#include "SDL_Light.h"
 class GroupManager : public Tick_Listener
 {
 public:
-  GroupManager(){};
+  GroupManager(){
+
+#ifdef __arm__
+#warning Injecting GPIO based lights into program, sudo will be needed to run
+    AddLight<BL_433>(14, 0);
+    AddLight<RF24_Sender>(MILIGHT_VERSION::V5);
+#endif
+    AddLight<Milight>(10); //10 is arbitrarily chosen
+    AddLight<ConsoleLight>("First", 1);
+    AddLight<ConsoleLight>("Second", 2);
+    //AddLight<SDL_Light>();
+    //AddTickListener(sdl_window);
+    //AddTickListener<SDL_Light>(); //Used to be shared with the light listener.
+  };
+
   void SetGroups(const int Group, const Command CommandItem);
   void AddToCurrentGroups(const int GroupToAdd);
   void UpdateColour(const Colour OutputColour, const Command item);

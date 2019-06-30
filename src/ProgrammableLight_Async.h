@@ -27,6 +27,7 @@ public:
 
 	{
 		thread.detach();
+		std::cout << "Initiated loop" << std::endl;
 	}
 
 	void EmitColour(const Command command, const std::map<int, colour_combiner> CurrentGroups) override
@@ -58,31 +59,41 @@ public:
 				case LIGHT_COMMAND_TYPE::EMIT_COLOUR:
 				{
 					light->EmitColour(item.command, item.groups);
+					break;
 				}
 				case LIGHT_COMMAND_TYPE::ON_CURRENT_GROUPS_UPDATE:
 				{
 					light->OnCurrentGroupsUpdate(item.command, item.groups);
+					break;
 				}
 				case LIGHT_COMMAND_TYPE::SPECIFIC_COMMAND:
 				{
 					light->SpecificCommand(item.command, item.groups);
+					break;
 				}
 				}
 			}
+			else
+			{
+				std::this_thread::sleep_for(std::chrono::milliseconds(100));
+			}
 		}
+		std::cout << "Exited loop for async programmable light" << std::endl;
 	}
 
 	void OnStart() override
 	{
 		light->OnStart();
 		flag.store(true);
+		thread = std::thread(&ProgrammableLight_Async::loop, this);
+		thread.detach();
 	}
 
 	void OnEnd() override
 	{
 		light->OnEnd();
 		queue.clear();
-		//A mechanism to pause the thread would be good here.
+		flag.store(false);
 	}
 
 	~ProgrammableLight_Async()

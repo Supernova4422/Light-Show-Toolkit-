@@ -6,15 +6,16 @@
 class Light_Command_Queue
 {
 public:
-	void push(const Command command, const std::map<int, colour_combiner> CurrentGroups, LIGHT_COMMAND_TYPE)
+	void push(const Command command, const std::map<int, colour_combiner> CurrentGroups, LIGHT_COMMAND_TYPE light_command_type)
 	{
 		auto cmd = Light_Command(
 			command,
 			CurrentGroups,
-			LIGHT_COMMAND_TYPE::SPECIFIC_COMMAND);
+			light_command_type);
 
 		std::lock_guard<std::mutex> lock(mut);
 		queue.push(cmd);
+		std::cout << "Finished Pushing" << std::endl;
 	}
 
 	std::optional<Light_Command> pop()

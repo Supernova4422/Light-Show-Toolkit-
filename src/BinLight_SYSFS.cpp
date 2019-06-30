@@ -7,7 +7,7 @@
 BinLight_SYSFS::BinLight_SYSFS()
 {
 	std::cout << std::endl
-			  << "Lading the file_editor binary light" << std::endl;
+			  << "Loading the file_editor binary light" << std::endl;
 	std::ifstream myfile("FileSettings.txt");
 	if (myfile.is_open())
 	{

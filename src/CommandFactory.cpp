@@ -7,12 +7,11 @@
 
 std::map<std::string, std::vector<Command>> CommandFactory::CreateFunctionHolder(std::map<std::string, std::vector<std::string>> IntermediateFile) const
 {
-
     std::map<std::string, std::vector<Command>> FunctionsToPlay;
 
     for (auto it = IntermediateFile.begin(); it != IntermediateFile.end(); ++it)
     {
-        auto CleanedCommands = CleanupCommands(it->second); //TODO do this at a more appropriate time
+        auto CleanedCommands = CleanupCommands(it->second);
 
         std::vector<Command> Commands;
         for (const auto Entry : CleanedCommands)
@@ -27,13 +26,12 @@ std::map<std::string, std::vector<Command>> CommandFactory::CreateFunctionHolder
 
 Command CommandFactory::ParseCommand(std::string CommandInput) const
 {
-    std::pair<CommandType, std::string> ReturningObject;
     std::string GroupIdentifier = "Group";
-    std::string value = "";
-    CommandType CurrentCommandType;
+    std::string value = CommandInput;
+    CommandType CurrentCommandType = CommandType::FunctionName;
     CommandOperation CurrentOperation = CommandOperation::set;
-    int TimesToExecute = 1;
-
+    unsigned int TimesToExecute = 1;
+    std::cout << "COMMAND: '"  << CommandInput << "'" << std::endl;
     if (CommandInput[0] == '+')
     {
         CurrentOperation = CommandOperation::add;
@@ -96,11 +94,6 @@ Command CommandFactory::ParseCommand(std::string CommandInput) const
             CurrentCommandType = CommandType::Wait;
         }
     }
-    else
-    {
-        value = CommandInput;
-        CurrentCommandType = CommandType::FunctionName;
-    }
     return Command(CurrentCommandType, value, CurrentOperation, TimesToExecute);
 }
 
@@ -110,39 +103,25 @@ std::vector<std::string> CommandFactory::CleanupCommands(const std::vector<std::
 
     for (const std::string &Entry : StringVector)
     {
-
-        std::string CleanedCommand;
-        CleanedCommand = RemoveTrailingWhiteSpace(Entry);
-
-        CommandsOnLine.push_back(CleanedCommand);
+        auto cleaned = RemoveTrailingWhiteSpace(Entry);
+        if (cleaned != "")
+        {
+            CommandsOnLine.push_back(cleaned);
+        }
     }
+
     return CommandsOnLine;
 }
 
 std::string CommandFactory::RemoveTrailingWhiteSpace(const std::string &StringToFix) const
 {
-    std::vector<std::string> CommandsOnLine;
-
-    bool SplittingStart = true;
-
-    std::string StringWithoutTrailing;
-    std::string TempString;
+    std::string StringWithoutTrailing = "";
 
     for (const char c : StringToFix)
     {
-        if (IsWhiteSpace(c) && SplittingStart)
+        if (IsWhiteSpace(c) == false)
         {
-            continue;
-        }
-        else if (IsWhiteSpace(c))
-        {
-            TempString = TempString + c; //Not added until a non-whitespace character is read, which prevents end of line trailing
-        }
-        else
-        {
-            StringWithoutTrailing = StringWithoutTrailing + TempString + c;
-            TempString = "";
-            SplittingStart = false;
+            StringWithoutTrailing += c;
         }
     }
 

@@ -3,7 +3,7 @@
 #include "CommandDataTypes.cpp"
 #include "ProgrammableLight.h"
 #include "FileParserHandler.h"
-
+#include "SDL_mixer.h"
 #include <string>
 #include <vector>
 #include <utility>
@@ -38,5 +38,10 @@ private:
     std::map<std::string, std::vector<Command>> MainFile;
     std::vector<std::unique_ptr<ProgrammableLight>> GroupChangeEventListiners;
     FileParserHandler Parser;
+    std::chrono::high_resolution_clock::time_point SongStartTime;
+    int WaitTimeTotalInMilli;
+
+    //The music that will be played
+    Mix_Music *gMusic = NULL;
 };
 #endif

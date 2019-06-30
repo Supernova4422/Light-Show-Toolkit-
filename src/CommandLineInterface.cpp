@@ -97,12 +97,14 @@ void CommandLineInterface::ParseLine(std::string Line)
         Player->StartPlaying(AfterSpace, delay);
         std::cout << "Finished Playing" << std::endl;
     }
+
     if (BeforeSpace == PrintMainDataCommand)
     {
     }
     if (BeforeSpace == PrintSupportDataCommand)
     {
     }
+
     if (BeforeSpace == Help)
     {
         std::cout << "For more information, visit: https://github.com/Fantasmos/Light-Show-Toolkit-" << std::endl

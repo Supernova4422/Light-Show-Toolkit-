@@ -3,15 +3,11 @@
 #include <iostream>
 #include "GroupManager.h"
 
-ConsoleLight::ConsoleLight()
-{
-    std::cout << "All commands will print to console" << std::endl;
-    std::cout << std::endl;
-}
+int ConsoleLight::count = 0;
 
 void ConsoleLight::EmitColour(const Command CommandItem, const std::map<int, colour_combiner> ExpectedOutput)
 {
-
+    std::cout << label << ":" << std::endl;
     if (PostedNewGroups == false)
     {
         std::cout << "Sending to groups: ";
@@ -20,10 +16,9 @@ void ConsoleLight::EmitColour(const Command CommandItem, const std::map<int, col
         {
             std::cout << group.first << ", ";
         }
+        std::cout << std::endl;
 
         PostedNewGroups = true;
-
-        std::cout << std::endl;
     }
 
     Colour NewColour(CommandItem.value, CommandItem.type == ColourChange_RGB);
@@ -42,7 +37,21 @@ void ConsoleLight::EmitColour(const Command CommandItem, const std::map<int, col
     }
 
     std::cout << "R: " << (int)NewColour.red << " G: " << (int)NewColour.green << " B: " << (int)NewColour.blue << std::endl;
-    std::cout << "H: " << (int)NewColour.Hue << " S: " << (int)NewColour.Saturation << " B: " << (int)NewColour.Brightness << std::endl;
+
+    std::cout
+    << "H: " << (int)NewColour.Hue
+    << " S: " << (int)NewColour.Saturation
+    << " B: " << (int)NewColour.Brightness
+    << std::endl;
+
+    if (delay > 0)
+    {
+        std::cout << "Pausing Thread... " << label << std::endl;
+        std::this_thread::sleep_for(std::chrono::seconds((int)delay));
+        std::cout << " Finished waiting on thread: " << label << std::endl;
+    }
+
+    std::cout << std::endl;
     std::cout << std::endl;
 }
 
@@ -57,5 +66,5 @@ void ConsoleLight::OnCurrentGroupsUpdate(const Command CommandItem, const std::m
 
 void ConsoleLight::SpecificCommand(const Command command, const std::map<int, colour_combiner> CurrentGroups)
 {
-    std::cout << command.value << std::endl;
+    std::cout << "Specific Command: " <<  command.value << std::endl;
 }

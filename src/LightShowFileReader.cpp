@@ -35,13 +35,12 @@ std::map<std::string, std::vector<std::string>> LightShowFileReader::ProcessFile
 				{
 					continue;
 				}
-
-				if (CurrentChar == ForwardSlash && PreviousChar == ForwardSlash)
+				else if (CurrentChar == ForwardSlash && PreviousChar == ForwardSlash)
 				{
 					CurrentWord = CurrentWord.substr(0, CurrentWord.size() - 1);
 					break;
 				}
-				else if (CurrentChar == '{' && (outsideFunction == true))
+				else if (CurrentChar == '{' && outsideFunction)
 				{
 					CurrentFunctionName = CurrentWord;
 					if (CurrentFunctionName[0] < 'a' || CurrentFunctionName[0] > 'Z')
@@ -61,7 +60,13 @@ std::map<std::string, std::vector<std::string>> LightShowFileReader::ProcessFile
 					CurrentFunctionName = "";
 					outsideFunction = true;
 				}
-				else if ((CurrentChar == ':' | CurrentChar == ' ') && (outsideFunction == false) && (CurrentWord != ""))
+				else if (
+					(CurrentChar == ':' | CurrentChar == ' ')
+					&&
+					(outsideFunction == false)
+					&&
+					CurrentWord != ""
+				)
 				{
 					CurrentCommandList.push_back(CurrentWord);
 					CurrentWord = "";
