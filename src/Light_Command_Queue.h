@@ -6,7 +6,7 @@
 class Light_Command_Queue
 {
 public:
-	void push(const Command command, const std::map<int, colour_combiner> CurrentGroups, LIGHT_COMMAND_TYPE light_command_type)
+	void push(const Command command, const std::map<int, Colour_Combiner> CurrentGroups, LIGHT_COMMAND_TYPE light_command_type)
 	{
 		auto cmd = Light_Command(
 			command,

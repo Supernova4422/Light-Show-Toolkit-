@@ -5,7 +5,7 @@
 
 int ConsoleLight::count = 0;
 
-void ConsoleLight::EmitColour(const Command CommandItem, const std::map<int, colour_combiner> ExpectedOutput)
+void ConsoleLight::EmitColour(const Command CommandItem, const std::map<int, Colour_Combiner> ExpectedOutput)
 {
     std::cout << label << ":" << std::endl;
     if (PostedNewGroups == false)
@@ -39,10 +39,10 @@ void ConsoleLight::EmitColour(const Command CommandItem, const std::map<int, col
     std::cout << "R: " << (int)NewColour.red << " G: " << (int)NewColour.green << " B: " << (int)NewColour.blue << std::endl;
 
     std::cout
-    << "H: " << (int)NewColour.Hue
-    << " S: " << (int)NewColour.Saturation
-    << " B: " << (int)NewColour.Brightness
-    << std::endl;
+        << "H: " << (int)NewColour.Hue
+        << " S: " << (int)NewColour.Saturation
+        << " B: " << (int)NewColour.Brightness
+        << std::endl;
 
     if (delay > 0)
     {
@@ -55,16 +55,16 @@ void ConsoleLight::EmitColour(const Command CommandItem, const std::map<int, col
     std::cout << std::endl;
 }
 
-void ConsoleLight::SetColourForCurrentGroups(const Colour OutputColour, const std::map<int, colour_combiner> CurrentGroups)
+void ConsoleLight::SetColourForCurrentGroups(const Colour OutputColour, const std::map<int, Colour_Combiner> CurrentGroups)
 {
 }
 
-void ConsoleLight::OnCurrentGroupsUpdate(const Command CommandItem, const std::map<int, colour_combiner> CurrentGroups)
+void ConsoleLight::OnCurrentGroupsUpdate(const Command CommandItem, const std::map<int, Colour_Combiner> CurrentGroups)
 {
     PostedNewGroups = false;
 }
 
-void ConsoleLight::SpecificCommand(const Command command, const std::map<int, colour_combiner> CurrentGroups)
+void ConsoleLight::SpecificCommand(const Command command, const std::map<int, Colour_Combiner> CurrentGroups)
 {
-    std::cout << "Specific Command: " <<  command.value << std::endl;
+    std::cout << "Specific Command: " << command.value << std::endl;
 }

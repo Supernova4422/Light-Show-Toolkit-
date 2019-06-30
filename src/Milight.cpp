@@ -71,7 +71,7 @@ Milight::Milight(const int BrightnessThreshhold)
               << std::endl;
 }
 
-void Milight::EmitColour(const Command CommandItem, const std::map<int, colour_combiner> ExpectedOutput)
+void Milight::EmitColour(const Command CommandItem, const std::map<int, Colour_Combiner> ExpectedOutput)
 {
     CanUseByteForALLGROUPS CanSendAllGroupByte = CheckIfCanUseByteForALLGROUPS(ExpectedOutput);
     if (ExpectedOutput.size() > 0)
@@ -130,7 +130,7 @@ void Milight::EmitColour(const Command CommandItem, const std::map<int, colour_c
 
 bool UpdatedCurrentGroup = false;
 
-CanUseByteForALLGROUPS Milight::CheckIfCanUseByteForALLGROUPS(const std::map<int, colour_combiner> Collection)
+CanUseByteForALLGROUPS Milight::CheckIfCanUseByteForALLGROUPS(const std::map<int, Colour_Combiner> Collection)
 {
     bool AllBrightnessAreSame = false;
     int NumberOfUniqueGroups = 0;
@@ -190,7 +190,7 @@ CanUseByteForALLGROUPS Milight::CheckIfCanUseByteForALLGROUPS(const std::map<int
 
     return ret;
 }
-void Milight::OnCurrentGroupsUpdate(const Command CommandItem, const std::map<int, colour_combiner> CurrentGroups)
+void Milight::OnCurrentGroupsUpdate(const Command CommandItem, const std::map<int, Colour_Combiner> CurrentGroups)
 {
     //These bools allow us to ensure no doubles occur, and question if all are in
     //We could probably replace this with a list that ensures unique values
@@ -318,7 +318,7 @@ void Milight::SendHue(const Colour OutputColour)
 
     if (OutputColour.Saturation < WhiteThreshhold)
     {
-        std::cout << "Milight is sending the Color: WHITE" << std::endl;
+        std::cout << "Milight is sending the Colour: WHITE" << std::endl;
         PacketSender->SendHexPackets(LastGroupPacketSent + 128);
     }
     else
@@ -326,7 +326,7 @@ void Milight::SendHue(const Colour OutputColour)
         bytes[0] = 0x40;
         bytes[1] = 174 - OutputColour.Hue;
         bytes[2] = 0x55;
-        std::cout << "Milight is sending the Color: " << (int)bytes[1] << std::endl;
+        std::cout << "Milight is sending the Colour: " << (int)bytes[1] << std::endl;
         PacketSender->SendHexPackets(bytes);
     }
 }
@@ -352,7 +352,7 @@ void Milight::SendBrightness(const Colour OutputColour)
     }
 }
 
-void Milight::SpecificCommand(const Command command, const std::map<int, colour_combiner> CurrentGroups)
+void Milight::SpecificCommand(const Command command, const std::map<int, Colour_Combiner> CurrentGroups)
 {
     if (command.value == "OFF")
     {

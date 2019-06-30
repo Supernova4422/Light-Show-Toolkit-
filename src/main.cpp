@@ -7,25 +7,12 @@
 #include <stdint.h>
 #include <iostream>
 #include <vector>
-#include <sstream> // std::istringstream
+#include <sstream>
 #include <string>
 #include <iostream>
 #include <memory>
 #include "SongPlayer.h"
-#include "CommandDataTypes.cpp"
-#include "CommandFactory.h"
-#include "ProgrammableLight.h"
-
-#include "Milight.h"
-#include "ConsoleLight.h"
-
-#include "GroupManager.h"
 #include "CommandLineInterface.h"
-#include "BinaryLight.h"
-#include "BinaryLightController.h"
-#include "BinLight_SYSFS.h"
-#include <chrono>
-#include "SDL_Light.h"
 
 #ifdef __arm__
 #warning Compiling for Raspberry PI, errors may occur on other platforms

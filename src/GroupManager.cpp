@@ -37,7 +37,7 @@ void GroupManager::SetGroups(const int Group, const Command CommandItem)
         break;
     }
 
-    std::map<int, colour_combiner> current_groups;
+    std::map<int, Colour_Combiner> current_groups;
     for (auto entry : CurrentlySelectedGroups)
     {
         current_groups[entry] = AllGroups[entry];
@@ -63,7 +63,7 @@ void GroupManager::UpdateColour(const Colour OutputColour, const Command item)
         AllGroups[group].set_new(OutputColour, item.Operation);
     }
 
-    std::map<int, colour_combiner> current_groups;
+    std::map<int, Colour_Combiner> current_groups;
     for (auto entry : CurrentlySelectedGroups)
     {
         current_groups[entry] = AllGroups[entry];
@@ -77,7 +77,7 @@ void GroupManager::UpdateColour(const Colour OutputColour, const Command item)
 
 void GroupManager::SpecificCommand(const Command command)
 {
-    std::map<int, colour_combiner> current_groups;
+    std::map<int, Colour_Combiner> current_groups;
     for (auto entry : CurrentlySelectedGroups)
     {
         current_groups[entry] = AllGroups[entry];

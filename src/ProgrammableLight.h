@@ -7,15 +7,15 @@
 #include <map>
 #include "CommandDataTypes.cpp"
 #include "Colour.h"
-#include "Color_Combiner.cpp"
+#include "Colour_Combiner.cpp"
 class ProgrammableLight
 {
 public:
-  virtual void EmitColour(const Command CommandItem, const std::map<int, colour_combiner> ExpectedOutput) = 0;
+  virtual void EmitColour(const Command CommandItem, const std::map<int, Colour_Combiner> ExpectedOutput) = 0;
 
-  virtual void OnCurrentGroupsUpdate(const Command CommandItem, const std::map<int, colour_combiner> CurrentGroups) = 0;
+  virtual void OnCurrentGroupsUpdate(const Command CommandItem, const std::map<int, Colour_Combiner> CurrentGroups) = 0;
 
-  virtual void SpecificCommand(const Command command, const std::map<int, colour_combiner> CurrentGroups) = 0;
+  virtual void SpecificCommand(const Command command, const std::map<int, Colour_Combiner> CurrentGroups) = 0;
 
   virtual void OnStart() = 0;
   virtual void OnEnd() = 0;

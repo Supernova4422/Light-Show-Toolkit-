@@ -27,10 +27,9 @@ find_library(SDL_MIXER_LIBRARIES NAME SDL2_mixer HINTS "../../library/SDL2_mixer
 add_executable(LightShowProject
 BinaryLightController.h
 Colour.h
-CommandFactory.h
 CommandLineInterface.h
 ConsoleLight.h
-FileParserHandler.h
+FileParser.h
 GroupManager.h
 LightShowFileReader.h
 Milight.h
@@ -55,12 +54,10 @@ Tick_Listener.cpp
 ProxyMaker.cpp
 main.cpp
 Colour.cpp
-Color_Combiner.cpp
+Colour_Combiner.cpp
 CommandDataTypes.cpp
-CommandFactory.cpp
 CommandLineInterface.cpp
 ConsoleLight.cpp
-FileParserHandler.cpp
 GroupManager.cpp
 LightShowFileReader.cpp
 Milight.cpp

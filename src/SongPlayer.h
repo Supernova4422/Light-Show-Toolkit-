@@ -2,7 +2,7 @@
 #define SONGPLAYER
 #include "CommandDataTypes.cpp"
 #include "ProgrammableLight.h"
-#include "FileParserHandler.h"
+#include "FileParser.h"
 #include "SDL_mixer.h"
 #include <string>
 #include <vector>
@@ -15,7 +15,19 @@
 class SongPlayer
 {
 public:
-    SongPlayer();
+    SongPlayer() : groupManager()
+    {
+        //Initialize SDL for audio playback
+        if (SDL_Init(SDL_INIT_AUDIO) < 0)
+        {
+            printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
+        }
+        //Initialize SDL_mixer
+        if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+        {
+            printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+        }
+    }
 
     void RunCommand(const Command item);
     void WaitMilliseconds(const int milliseconds);
@@ -32,16 +44,15 @@ public:
     void add_sdl();
 
 private:
-    std::map<std::string, std::vector<Command>> SupportFile;
     void RunFunction(const std::string FunctionToPlay, const CommandOperation Operation = CommandOperation::set);
-    std::unique_ptr<GroupManager> manager;
-    std::map<std::string, std::vector<Command>> MainFile;
-    std::vector<std::unique_ptr<ProgrammableLight>> GroupChangeEventListiners;
-    FileParserHandler Parser;
-    std::chrono::high_resolution_clock::time_point SongStartTime;
-    int WaitTimeTotalInMilli;
 
-    //The music that will be played
+    std::map<std::string, std::vector<Command>> SupportFile;
+    std::map<std::string, std::vector<Command>> MainFile;
+
+    FileParser Parser;
+    GroupManager groupManager;
+    std::chrono::high_resolution_clock::time_point SongStartTime;
+    unsigned int WaitTimeTotalInMilli;
     Mix_Music *gMusic = NULL;
 };
 #endif

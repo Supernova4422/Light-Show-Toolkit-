@@ -3,7 +3,7 @@
 #include <string>
 #include <iostream>
 #include <sstream>
-#include "Color_Combiner.cpp"
+#include "Colour_Combiner.cpp"
 #include <fstream>
 #include <set>
 #include "ProxyMaker.h"
@@ -68,7 +68,7 @@ std::map<std::set<int>, int, cmpBySetSize> ProxyMaker::proxy_filereader(std::str
 }
 
 //TODO MAKE OPTIONAL
-colour_combiner ProxyMaker::get_from_data(int id, std::vector<std::pair<const int, colour_combiner> *> input)
+Colour_Combiner ProxyMaker::get_from_data(int id, std::vector<std::pair<const int, Colour_Combiner> *> input)
 {
 	for (auto entry : input)
 	{
@@ -77,9 +77,9 @@ colour_combiner ProxyMaker::get_from_data(int id, std::vector<std::pair<const in
 			return entry->second;
 		}
 	}
-	return colour_combiner();
+	return Colour_Combiner();
 }
-bool ProxyMaker::colors_equal(colour_combiner c1, colour_combiner c2)
+bool ProxyMaker::colors_equal(Colour_Combiner c1, Colour_Combiner c2)
 {
 	//There's an extremely rare chance two having different operations make the same result, so we don't
 	//care about the command
@@ -96,7 +96,7 @@ bool ProxyMaker::colors_equal(colour_combiner c1, colour_combiner c2)
 	return true;
 }
 
-std::vector<std::pair<const int, colour_combiner> *> ProxyMaker::proxy_maker(std::vector<std::pair<const int, colour_combiner> *> input, std::map<std::set<int>, int, cmpBySetSize> proxies)
+std::vector<std::pair<const int, Colour_Combiner> *> ProxyMaker::proxy_maker(std::vector<std::pair<const int, Colour_Combiner> *> input, std::map<std::set<int>, int, cmpBySetSize> proxies)
 {
 
 	std::vector<int> Groups;
@@ -106,7 +106,7 @@ std::vector<std::pair<const int, colour_combiner> *> ProxyMaker::proxy_maker(std
 		Groups.push_back(item->first);
 	}
 
-	std::vector<std::pair<const int, colour_combiner> *> output;
+	std::vector<std::pair<const int, Colour_Combiner> *> output;
 
 	for (auto proxy : proxies)
 	{
@@ -201,8 +201,8 @@ std::vector<std::pair<const int, colour_combiner> *> ProxyMaker::proxy_maker(std
 						std::cout << '\t' << "Proxy group is: " << std::to_string(proxy.second) << " Using data from: " << std::to_string(ID) << '\n'
 								  << '\n';
 					}
-					std::pair<const int, colour_combiner> *updated_pair =
-						new std::pair<const int, colour_combiner>(proxy.second, pair->second);
+					std::pair<const int, Colour_Combiner> *updated_pair =
+						new std::pair<const int, Colour_Combiner>(proxy.second, pair->second);
 					output.push_back(updated_pair);
 					break;
 				}

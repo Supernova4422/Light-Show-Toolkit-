@@ -18,25 +18,9 @@
 #include "GroupManager.h"
 #include "SDL_Light.h"
 
-SongPlayer::SongPlayer()
-{
-    //Initialize SDL for audio playback
-    if (SDL_Init(SDL_INIT_AUDIO) < 0)
-    {
-        printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
-    }
-    //Initialize SDL_mixer
-    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
-    {
-        printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
-    }
-
-    this->manager = std::make_unique<GroupManager>();
-}
-
 void SongPlayer::add_sdl()
 {
-    manager->AddLight<SDL_Light>();
+    groupManager.AddLight<SDL_Light>();
 }
 
 void SongPlayer::LoadMainFile(const std::string FileName)
@@ -64,7 +48,6 @@ void SongPlayer::AddParsedFileToSupportFile(std::map<std::string, std::vector<Co
 
 void SongPlayer::RunFunction(const std::string FunctionToPlay, const CommandOperation Operation)
 {
-
     auto search = MainFile.find(FunctionToPlay);
 
     if (search == MainFile.end()) //Error, didn't find the function
@@ -103,12 +86,12 @@ void SongPlayer::RunCommand(const Command item)
     {
         if (item.type == CommandType::SpecificCommand)
         {
-            manager->SpecificCommand(item);
+            groupManager.SpecificCommand(item);
         }
 
         if (item.type == CommandType::Group)
         {
-            manager->SetGroups(atoi(item.value.c_str()), item);
+            groupManager.SetGroups(atoi(item.value.c_str()), item);
         }
 
         if (item.type == CommandType::FunctionName)
@@ -122,29 +105,24 @@ void SongPlayer::RunCommand(const Command item)
         if (item.type == CommandType::ColourChange_RGB)
         {
             Colour Newcolour(item.value, true);
-            manager->UpdateColour(Newcolour, item);
+            groupManager.UpdateColour(Newcolour, item);
         }
 
         if (item.type == CommandType::ColourChange_HSV)
         {
             Colour Newcolour(item.value, false);
-            manager->UpdateColour(Newcolour, item);
+            groupManager.UpdateColour(Newcolour, item);
         }
     }
-    //manager->On_Tick();
+    //groupManager.On_Tick();
 }
-
 
 void SongPlayer::WaitMilliseconds(const int milliseconds)
 {
-
     std::cout << "Starting wait for: " << milliseconds << " Milliseconds" << std::endl;
     WaitTimeTotalInMilli = WaitTimeTotalInMilli + milliseconds;
 
-    while (std::chrono::high_resolution_clock::now() < (SongStartTime + std::chrono::milliseconds((int)WaitTimeTotalInMilli)))
-    {
-        //Do nothing
-    }
+    std::this_thread::sleep_until(SongStartTime + std::chrono::milliseconds(WaitTimeTotalInMilli));
 
     std::cout << "Finished Waiting" << std::endl;
 }
@@ -152,15 +130,18 @@ void SongPlayer::WaitMilliseconds(const int milliseconds)
 void SongPlayer::StartPlaying(const std::string SongToPlay, const int start_time, const std::string FunctionToPlay)
 {
     bool SongIsPlaying = PlaySong(SongToPlay);
-
-    if (SongIsPlaying)
+    if (SongToPlay == "")
+    {
+        std::cout << "No song has been configured. The lightshow will play without audio" << std::endl;
+    }
+    if (SongIsPlaying || SongToPlay == "")
     {
         SongStartTime = std::chrono::high_resolution_clock::now() - std::chrono::seconds(start_time);
         WaitTimeTotalInMilli = 0;
-        manager->OnStart();
+        groupManager.OnStart();
         RunFunction(FunctionToPlay);
         StopSong();
-        manager->OnEnd();
+        groupManager.OnEnd();
     }
     else
     {
@@ -170,27 +151,24 @@ void SongPlayer::StartPlaying(const std::string SongToPlay, const int start_time
 
 bool SongPlayer::PlaySong(const std::string SongToPlay, const int start_at)
 {
-    bool success = true;
     gMusic = Mix_LoadMUS(SongToPlay.c_str());
 
     if (gMusic == NULL)
     {
         printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
-        success = false;
+        return false;
     }
     else
     {
         Mix_PlayMusic(gMusic, 1); //Play the music once
         Mix_SetMusicPosition(start_at);
+        return true;
     }
-
-    return success;
 }
 void SongPlayer::StopSong()
 {
     if (Mix_PlayingMusic() != 0)
     {
-        //Free and stop the music
         Mix_FreeMusic(gMusic);
         gMusic = NULL;
         Mix_Quit();
@@ -199,5 +177,5 @@ void SongPlayer::StopSong()
 
 void SongPlayer::On_Tick()
 {
-    manager->On_Tick();
+    groupManager.On_Tick();
 }

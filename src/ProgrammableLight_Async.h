@@ -10,7 +10,7 @@
 #include <memory>
 #include "CommandDataTypes.cpp"
 #include "Colour.h"
-#include "Color_Combiner.cpp"
+#include "Colour_Combiner.cpp"
 #include "ProgrammableLight.h"
 #include <utility>
 #include "LIGHT_COMMAND_TYPE.h"
@@ -30,17 +30,17 @@ public:
 		std::cout << "Initiated loop" << std::endl;
 	}
 
-	void EmitColour(const Command command, const std::map<int, colour_combiner> CurrentGroups) override
+	void EmitColour(const Command command, const std::map<int, Colour_Combiner> CurrentGroups) override
 	{
 		queue.push(command, CurrentGroups, LIGHT_COMMAND_TYPE::EMIT_COLOUR);
 	};
 
-	void OnCurrentGroupsUpdate(const Command command, const std::map<int, colour_combiner> CurrentGroups) override
+	void OnCurrentGroupsUpdate(const Command command, const std::map<int, Colour_Combiner> CurrentGroups) override
 	{
 		queue.push(command, CurrentGroups, LIGHT_COMMAND_TYPE::ON_CURRENT_GROUPS_UPDATE);
 	};
 
-	void SpecificCommand(const Command command, const std::map<int, colour_combiner> CurrentGroups) override
+	void SpecificCommand(const Command command, const std::map<int, Colour_Combiner> CurrentGroups) override
 	{
 		queue.push(command, CurrentGroups, LIGHT_COMMAND_TYPE::SPECIFIC_COMMAND);
 	};

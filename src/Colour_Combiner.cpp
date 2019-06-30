@@ -1,11 +1,10 @@
-#ifndef COLOUR_COMBINER
-#define COLOUR_COMBINER
+#ifndef Colour_Combiner_H
+#define Colour_Combiner_H
 #include "Colour.h"
 #include "CommandDataTypes.cpp"
-class colour_combiner
+class Colour_Combiner
 {
 public:
-	CommandOperation command;
 	bool hue_changed() const
 	{
 		return ((colour_change.Hue != 0 && command != CommandOperation::set) |
@@ -63,6 +62,7 @@ public:
 			return result;
 			break;
 		}
+		return result;
 	}
 
 	void set_new(const Colour colour_change, const CommandOperation cmd)
@@ -72,9 +72,14 @@ public:
 		this->colour_change = colour_change;
 	}
 
+	Colour_Combiner() : currentColour("#000000", true), colour_change("#000000", true)
+	{
+	}
+
 private:
 	Colour currentColour;
 	Colour colour_change;
+	CommandOperation command;
 };
 
 #endif

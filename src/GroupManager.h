@@ -9,7 +9,7 @@
 #include "CommandDataTypes.cpp"
 #include "Colour.h"
 #include "ProgrammableLight.h"
-#include "Color_Combiner.cpp"
+#include "Colour_Combiner.cpp"
 #include "Tick_Listener.h"
 #include <set>
 #include "ProgrammableLight_Async.h"
@@ -19,7 +19,8 @@
 class GroupManager : public Tick_Listener
 {
 public:
-  GroupManager(){
+  GroupManager()
+  {
 
 #ifdef __arm__
 #warning Injecting GPIO based lights into program, sudo will be needed to run
@@ -56,7 +57,7 @@ public:
 
   void OnStart()
   {
-    for (auto& light : ListeningLights)
+    for (auto &light : ListeningLights)
     {
       light->OnStart();
     }
@@ -64,16 +65,16 @@ public:
 
   void OnEnd()
   {
-    for (auto& light : ListeningLights)
+    for (auto &light : ListeningLights)
     {
       light->OnEnd();
     }
   }
 
 private:
-  std::map<int, colour_combiner> AllGroups;
+  std::map<int, Colour_Combiner> AllGroups;
   std::set<int> CurrentlySelectedGroups;
-  colour_combiner CurrentSelectedColour;
+  Colour_Combiner CurrentSelectedColour;
 
   std::vector<std::unique_ptr<ProgrammableLight>> ListeningLights;
   std::vector<std::unique_ptr<Tick_Listener>> TickListeners;

@@ -4,17 +4,22 @@
 #include <string>
 #include <iostream>
 #include <sstream>
-#include "Color_Combiner.cpp"
+#include "Colour_Combiner.cpp"
 #include <fstream>
 #include <set>
 #include <cstddef>
 #include <cstdio>
 
-struct cmpBySetSize {
-	bool operator()(const std::set<int>& a, const std::set<int>& b) const {
-		if (a.size() == b.size()) {
-			for (int item : a) { //See if each element of the set is the same
-				if (b.find(item) == b.end()) {
+struct cmpBySetSize
+{
+	bool operator()(const std::set<int> &a, const std::set<int> &b) const
+	{
+		if (a.size() == b.size())
+		{
+			for (int item : a)
+			{ //See if each element of the set is the same
+				if (b.find(item) == b.end())
+				{
 					return true;
 				}
 			}
@@ -24,7 +29,8 @@ struct cmpBySetSize {
 	}
 };
 
-struct ProxyMaker {
+struct ProxyMaker
+{
 	static const bool verbose = false;
 
 	static void print_proxies(std::map<std::set<int>, int, cmpBySetSize> proxies);
@@ -32,10 +38,9 @@ struct ProxyMaker {
 	static std::map<std::set<int>, int, cmpBySetSize> proxy_filereader(std::string filename);
 
 	//TODO MAKE OPTIONAL
-	static colour_combiner get_from_data (int id, std::vector<std::pair<const int, colour_combiner>*> input);
-	static bool colors_equal (colour_combiner c1, colour_combiner c2);
-	static std::vector<std::pair<const int, colour_combiner>*> proxy_maker(
-		std::vector<std::pair<const int, colour_combiner>*> input,
+	static Colour_Combiner get_from_data(int id, std::vector<std::pair<const int, Colour_Combiner> *> input);
+	static bool colors_equal(Colour_Combiner c1, Colour_Combiner c2);
+	static std::vector<std::pair<const int, Colour_Combiner> *> proxy_maker(
+		std::vector<std::pair<const int, Colour_Combiner> *> input,
 		std::map<std::set<int>, int, cmpBySetSize> proxies);
-
 };

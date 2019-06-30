@@ -52,7 +52,7 @@ SDL_Light::SDL_Light()
 	}
 }
 
-void SDL_Light::EmitColour(const Command CommandItem, const std::map<int, colour_combiner> ExpectedOutput)
+void SDL_Light::EmitColour(const Command CommandItem, const std::map<int, Colour_Combiner> ExpectedOutput)
 {
 
 	for (auto it : ExpectedOutput)
