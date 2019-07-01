@@ -127,16 +127,26 @@ void SongPlayer::WaitMilliseconds(const int milliseconds)
     std::cout << "Finished Waiting" << std::endl;
 }
 
-void SongPlayer::StartPlaying(const std::string SongToPlay, const int start_time, const std::string FunctionToPlay)
+void SongPlayer::PrepareSong(const std::string songFilename)
 {
-    bool SongIsPlaying = PlaySong(SongToPlay);
-    if (SongToPlay == "")
+    this->songFilename = songFilename;
+}
+
+void SongPlayer::SetSongStart(const unsigned int startAt_Seconds)
+{
+    SongStartTime = std::chrono::high_resolution_clock::now() - std::chrono::seconds(startAt_Seconds);
+}
+void SongPlayer::StartPlaying(const std::string FunctionToPlay)
+{
+    bool SongIsPlaying = PlaySong();
+    if (songFilename == "")
     {
         std::cout << "No song has been configured. The lightshow will play without audio" << std::endl;
+        SongIsPlaying = true;
     }
-    if (SongIsPlaying || SongToPlay == "")
+
+    if (SongIsPlaying)
     {
-        SongStartTime = std::chrono::high_resolution_clock::now() - std::chrono::seconds(start_time);
         WaitTimeTotalInMilli = 0;
         groupManager.OnStart();
         RunFunction(FunctionToPlay);
@@ -149,9 +159,9 @@ void SongPlayer::StartPlaying(const std::string SongToPlay, const int start_time
     }
 }
 
-bool SongPlayer::PlaySong(const std::string SongToPlay, const int start_at)
+bool SongPlayer::PlaySong()
 {
-    gMusic = Mix_LoadMUS(SongToPlay.c_str());
+    gMusic = Mix_LoadMUS(songFilename.c_str());
 
     if (gMusic == NULL)
     {
@@ -161,7 +171,8 @@ bool SongPlayer::PlaySong(const std::string SongToPlay, const int start_at)
     else
     {
         Mix_PlayMusic(gMusic, 1); //Play the music once
-        Mix_SetMusicPosition(start_at);
+        Mix_SetMusicPosition(songStartAt);
+        SongStartTime = std::chrono::high_resolution_clock::now() - std::chrono::seconds(songStartAt);
         return true;
     }
 }

@@ -72,7 +72,7 @@ public:
 		this->colour_change = colour_change;
 	}
 
-	Colour_Combiner() : currentColour("#000000", true), colour_change("#000000", true)
+	Colour_Combiner() : currentColour("000000", true), colour_change("000000", true)
 	{
 	}
 

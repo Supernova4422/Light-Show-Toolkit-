@@ -49,8 +49,6 @@ LIGHT_COMMAND_TYPE.h
 
 Tick_Listener.h
 
-Tick_Listener.cpp
-
 ProxyMaker.cpp
 main.cpp
 Colour.cpp
@@ -59,7 +57,6 @@ CommandDataTypes.cpp
 CommandLineInterface.cpp
 ConsoleLight.cpp
 GroupManager.cpp
-LightShowFileReader.cpp
 Milight.cpp
 SDL_TCPSender.cpp
 SDL_UDPSender.cpp

@@ -21,21 +21,46 @@
 #include "Factory_433.h"
 #endif
 
-int main(int argc, char *argv[])
+long getDigit(char c)
 {
-	if (argc >= 2)
+	return (long)c - (long)'0';
+}
+
+int main(int argc, char* argv[])
+{
+	if (argc > 1)
 	{
-		std::cout << "Loading file: " << argv[1] << std::endl;
+		std::cout << "Beginning" << std::endl;
 		std::unique_ptr<SongPlayer> Player = std::make_unique<SongPlayer>();
-		Player->LoadMainFile(argv[1]);
 
-		for (int i = 3; i < argc; i++)
+		for (auto i = 0; i < argc - 1; ++i)
 		{
-			Player->AddSupportFile(argv[i]);
-			std::cout << "Loading support file: " << argv[i] << std::endl;
-		}
+			if (std::strcmp(argv[i], "-file"))
+			{
+				Player->LoadMainFile(argv[++i]);
+			}
+			else if (std::strcmp(argv[i], "-supportfile"))
+			{
+				Player->AddSupportFile(argv[++i]);
+			}
+			else if (std::strcmp(argv[i],  "-time"))
+			{
+				++i;
+				unsigned int hours = (getDigit(argv[i][0])  * 10) + getDigit(argv[i][1]);
+				unsigned int minutes = (getDigit(argv[i][3]) * 10) + getDigit(argv[i][4]);
+				unsigned int seconds = (getDigit(argv[i][6]) * 10) + getDigit(argv[i][7]);
 
-		std::cout << "Playing song:" << argv[2] << std::endl;
+				Player->SetTime(hours,minutes,seconds);
+			}
+			else if (std::strcmp(argv[i],  "-song"))
+			{
+				Player->PrepareSong(argv[2]);
+			}
+			else if (std::strcmp(argv[i], "-start"))
+			{
+				Player->SetSongStart(std::stoi(argv[++i]));
+			}
+		}
 		Player->StartPlaying(argv[2]);
 	}
 	else

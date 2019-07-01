@@ -28,7 +28,7 @@ void CommandLineInterface::Run()
 void CommandLineInterface::ParseLine(std::string Line)
 {
     std::string LoadMainCommand = "loadmain";
-    std::string delayCommand = "delay";
+    std::string delayCommand = "skip";
     std::string LoadSupportCommand = "loadsupport";
     std::string MP3ShowCommand = "mp3show";
     std::string RunCommand = "run";
@@ -36,6 +36,7 @@ void CommandLineInterface::ParseLine(std::string Line)
     std::string PrintSupportDataCommand = "printSupportData";
     std::string loadSdlCommand = "sdlload";
     std::string Help = "help";
+    std::string now = "now";
 
     std::string BeforeSpace = "";
     std::string AfterSpace = "";
@@ -66,8 +67,15 @@ void CommandLineInterface::ParseLine(std::string Line)
 
     if (BeforeSpace == delayCommand)
     {
-        delay = std::stoi(AfterSpace);
-        std::cout << "Added Delay" << std::endl;
+        Player->SetSongStart(std::stoi(AfterSpace));
+        std::cout << "Added skip" << std::endl;
+    }
+    if (BeforeSpace == now)
+    {
+        unsigned int hours   = ((AfterSpace[0] - '0') * 10) + (AfterSpace[1] - '0');
+        unsigned int minutes = ((AfterSpace[3] - '0') * 10) + (AfterSpace[4] - '0');
+        unsigned int seconds = ((AfterSpace[6] - '0') * 10) + (AfterSpace[7] - '0');
+        Player->SetTime(hours,minutes,seconds);
     }
     if (BeforeSpace == loadSdlCommand)
     {
@@ -88,21 +96,16 @@ void CommandLineInterface::ParseLine(std::string Line)
     {
         std::cout << "Loading file and mp3" << std::endl;
         Player->LoadMainFile(AfterSpace + ".ls");
-        Player->StartPlaying(AfterSpace + ".mp3", delay);
+        Player->PrepareSong(AfterSpace + ".mp3");
+        Player->StartPlaying();
         std::cout << "Finished Playing" << std::endl;
     }
     if (BeforeSpace == RunCommand)
     {
         std::cout << "Starting Song" << std::endl;
-        Player->StartPlaying(AfterSpace, delay);
+        Player->PrepareSong(AfterSpace);
+        Player->StartPlaying();
         std::cout << "Finished Playing" << std::endl;
-    }
-
-    if (BeforeSpace == PrintMainDataCommand)
-    {
-    }
-    if (BeforeSpace == PrintSupportDataCommand)
-    {
     }
 
     if (BeforeSpace == Help)
