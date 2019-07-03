@@ -46,6 +46,7 @@ ProgrammableLight_Async.h
 Light_Command.h
 Light_Command_Queue.h
 LIGHT_COMMAND_TYPE.h
+UserCommand.h
 
 Tick_Listener.h
 

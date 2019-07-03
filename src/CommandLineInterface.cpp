@@ -9,6 +9,65 @@ CommandLineInterface::CommandLineInterface()
     this->Player = std::make_unique<SongPlayer>();
     std::cout << "CommandLine Interface has loaded" << std::endl;
     std::cout << "Type 'Help' to get started." << std::endl;
+
+    userCommands.push_back(UserCommand("loadmain", "Load the Lighshow file by passing as a parameter",
+                                       [&](std::string afterSpace) {
+                                           Player->LoadMainFile(afterSpace);
+                                           std::cout << "Loaded Main File" << std::endl;
+                                       }));
+
+    userCommands.push_back(UserCommand("run", "To start playing the file alongside a song, pass the music file name as a parameter",
+                                       [&](std::string afterSpace) {
+                                           std::cout << "Starting Song" << std::endl;
+                                           Player->PrepareSong(afterSpace);
+                                           Player->StartPlaying();
+                                           std::cout << "Finished Playing" << std::endl;
+                                       }));
+
+    userCommands.push_back(UserCommand("skip", "Starts the song with a delay",
+                                       [&](std::string afterSpace) {
+                                           Player->SetSongStart(std::stoi(afterSpace));
+                                           std::cout << "Added skip" << std::endl;
+                                       }));
+
+    userCommands.push_back(UserCommand("loadsdl", "Loads a GUI window",
+                                       [&](std::string afterSpace) {
+                                           Player->add_sdl();
+                                           std::cout << "Loaded SDL" << std::endl;
+                                       }));
+
+    userCommands.push_back(UserCommand("loadsupport", "Loads a second song file, that can be referenced by the first one loaded",
+                                       [&](std::string afterSpace) {
+                                           Player->AddSupportFile(afterSpace);
+                                           std::cout << "Loaded Support File" << std::endl;
+                                       }));
+    userCommands.push_back(UserCommand("runmp3", "Loads and runs a .ls and .mp3 file with a given filename",
+                                       [&](std::string afterSpace) {
+                                           std::cout << "Loading file and mp3" << std::endl;
+                                           Player->LoadMainFile(afterSpace + ".ls");
+                                           Player->PrepareSong(afterSpace + ".mp3");
+                                           Player->StartPlaying();
+                                           std::cout << "Finished Playing" << std::endl;
+                                       }));
+
+    userCommands.push_back(UserCommand("start", "When the run command is executed, the song will not begin until the time given (as a parameter) has passed",
+                                       [&](std::string afterSpace) {
+                                           unsigned int hours = ((afterSpace[0] - '0') * 10) + (afterSpace[1] - '0');
+                                           unsigned int minutes = ((afterSpace[3] - '0') * 10) + (afterSpace[4] - '0');
+                                           unsigned int seconds = ((afterSpace[6] - '0') * 10) + (afterSpace[7] - '0');
+                                           Player->SetTime(hours, minutes, seconds);
+                                       }));
+
+    userCommands.push_back(UserCommand("now", "Gives the current time",
+                                       [&](std::string afterSpace) {
+                                           std::cout << "For more information, visit: https://github.com/Fantasmos/Light-Show-Toolkit-" << std::endl;
+                                           std::cout << "Input syntax is: <Command> <Parameter>" << std::endl;
+                                           std::cout << "All commands: " << std::endl;
+                                           for (auto command : userCommands)
+                                           {
+                                               std::cout << "    " << command.get_help() << std::endl;
+                                           }
+                                       }));
 }
 
 void CommandLineInterface::Run()
@@ -27,17 +86,6 @@ void CommandLineInterface::Run()
 
 void CommandLineInterface::ParseLine(std::string Line)
 {
-    std::string LoadMainCommand = "loadmain";
-    std::string delayCommand = "skip";
-    std::string LoadSupportCommand = "loadsupport";
-    std::string MP3ShowCommand = "mp3show";
-    std::string RunCommand = "run";
-    std::string PrintMainDataCommand = "printMainData";
-    std::string PrintSupportDataCommand = "printSupportData";
-    std::string loadSdlCommand = "sdlload";
-    std::string Help = "help";
-    std::string now = "now";
-
     std::string BeforeSpace = "";
     std::string AfterSpace = "";
 
@@ -63,58 +111,12 @@ void CommandLineInterface::ParseLine(std::string Line)
         }
     }
 
+    for (auto command : userCommands)
+    {
+        if (command.input_matches(BeforeSpace))
+        {
+            command.run(AfterSpace);
+        }
+    }
     std::cout << std::endl;
-
-    if (BeforeSpace == delayCommand)
-    {
-        Player->SetSongStart(std::stoi(AfterSpace));
-        std::cout << "Added skip" << std::endl;
-    }
-    if (BeforeSpace == now)
-    {
-        unsigned int hours   = ((AfterSpace[0] - '0') * 10) + (AfterSpace[1] - '0');
-        unsigned int minutes = ((AfterSpace[3] - '0') * 10) + (AfterSpace[4] - '0');
-        unsigned int seconds = ((AfterSpace[6] - '0') * 10) + (AfterSpace[7] - '0');
-        Player->SetTime(hours,minutes,seconds);
-    }
-    if (BeforeSpace == loadSdlCommand)
-    {
-        Player->add_sdl();
-        std::cout << "Loaded SDL" << std::endl;
-    }
-    if (BeforeSpace == LoadMainCommand)
-    {
-        Player->LoadMainFile(AfterSpace);
-        std::cout << "Loaded Main File" << std::endl;
-    }
-    if (BeforeSpace == LoadSupportCommand)
-    {
-        Player->AddSupportFile(AfterSpace);
-        std::cout << "Loaded Support File" << std::endl;
-    }
-    if (BeforeSpace == MP3ShowCommand)
-    {
-        std::cout << "Loading file and mp3" << std::endl;
-        Player->LoadMainFile(AfterSpace + ".ls");
-        Player->PrepareSong(AfterSpace + ".mp3");
-        Player->StartPlaying();
-        std::cout << "Finished Playing" << std::endl;
-    }
-    if (BeforeSpace == RunCommand)
-    {
-        std::cout << "Starting Song" << std::endl;
-        Player->PrepareSong(AfterSpace);
-        Player->StartPlaying();
-        std::cout << "Finished Playing" << std::endl;
-    }
-
-    if (BeforeSpace == Help)
-    {
-        std::cout << "For more information, visit: https://github.com/Fantasmos/Light-Show-Toolkit-" << std::endl
-                  << std::endl;
-        std::cout << "Guide to usage:" << std::endl;
-        std::cout << "  Load the Lighshow file with: LoadMain FILENAME.ls" << std::endl;
-        std::cout << "  Load any secondary files with: LoadSupport FILENAME" << std::endl;
-        std::cout << "  To start playing the file alongside a song, use: RUN MusicFileName" << std::endl;
-    }
 }
