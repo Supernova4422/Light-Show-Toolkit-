@@ -47,6 +47,8 @@ Light_Command.h
 Light_Command_Queue.h
 LIGHT_COMMAND_TYPE.h
 UserCommand.h
+AudioPlayer_Dummy.h
+SDL_AudioPlayer.h
 
 Tick_Listener.h
 

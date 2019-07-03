@@ -21,6 +21,8 @@
 #include "Factory_433.h"
 #endif
 
+
+
 long getDigit(char c)
 {
 	return (long)c - (long)'0';
@@ -33,7 +35,7 @@ int main(int argc, char *argv[])
 	{
 		for (auto i = 0; i < argc - 1; i += 2)
 		{
-			cli->ParseLine(argv[i], argv[i + 1])
+			cli->ParseLine(std::string(argv[i]) + std::string(" ") + std::string(argv[i + 1]));
 		}
 	}
 	else

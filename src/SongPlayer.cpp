@@ -14,7 +14,6 @@
 #include <chrono>
 #include <fstream>
 
-#include "SDL_net.h"
 #include "GroupManager.h"
 #include "SDL_Light.h"
 
@@ -138,7 +137,9 @@ void SongPlayer::SetSongStart(const unsigned int startAt_Seconds)
 }
 void SongPlayer::StartPlaying(const std::string FunctionToPlay)
 {
-    bool SongIsPlaying = PlaySong();
+    bool SongIsPlaying = audioPlayer.playSong(songFilename, songStartAt);
+    SongStartTime = std::chrono::high_resolution_clock::now() - std::chrono::seconds(songStartAt);
+
     if (songFilename == "")
     {
         std::cout << "No song has been configured. The lightshow will play without audio" << std::endl;
@@ -150,39 +151,12 @@ void SongPlayer::StartPlaying(const std::string FunctionToPlay)
         WaitTimeTotalInMilli = 0;
         groupManager.OnStart();
         RunFunction(FunctionToPlay);
-        StopSong();
+        audioPlayer.stopSong();
         groupManager.OnEnd();
     }
     else
     {
         std::cout << "There was an error loading the song!" << std::endl;
-    }
-}
-
-bool SongPlayer::PlaySong()
-{
-    gMusic = Mix_LoadMUS(songFilename.c_str());
-
-    if (gMusic == NULL)
-    {
-        printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
-        return false;
-    }
-    else
-    {
-        Mix_PlayMusic(gMusic, 1); //Play the music once
-        Mix_SetMusicPosition(songStartAt);
-        SongStartTime = std::chrono::high_resolution_clock::now() - std::chrono::seconds(songStartAt);
-        return true;
-    }
-}
-void SongPlayer::StopSong()
-{
-    if (Mix_PlayingMusic() != 0)
-    {
-        Mix_FreeMusic(gMusic);
-        gMusic = NULL;
-        Mix_Quit();
     }
 }
 

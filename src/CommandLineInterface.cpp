@@ -50,7 +50,7 @@ CommandLineInterface::CommandLineInterface()
                                            std::cout << "Finished Playing" << std::endl;
                                        }));
 
-    userCommands.push_back(UserCommand("start", "When the run command is executed, the song will not begin until the time given (as a parameter) has passed",
+    userCommands.push_back(UserCommand("startat", "When the run command is executed, the song will not begin until the time given (as a parameter) has passed",
                                        [&](std::string afterSpace) {
                                            unsigned int hours = ((afterSpace[0] - '0') * 10) + (afterSpace[1] - '0');
                                            unsigned int minutes = ((afterSpace[3] - '0') * 10) + (afterSpace[4] - '0');
@@ -58,7 +58,7 @@ CommandLineInterface::CommandLineInterface()
                                            Player->SetTime(hours, minutes, seconds);
                                        }));
 
-    userCommands.push_back(UserCommand("now", "Gives the current time",
+    userCommands.push_back(UserCommand("help", "Gives the current time",
                                        [&](std::string afterSpace) {
                                            std::cout << "For more information, visit: https://github.com/Fantasmos/Light-Show-Toolkit-" << std::endl;
                                            std::cout << "Input syntax is: <Command> <Parameter>" << std::endl;
