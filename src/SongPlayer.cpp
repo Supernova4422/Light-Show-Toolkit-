@@ -130,7 +130,7 @@ void SongPlayer::RunCommand(const Command item)
             groupManager.UpdateColour(Newcolour, item);
         }
     }
-    //groupManager.On_Tick();
+    On_Tick();
 }
 
 void SongPlayer::WaitMilliseconds(const int milliseconds)
@@ -179,5 +179,17 @@ void SongPlayer::StartPlaying(const std::string FunctionToPlay)
 
 void SongPlayer::On_Tick()
 {
+#if SDL_WINDOW_ENABLED == 1
+    SDL_Event event;
+    while (SDL_PollEvent(&event))
+    {
+        if (event.type == SDL_QUIT)
+        {
+
+            SDL_DestroyWindow(SDL_Light::MainWindow);
+        }
+    }
+
     groupManager.On_Tick();
+#endif
 }

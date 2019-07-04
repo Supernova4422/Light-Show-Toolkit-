@@ -7,13 +7,13 @@
 class CommandLineInterface
 {
 public:
+    static bool RUNNING;
     CommandLineInterface();
     void Run();
     void ParseLine(std::string Line);
 
 private:
     std::unique_ptr<SongPlayer> Player;
-    int delay = 0;
 
     std::vector<UserCommand> userCommands;
 };

@@ -4,6 +4,7 @@
 #include "ProgrammableLight.h"
 #include "ProxyMaker.h"
 #include "Tick_Listener.h"
+
 class SDL_Light : public ProgrammableLight, public Tick_Listener
 {
 public:
@@ -23,11 +24,12 @@ public:
 
     void OnEnd() override{}; //TODO
 
+    static SDL_Renderer *renderer;
+    static SDL_Window *MainWindow;
+
 private:
     std::map<std::set<int>, int, cmpBySetSize> proxies;
     std::map<int, Colour_Combiner> groups;
-    SDL_Renderer *renderer = NULL;
-    SDL_Window *MainWindow = NULL;
 };
 
 #endif // SDL_LIGHT_H

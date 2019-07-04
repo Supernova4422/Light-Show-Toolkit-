@@ -42,15 +42,16 @@ public:
     void StopSong();
 
     void On_Tick();
+
     void LoadMainFile(const std::string FileName);
     void AddSupportFile(const std::string FileName);
+#if SDL_WINDOW_ENABLED == 1
     void add_sdl();
-
+#endif
     void SetTime(unsigned int hours, unsigned int minutes);
 
 private:
     void RunFunction(const std::string FunctionToPlay, const CommandOperation Operation = CommandOperation::set);
-
     std::map<std::string, std::vector<Command>> SupportFile;
     std::map<std::string, std::vector<Command>> MainFile;
     std::string songFilename;

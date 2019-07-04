@@ -21,6 +21,16 @@
 #include "Factory_433.h"
 #endif
 
+void signalHandler(int signum)
+{
+	std::cout << "Interrupt signal (" << signum << ") received.\n";
+	CommandLineInterface::RUNNING = false;
+	if (AUDIO_OUT == 1 || SDL_WINDOW_ENABLED == 1 || MILIGHT_ENABLED == 1)
+	{
+		SDL_Quit();
+	}
+	exit(signum);
+}
 
 int main(int argc, char *argv[])
 {
@@ -37,5 +47,14 @@ int main(int argc, char *argv[])
 		cli->Run();
 	}
 
+#if SDL_WINDOW_ENABLED == 1
+	SDL_Quit();
+#endif
+#if AUDIO_OUT == 1
+	SDL_Quit();
+#endif
+#if MILIGHT_ENABLED == 1
+	SDL_Quit();
+#endif
 	return 0;
 }

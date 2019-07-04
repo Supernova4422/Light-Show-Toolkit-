@@ -3,6 +3,7 @@
 #include <iostream>
 #include <algorithm>
 #include "SDL_Light.h"
+bool CommandLineInterface::RUNNING = true;
 
 CommandLineInterface::CommandLineInterface()
 {
@@ -52,7 +53,7 @@ CommandLineInterface::CommandLineInterface()
 
     userCommands.push_back(UserCommand("startat", "When the run command is executed, the song will not begin until the time given (as a parameter) has passed",
                                        [&](std::string afterSpace) {
-                                           unsigned int hours   = ((afterSpace[0] - '0') * 10) + (afterSpace[1] - '0');
+                                           unsigned int hours = ((afterSpace[0] - '0') * 10) + (afterSpace[1] - '0');
                                            unsigned int minutes = ((afterSpace[3] - '0') * 10) + (afterSpace[4] - '0');
                                            Player->SetTime(hours, minutes);
                                        }));
@@ -67,20 +68,39 @@ CommandLineInterface::CommandLineInterface()
                                                std::cout << "    " << command.get_help() << std::endl;
                                            }
                                        }));
+    userCommands.push_back(UserCommand("exit", "Exits the application",
+                                       [&](std::string afterSpace) {
+                                           CommandLineInterface::RUNNING = false;
+                                       }));
 }
 
 void CommandLineInterface::Run()
 {
-    bool Running = true;
-    while (Running)
+    std::string Line;
+    unsigned int consecutive_blanks = 0;
+    unsigned int consecutive_blanks_limit = 5;
+
+    do
     {
-        std::cout << std::endl;
-        std::cout << "Waiting on Input" << std::endl;
-        std::string Line;
+        if (Line != "")
+        {
+            std::cout << std::endl;
+            std::cout << "Waiting on Input:" << std::endl;
+        }
+
         std::getline(std::cin, Line);
-        ParseLine(Line);
-        Player->On_Tick();
-    }
+
+        if (Line == "")
+        {
+            ++consecutive_blanks;
+        }
+        else
+        {
+            ParseLine(Line);
+            Player->On_Tick();
+            consecutive_blanks = 0;
+        }
+    } while (CommandLineInterface::RUNNING && consecutive_blanks < consecutive_blanks_limit);
 }
 
 void CommandLineInterface::ParseLine(std::string Line)
