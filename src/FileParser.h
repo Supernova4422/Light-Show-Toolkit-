@@ -5,7 +5,6 @@
 
 #include "CommandDataTypes.cpp"
 #include "LightShowFileReader.h"
-#include "CommandFactory.h"
 
 class FileParser
 {
@@ -63,7 +62,7 @@ private:
         }
         if (CommandInput[0] == '=')
         {
-            CurrentOperation = CommandOperation::Set;
+            CurrentOperation = CommandOperation::set;
             CommandInput = CommandInput.erase(0, 1);
         }
 
