@@ -14,6 +14,5 @@ public:
 
 private:
     std::unique_ptr<SongPlayer> Player;
-
     std::vector<UserCommand> userCommands;
 };

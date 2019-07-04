@@ -10,8 +10,6 @@ class SDL_Light : public ProgrammableLight, public Tick_Listener
 public:
     SDL_Light();
 
-    void SetColourForCurrentGroups(const Colour_Combiner OutputColour){};
-
     void EmitColour(const Command CommandItem, const std::map<int, Colour_Combiner> ExpectedOutput) override;
 
     void SpecificCommand(const Command command, const std::map<int, Colour_Combiner> CurrentGroups) override{};

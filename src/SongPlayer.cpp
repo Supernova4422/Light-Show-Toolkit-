@@ -13,8 +13,8 @@
 #include <iomanip>
 #include <chrono>
 #include <fstream>
-
 #include "GroupManager.h"
+
 #if SDL_WINDOW_ENABLED == 1
 #include "SDL_Light.h"
 void SongPlayer::add_sdl()

@@ -26,7 +26,6 @@ public:
 		light.initialise();
 	};
 
-	void SetColourForCurrentGroups(const Colour OutputColour){};
 	void SpecificCommand(const Command command){};
 
 	void EmitColour(const Command CommandItem, const std::map<int, Colour_Combiner> ExpectedOutput)

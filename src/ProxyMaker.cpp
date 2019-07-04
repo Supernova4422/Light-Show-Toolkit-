@@ -10,7 +10,6 @@
 #include <algorithm>
 void ProxyMaker::print_proxies(std::map<std::set<int>, int, cmpBySetSize> proxies)
 {
-
 	for (auto proxy : proxies)
 	{
 		std::cout << proxy.second << ": ";
@@ -79,14 +78,14 @@ Colour_Combiner ProxyMaker::get_from_data(int id, std::vector<std::pair<const in
 	}
 	return Colour_Combiner();
 }
-bool ProxyMaker::colors_equal(Colour_Combiner c1, Colour_Combiner c2)
+bool ProxyMaker::colours_equal(const Colour_Combiner c1, const Colour_Combiner c2)
 {
 	//There's an extremely rare chance two having different operations make the same result, so we don't
 	//care about the command
 	//if (c1.command != c2.command) { return false; }
 
-	auto Colour1 = c1.get_colour();
-	auto Colour2 = c2.get_colour();
+	const auto Colour1 = c1.get_colour();
+	const auto Colour2 = c2.get_colour();
 
 	if (Colour1.red != Colour2.red | Colour1.blue != Colour2.blue | Colour1.green != Colour2.green)
 	{
@@ -158,12 +157,12 @@ std::vector<std::pair<const int, Colour_Combiner> *> ProxyMaker::proxy_maker(std
 			bool valid_proxy = true;
 			for (auto entry : proxy.first)
 			{
-				if (colors_equal(new_setting, get_from_data(entry, input)) == false)
+				if (colours_equal(new_setting, get_from_data(entry, input)) == false)
 				{
 					if (verbose)
 					{
 						std::cout << '\n'
-								  << '\t' << "Proxy is not valid because groups are different colors" << '\n'
+								  << '\t' << "Proxy is not valid because groups are different colours" << '\n'
 								  << '\n';
 					}
 					valid_proxy = false;

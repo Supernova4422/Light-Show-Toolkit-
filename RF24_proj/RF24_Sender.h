@@ -19,12 +19,12 @@ enum MILIGHT_VERSION
     V5,
     V6
 };
+
 class RF24_Sender : public ProgrammableLight
 {
 public:
     RF24_Sender(MILIGHT_VERSION version);
 
-    void SetColourForCurrentGroups(const Colour OutputColour);
     void EmitColour(const Command CommandItem, const std::vector<std::pair<const int, Colour_Combiner> *> ExpectedOutput);
     void SpecificCommand(const Command command);
     void OnCurrentGroupsUpdate(const Command CommandItem, std::vector<std::pair<const int, Colour_Combiner> *> CurrentGroups);
@@ -42,10 +42,10 @@ private:
     MILIGHT_VERSION version = MILIGHT_VERSION::V5;
     uint8_t end_byte = 0x00;
     uint8_t seq_num = 0x00;
-    uint8_t threshold = 0x08;
-    uint8_t white_threshold = 10;
-    uint8_t CHANNELS_V5[3] = {9, 40, 71};
-    uint8_t CHANNELS_V6[3] = {70, 39, 8};
+    const uint8_t threshold = 0x08;
+    const uint8_t white_threshold = 10;
+    const uint8_t CHANNELS_V5[3] = {9, 40, 71}; //Make it possible to configure perhaps
+    const uint8_t CHANNELS_V6[3] = {70, 39, 8};
     std::map<std::pair<uint8_t, uint8_t>, uint8_t> last_group;
 
     int packet_size = 7;

@@ -15,8 +15,6 @@ RF24_Sender::RF24_Sender(MILIGHT_VERSION version)
 {
     proxies = ProxyMaker::proxy_filereader("proxy_rf24.txt");
 
-    std::ifstream input_file;
-    input_file.open("RF24_Config.txt");
     std::vector<uint8_t> byte_codes(3);
 
     int groupID = 0;
@@ -24,32 +22,21 @@ RF24_Sender::RF24_Sender(MILIGHT_VERSION version)
     int counter = 0;
     MILIGHT_VERSION ver = MILIGHT_VERSION::V5;
     std::cout << "Begin Reading" << '\n';
+
+    std::ifstream input_file;
+    input_file.open("RF24_Config.txt");
     while (input_file >> std::hex >> read_value)
     {
-
         if (counter == 0)
         {
             groupID = read_value;
             counter++;
         }
-        else if (counter == 1)
-        {
-            if (read_value == 0x05)
-            {
-                ver = MILIGHT_VERSION::V5;
-            }
-            if (read_value == 0x06)
-            {
-                ver = MILIGHT_VERSION::V6;
-            }
-            counter++;
-        }
         else
         {
-            byte_codes[counter - 2] = read_value; //Conversion needed
+            byte_codes[counter - 1] = read_value; //Conversion needed
 
-            counter++;
-            if (counter == 5)
+            if (counter == 4)
             {
                 std::pair<MILIGHT_VERSION, std::vector<uint8_t>> pairing = {
                     ver, byte_codes};
@@ -78,9 +65,9 @@ void RF24_Sender::EmitColour(const Command CommandItem,
 {
     auto proxiedOutput = ProxyMaker::proxy_maker(ExpectedOutput, proxies);
 
-    for (std::pair<const int, Colour_Combiner> *entry : proxiedOutput)
+    for (auto entry : proxiedOutput)
     {
-        std::map<int, std::pair<MILIGHT_VERSION, std::vector<uint8_t>>>::iterator it = Groups.find(entry->first);
+        auto it = Groups.find(entry->first);
 
         if (it != Groups.end())
         {
@@ -150,10 +137,10 @@ void RF24_Sender::EmitColour(const Command CommandItem,
             }
             if (version == MILIGHT_VERSION::V5)
             {
-                uint8_t msg[7] =
-                    {
-                        0xB0, it->second.second[0], it->second.second[1],
-                        0x00, 0x00, 0x00, ++seq_num};
+                uint8_t msg[7] = {
+                    0xB0, it->second.second[0], it->second.second[1],
+                    0x00, 0x00, 0x00, ++seq_num};
+
                 //Should msg[0] be b0 or b8
                 //msg[5] = it->second.second[2]; //Why NOT do it now?
 
@@ -177,7 +164,7 @@ void RF24_Sender::EmitColour(const Command CommandItem,
                         brightness -= (entry->second.get_colour().Brightness);
                     }
 
-                    int br = ((brightness + 0x08 / 2) / 0x08) * 0x08;
+                    int br = ((brightness + 0x08 / 2) / 0x08) * 0x08; //Did you forget order of operations?
                     msg[4] = uint8_t(br);
 
                     //Redo logic here to turn on light
@@ -253,10 +240,6 @@ void RF24_Sender::EmitColour(const Command CommandItem,
             }
         }
     }
-}
-void RF24_Sender::SetColourForCurrentGroups(const Colour OutputColour)
-{
-    std::cout << "Set for current called" << '\n';
 }
 
 void RF24_Sender::OnCurrentGroupsUpdate(

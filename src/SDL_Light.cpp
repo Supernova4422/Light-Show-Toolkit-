@@ -47,7 +47,7 @@ SDL_Light::SDL_Light()
 				}
 				else
 				{
-					std::cout << "Initialised SDL Light" << std::endl;
+					std::cout << "Initialised SDL Light, the window can be closed when the song is running, or when the application exits." << std::endl;
 					SDL_SetRenderDrawColor(SDL_Light::renderer, 255, 255, 0, 255);
 					SDL_RenderPresent(SDL_Light::renderer);
 					SDL_ShowWindow(SDL_Light::MainWindow);

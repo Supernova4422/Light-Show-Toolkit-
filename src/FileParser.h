@@ -51,7 +51,6 @@ private:
         CommandType CurrentCommandType = CommandType::FunctionName;
         CommandOperation CurrentOperation = CommandOperation::set;
         unsigned int TimesToExecute = 1;
-        std::cout << "COMMAND: '" << CommandInput << "'" << std::endl;
         if (CommandInput[0] == '+')
         {
             CurrentOperation = CommandOperation::add;
@@ -60,6 +59,11 @@ private:
         if (CommandInput[0] == '-')
         {
             CurrentOperation = CommandOperation::Remove;
+            CommandInput = CommandInput.erase(0, 1);
+        }
+        if (CommandInput[0] == '=')
+        {
+            CurrentOperation = CommandOperation::Set;
             CommandInput = CommandInput.erase(0, 1);
         }
 

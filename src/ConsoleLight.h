@@ -12,8 +12,6 @@ public:
         std::cout << "All commands will print to console" << std::endl;
     };
 
-    void SetColourForCurrentGroups(const Colour OutputColour,
-                                   const std::map<int, Colour_Combiner> CurrentGroups);
     void EmitColour(const Command CommandItem,
                     const std::map<int, Colour_Combiner> ExpectedOutput) override;
 
