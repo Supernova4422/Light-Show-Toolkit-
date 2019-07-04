@@ -3,11 +3,14 @@
 #define NETWORKPACKETSENDER_H
 #include <ctime>
 #include <iomanip>
+namespace NetworkProtocal
+{
 enum NetworkProtocal
 {
 	TCP,
 	UDP
 };
+}
 
 class NetworkPacketSender
 {

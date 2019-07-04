@@ -19,7 +19,7 @@ Milight::Milight(const int BrightnessThreshhold)
 
     std::string IPAddress = "255.255.255.255";
     unsigned short Port = 8899;
-    NetworkProtocal Protocal = NetworkProtocal::UDP;
+    auto Protocal = NetworkProtocal::UDP;
     int DelayAfterPacketMS = 0;
     if (myfile.is_open())
     {
@@ -54,12 +54,12 @@ Milight::Milight(const int BrightnessThreshhold)
 
     switch (Protocal)
     {
-    case TCP:
+    case NetworkProtocal::TCP:
         PacketSender = std::make_unique<SDL_TCPSender>();
         std::cout << "TCP" << std::endl;
         break;
 
-    case UDP:
+    case NetworkProtocal::UDP:
         std::cout << "  Delay after each packet:" << DelayAfterPacketMS << "MS" << std::endl;
         PacketSender = std::make_unique<SDL_UDPSender>(DelayAfterPacketMS);
         std::cout << "UDP" << std::endl;
@@ -74,7 +74,7 @@ Milight::Milight(const int BrightnessThreshhold)
 
 void Milight::EmitColour(const Command CommandItem, const std::map<int, Colour_Combiner> ExpectedOutput)
 {
-    CanUseByteForALLGROUPS CanSendAllGroupByte = CheckIfCanUseByteForALLGROUPS(ExpectedOutput);
+    auto CanSendAllGroupByte = GetNumOfPossibleGroups(ExpectedOutput);
     if (ExpectedOutput.size() > 0)
     {
         //COLOUR MUST ALWAYS BE SENT FIRST
@@ -82,14 +82,14 @@ void Milight::EmitColour(const Command CommandItem, const std::map<int, Colour_C
 
         switch (CanSendAllGroupByte)
         {
-        case ForBoth:
-            SendGroupOn(MilightGroupIDs::ALLGROUPS);
+        case ML_BYTES::CAN_USE_FOR_ALL_ALL_GROUPS::ForBoth:
+            SendGroupOn(ML_BYTES::GROUP_ID::ALLGROUPS);
             SendHue(FirstEntryColour);
             SendBrightness(FirstEntryColour);
             break;
 
-        case ForHue:
-            SendGroupOn(MilightGroupIDs::ALLGROUPS);
+        case ML_BYTES::CAN_USE_FOR_ALL_ALL_GROUPS::ForHue:
+            SendGroupOn(ML_BYTES::GROUP_ID::ALLGROUPS);
             SendHue(FirstEntryColour);
             for (auto entry : ExpectedOutput)
             {
@@ -101,7 +101,7 @@ void Milight::EmitColour(const Command CommandItem, const std::map<int, Colour_C
             }
             break;
 
-        case ForBrightness:
+        case ML_BYTES::CAN_USE_FOR_ALL_ALL_GROUPS::ForBrightness:
             for (auto entry : ExpectedOutput)
             {
                 if ((entry.first < 5) && (entry.first > 0))
@@ -110,11 +110,11 @@ void Milight::EmitColour(const Command CommandItem, const std::map<int, Colour_C
                     SendHue(entry.second.get_colour());
                 }
             }
-            SendGroupOn(MilightGroupIDs::ALLGROUPS);
+            SendGroupOn(ML_BYTES::GROUP_ID::ALLGROUPS);
             SendBrightness(FirstEntryColour);
             break;
 
-        case ForNeither:
+        case ML_BYTES::CAN_USE_FOR_ALL_ALL_GROUPS::ForNeither:
             for (auto entry : ExpectedOutput)
             {
                 if ((entry.first < 5) && (entry.first > 0))
@@ -131,11 +131,11 @@ void Milight::EmitColour(const Command CommandItem, const std::map<int, Colour_C
 
 bool UpdatedCurrentGroup = false;
 
-CanUseByteForALLGROUPS Milight::CheckIfCanUseByteForALLGROUPS(const std::map<int, Colour_Combiner> Collection)
+ML_BYTES::CAN_USE_FOR_ALL_ALL_GROUPS Milight::GetNumOfPossibleGroups(const std::map<int, Colour_Combiner> Collection) const
 {
     bool AllBrightnessAreSame = false;
     int NumberOfUniqueGroups = 0;
-    CanUseByteForALLGROUPS ret = ForBoth;
+    ML_BYTES::CAN_USE_FOR_ALL_ALL_GROUPS ret = ML_BYTES::ForBoth;
     uint8_t Hue = 0;
     uint8_t Brightness = 0;
 
@@ -175,18 +175,18 @@ CanUseByteForALLGROUPS Milight::CheckIfCanUseByteForALLGROUPS(const std::map<int
         {
             if (item.second.get_colour().Hue != Hue)
             {
-                ret = (CanUseByteForALLGROUPS)(ret & ~ForHue); //Performs bitwise subtraction
+                ret = (ML_BYTES::CAN_USE_FOR_ALL_ALL_GROUPS)(ret & ~ML_BYTES::ForHue); //Performs bitwise subtraction
             }
             if (item.second.get_colour().Brightness != Brightness)
             {
-                ret = (CanUseByteForALLGROUPS)(ret & ~ForBrightness); //Performs bitwise subtraction
+                ret = (ML_BYTES::CAN_USE_FOR_ALL_ALL_GROUPS)(ret & ~ML_BYTES::ForBrightness); //Performs bitwise subtraction
                 AllBrightnessAreSame = false;
             }
         }
     }
     if (NumberOfUniqueGroups != 4)
     {
-        ret = ForNeither;
+        ret = ML_BYTES::ForNeither;
     }
 
     return ret;
@@ -238,24 +238,24 @@ void Milight::OnCurrentGroupsUpdate(const Command CommandItem, const std::map<in
         }
     }
 }
-MilightGroupIDs Milight::GetGroupEnum(int GroupNumber) const
+ML_BYTES::GROUP_ID Milight::GetGroupEnum(int GroupNumber) const
 {
-    MilightGroupIDs GroupIDEnum;
+    ML_BYTES::GROUP_ID GroupIDEnum;
     if (GroupNumber == 1)
     {
-        GroupIDEnum = Group1;
+        GroupIDEnum = ML_BYTES::GROUP_ID::Group1;
     }
     if (GroupNumber == 2)
     {
-        GroupIDEnum = Group2;
+        GroupIDEnum = ML_BYTES::GROUP_ID::Group2;
     }
     if (GroupNumber == 3)
     {
-        GroupIDEnum = Group3;
+        GroupIDEnum = ML_BYTES::GROUP_ID::Group3;
     }
     if (GroupNumber == 4)
     {
-        GroupIDEnum = Group4;
+        GroupIDEnum = ML_BYTES::GROUP_ID::Group4;
     }
 
     return GroupIDEnum;
@@ -275,21 +275,21 @@ uint8_t Milight::GetGroupHexByte(const int GroupNumber) const
     return GroupHex;
 }
 
-void Milight::SendGroupOn(const MilightGroupIDs GroupID)
+void Milight::SendGroupOn(const ML_BYTES::GROUP_ID GroupID)
 {
     uint8_t bytes[3];
     bytes[1] = 0x00;
     bytes[2] = 0x55;
-    if (GroupID == ALLGROUPS)
+    if (GroupID == ML_BYTES::GROUP_ID::ALLGROUPS)
     {
         bytes[0] = 0x42;
     }
-    else if (GroupID != Invalid)
+    else if (GroupID != ML_BYTES::GROUP_ID::Invalid)
     {
         bytes[0] = GetGroupHexByte(GroupID);
     }
 
-    if ((GroupID != Invalid) && (LastGroupPacketSent != bytes[0]))
+    if ((GroupID != ML_BYTES::GROUP_ID::Invalid) && (LastGroupPacketSent != bytes[0]))
     {
         LastGroupPacketSent = bytes[0];
 

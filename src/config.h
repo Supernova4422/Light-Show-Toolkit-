@@ -1,3 +1,5 @@
+#pragma once
+
 /*
  * Should Milight commands be sent over wifi?
 */
@@ -19,3 +21,5 @@
 #ifndef SDL_WINDOW_ENABLED
 #define SDL_WINDOW_ENABLED 1
 #endif
+
+#define USING_SDL (AUDIO_OUT == 1 || SDL_WINDOW_ENABLED == 1 || MILIGHT_ENABLED == 1)

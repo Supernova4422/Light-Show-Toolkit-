@@ -4,7 +4,10 @@
 #include <vector>
 #include "NetworkPacketSender.h"
 
-enum CanUseByteForALLGROUPS
+//ML Means milight
+namespace ML_BYTES
+{
+enum CAN_USE_FOR_ALL_ALL_GROUPS
 {
     ForNeither = 0x00,    //"00000000"
     ForHue = 0x01,        //"00000001"
@@ -12,7 +15,7 @@ enum CanUseByteForALLGROUPS
     ForBoth = 0x03        //"00000011"
 };
 
-enum MilightGroupIDs
+enum GROUP_ID
 {
     Invalid = 0,
     Group1 = 1,
@@ -21,11 +24,12 @@ enum MilightGroupIDs
     Group4 = 4,
     ALLGROUPS = 5
 };
+} // namespace ML_BYTES
 
 class Milight : public ProgrammableLight
 {
 public:
-    CanUseByteForALLGROUPS CheckIfCanUseByteForALLGROUPS(const std::map<int, Colour_Combiner> Collection);
+    ML_BYTES::CAN_USE_FOR_ALL_ALL_GROUPS GetNumOfPossibleGroups(const std::map<int, Colour_Combiner> Collection) const;
     Milight(int BrightnessThreshhold);
 
     void EmitColour(const Command CommandItem, const std::map<int, Colour_Combiner> ExpectedOutput) override;
@@ -40,7 +44,7 @@ public:
 
 private:
     int BrightnessThreshhold;
-    MilightGroupIDs GetGroupEnum(const int GroupNumber) const;
+    ML_BYTES::GROUP_ID GetGroupEnum(const int GroupNumber) const;
     uint8_t GetGroupHexByte(const int GroupNumber) const;
     std::unique_ptr<NetworkPacketSender> PacketSender;
     std::vector<uint8_t> CurrentGroupBytes;
@@ -48,6 +52,6 @@ private:
 
     void SendHue(const Colour OutputColour);
     void SendBrightness(const Colour OutputColour);
-    void SendGroupOn(const MilightGroupIDs GroupID);
+    void SendGroupOn(const ML_BYTES::GROUP_ID GroupID);
     void SendGroupOFF();
 };

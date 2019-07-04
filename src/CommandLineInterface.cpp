@@ -2,7 +2,6 @@
 #include <string>
 #include <iostream>
 #include <algorithm>
-#include "SDL_Light.h"
 bool CommandLineInterface::RUNNING = true;
 
 CommandLineInterface::CommandLineInterface()
