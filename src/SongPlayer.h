@@ -58,34 +58,15 @@ public:
     {
     }
 
-    void SetTime(unsigned int hours, unsigned int minutes, unsigned int seconds)
+    void SetTime(unsigned int hours, unsigned int minutes)
     {
-        std::chrono::system_clock::time_point tp = std::chrono::system_clock::now();
-        std::chrono::system_clock::duration dtn = tp.time_since_epoch();
-        const auto total_seconds = dtn.count() * std::chrono::system_clock::period::num / std::chrono::system_clock::period::den;
+        std::time_t t = std::time(nullptr);
+        std::tm tm = *std::localtime(&t);
+        tm.tm_sec = 0;
+        tm.tm_min = minutes;
+        tm.tm_hour = hours;
 
-        const auto seconds_now = total_seconds % 60;
-        const auto minutes_total = total_seconds / 60;
-        const auto minutes_now = minutes_total % 60;
-        const auto hours_total = minutes_total / 60;
-        const auto hours_now = hours_total % 60;
-        const auto days_total = hours_total / 24;
-
-        std::cout
-            << "Time is: "
-            << std::to_string(days_total) << ":"
-            << std::to_string(hours_now) << ":"
-            << std::to_string(minutes_now) << ":"
-            << std::to_string(seconds_now)
-            << std::endl;
-
-        const auto seconds_in_a_day = 60 * 60 * 24;
-        const auto offset = (days_total * seconds_in_a_day) + (hours * 60 * 60) + (minutes * 60) + (seconds);
-        const auto start_time = std::chrono::seconds(offset);
-        std::chrono::time_point<std::chrono::system_clock, std::chrono::seconds> tp_seconds(start_time);
-
-        const auto run_seconds = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::time_point_cast<std::chrono::milliseconds>(tp_seconds).time_since_epoch());
-        std::cout << run_seconds.count() << std::endl;
+        SongStartTime = std::chrono::system_clock::from_time_t(std::mktime(&tm));
     };
 
 private:

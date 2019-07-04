@@ -52,10 +52,9 @@ CommandLineInterface::CommandLineInterface()
 
     userCommands.push_back(UserCommand("startat", "When the run command is executed, the song will not begin until the time given (as a parameter) has passed",
                                        [&](std::string afterSpace) {
-                                           unsigned int hours = ((afterSpace[0] - '0') * 10) + (afterSpace[1] - '0');
+                                           unsigned int hours   = ((afterSpace[0] - '0') * 10) + (afterSpace[1] - '0');
                                            unsigned int minutes = ((afterSpace[3] - '0') * 10) + (afterSpace[4] - '0');
-                                           unsigned int seconds = ((afterSpace[6] - '0') * 10) + (afterSpace[7] - '0');
-                                           Player->SetTime(hours, minutes, seconds);
+                                           Player->SetTime(hours, minutes);
                                        }));
 
     userCommands.push_back(UserCommand("help", "Gives the current time",
