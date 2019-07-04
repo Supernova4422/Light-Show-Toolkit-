@@ -1,21 +1,8 @@
 #include "SDL_Light.h"
-#include "SDL.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include "ProxyMaker.h"
-
-void SDL_Light::On_Tick()
-{
-	SDL_Event event;
-	while (SDL_PollEvent(&event))
-	{
-		if (event.type == SDL_QUIT)
-		{
-			SDL_DestroyWindow(MainWindow);
-		}
-	}
-}
 
 SDL_Light::SDL_Light()
 {
@@ -48,6 +35,18 @@ SDL_Light::SDL_Light()
 					SDL_RenderPresent(renderer);
 				}
 			}
+		}
+	}
+}
+
+void SDL_Light::On_Tick()
+{
+	SDL_Event event;
+	while (SDL_PollEvent(&event))
+	{
+		if (event.type == SDL_QUIT)
+		{
+			SDL_DestroyWindow(MainWindow);
 		}
 	}
 }

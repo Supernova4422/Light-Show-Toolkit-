@@ -3,7 +3,7 @@
 
 #define HAVE_STRUCT_TIMESPEC
 #define STRUCT_TIMESPEC_HAS_TV_SEC
-
+#include "config.h"
 #include <stdint.h>
 #include <iostream>
 #include <vector>
@@ -21,12 +21,6 @@
 #include "Factory_433.h"
 #endif
 
-
-
-long getDigit(char c)
-{
-	return (long)c - (long)'0';
-}
 
 int main(int argc, char *argv[])
 {

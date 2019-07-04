@@ -1,5 +1,7 @@
 #pragma once
-#include "SDL_Mixer.h"
+#if AUDIO_OUT == 1
+#include "SDL_mixer.h"
+#include "SDL.h"
 
 class SDL_AudioPlayer
 {
@@ -49,3 +51,4 @@ public:
 private:
 	Mix_Music *gMusic = NULL;
 };
+#endif

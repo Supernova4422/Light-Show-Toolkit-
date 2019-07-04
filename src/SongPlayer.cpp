@@ -15,12 +15,19 @@
 #include <fstream>
 
 #include "GroupManager.h"
+#if SDL_WINDOW_ENABLED == 1
 #include "SDL_Light.h"
-
 void SongPlayer::add_sdl()
 {
     groupManager.AddLight<SDL_Light>();
 }
+#else
+void SongPlayer::add_sdl()
+{
+    std::cout << "SDL preview has been disabled in the config!" << std::endl;
+}
+
+#endif
 
 void SongPlayer::LoadMainFile(const std::string FileName)
 {
@@ -45,6 +52,16 @@ void SongPlayer::AddParsedFileToSupportFile(std::map<std::string, std::vector<Co
     }
 }
 
+void SongPlayer::SetTime(unsigned int hours, unsigned int minutes)
+{
+    std::time_t t = std::time(nullptr);
+    std::tm tm = *std::localtime(&t);
+    tm.tm_sec = 0;
+    tm.tm_min = minutes;
+    tm.tm_hour = hours;
+
+    SongStartTime = std::chrono::system_clock::from_time_t(std::mktime(&tm));
+}
 void SongPlayer::RunFunction(const std::string FunctionToPlay, const CommandOperation Operation)
 {
     auto search = MainFile.find(FunctionToPlay);
@@ -133,12 +150,12 @@ void SongPlayer::PrepareSong(const std::string songFilename)
 
 void SongPlayer::SetSongStart(const unsigned int startAt_Seconds)
 {
-    SongStartTime = std::chrono::high_resolution_clock::now() - std::chrono::seconds(startAt_Seconds);
+    SongStartTime = std::chrono::system_clock::now() - std::chrono::seconds(startAt_Seconds);
 }
 void SongPlayer::StartPlaying(const std::string FunctionToPlay)
 {
     bool SongIsPlaying = audioPlayer.playSong(songFilename, songStartAt);
-    SongStartTime = std::chrono::high_resolution_clock::now() - std::chrono::seconds(songStartAt);
+    SongStartTime = std::chrono::system_clock::now() - std::chrono::seconds(songStartAt);
 
     if (songFilename == "")
     {

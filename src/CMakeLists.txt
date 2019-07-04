@@ -25,6 +25,8 @@ find_path(SDL_MIXER_INCLUDE_DIRS NAME SDL_mixer.h HINTS "../../library/SDL2_mixe
 find_library(SDL_MIXER_LIBRARIES NAME SDL2_mixer HINTS "../../library/SDL2_mixer/lib/x86/")
 
 add_executable(LightShowProject
+config.h
+
 BinaryLightController.h
 Colour.h
 CommandLineInterface.h
@@ -49,9 +51,7 @@ LIGHT_COMMAND_TYPE.h
 UserCommand.h
 AudioPlayer_Dummy.h
 SDL_AudioPlayer.h
-
 Tick_Listener.h
-
 ProxyMaker.cpp
 main.cpp
 Colour.cpp

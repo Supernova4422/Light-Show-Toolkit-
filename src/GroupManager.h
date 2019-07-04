@@ -13,9 +13,13 @@
 #include "Tick_Listener.h"
 #include <set>
 #include "ProgrammableLight_Async.h"
-#include "Milight.h"
 #include "ConsoleLight.h"
-#include "SDL_Light.h"
+
+#ifdef MILIGHT_ENABLED
+#include "Milight.h"
+#endif
+
+
 class GroupManager : public Tick_Listener
 {
 public:
@@ -27,9 +31,13 @@ public:
     AddLight<BL_433>(14, 0);
     AddLight<RF24_Sender>(MILIGHT_VERSION::V5);
 #endif
+
+#if MILIGHT_ENABLED == 1
     AddLight<Milight>(10); //10 is arbitrarily chosen
+#endif
     AddLight<ConsoleLight>("First", 1);
     AddLight<ConsoleLight>("Second", 2);
+
     //AddLight<SDL_Light>();
     //AddTickListener(sdl_window);
     //AddTickListener<SDL_Light>(); //Used to be shared with the light listener.
