@@ -4,7 +4,7 @@ This software can be used to play "Light Show" Files, which are files designed t
 
 This works by running a function (which means commands in sequence), which are interpreted properly by each individual system. This program will begin running the function "Play" from a given file, alongside a given song.
 
-The aim is for future light systems to be added, allowing for a standard method. 
+The aim is for future light systems to be added, allowing for a standard method.
 
 Demonstration: http://www.youtube.com/watch?v=yJPQA24talc
 
@@ -17,64 +17,65 @@ To compile this program, you may need to download necessary headers, and to run 
 
 ## Using the CLI
 
-* LoadMain <LightShowFile.lightshow>: Is used to load the file used to play the song
-
-* LoadSupport <LightShowFile.lightshow>: Loads a file that the "FunctionName" command will also search inside
-
-* Run <AudioFile.wav>: Begins executing the "Play" function, with the given music
-
-* Help: Prints out some helpful text
-
+In the software use the help command to view available commands.
 
 ## LightShow file format
 The lightshow file format is a unique file format used by this program, "Example.lightshow" outlines the syntax and functionality of the format
 
-Generally, a function is a collection of sequential commands. A command has three properties: 
+Generally, a function is a collection of sequential commands. A command has three properties:
 * What the command does
 * The Operator
 * The Value
 
 The "Play" Function is where the song starts from.
 
-If you are still confused, Example.lightshow will definetely clear up a few questions
+Example.lightshow is provided to help clear up any questions that remain after reading the following sections.
 
 ## Available "Commands"
-* ColourChange: Change the colour to what is specified for the currently selected groups
+
+A command is of the following syntax:
+
+<Integer><Operator><CommandValue>
+
+
+* ColourChange (Prefixed with # for a 6 byte RGB string such as: #FF0010, and $ for a 6 byte HSL string such as: $FF0010): Change the colour to what is specified for the currently selected groups
 * Wait: Pause for an amount of seconds
-* Group: Set the current group  
-* FunctionName: Run another function
-* SpecificCommand: Passes a string to the light class, for individual interpretation
-  
+* Group: Set the current group, e.g Group1
+* FunctionName: Run another function defined in the file
+* SpecificCommand: Passes a string to the light class, for individual interpretation.
+
 ## Available Operations
 Operations can be applied to a command, changing their functionality
 
-Within the lightshow file format, a command preceeded by '+' denotes "add", '-' denotes "Subtract", nothing denotes "Set"
+Within the lightshow file format, a command preceeded by '+' denotes "add", '-' denotes "Subtract", "=" denotes "Set." If no prefix is given then "Set" is assumed.
 
-### Set Operator (Default)
-* For Colour, will SET the colour to the given value for each "Currently Selected Group" 
-* For Group, will SET the "Currently Selected Group" to the given value
-* For FunctionName, will run every function
-    
+### Set Operator (Default, "=")
+* When prefixed to a Colour command, will SET the colour to the given value for each "Currently Selected Group"
+* When prefixed to a group Group command, will SET the "Currently Selected Groups" to the given group
+* For FunctionName, will run the function
+
 ### Add operator (+Command)
-* For Colour, will ADD the colour to each light individually
-* For Group, will ADD the group to the currently selected group
+* For Colour, will ADD the colour to each light's current colour (individually).
+* For Group, will ADD the group to the currently selected groups
 * For FunctionName, will run every command with the + operator
+
 ### Subtract Operator (-Command)
-* The opposite for each
+* The opposite of the add operator
 
 ### Repeat Operator (Integer)
-* For a function, will execute it the given number of times
+* For a function, will execute it the given number of times. E.g: 5+#550000
 
 ## General Principle of changing a light's colour:
 
-To change the colour of a light, 
+To change the colour of a light,
 1. FIRST you set the "Current Groups" to the light.
-2. Secondly you fire off a Colour. 
+2. Secondly you fire off a Colour.
 
 ## Settings Files
+Do keep in mind this section needs to be updated as there have been significant changes.
 
 ### LimitlessLED/Milight Settings
-MiLightSettings.txt holds the settings for LimitlessLED/MiLight. 
+MiLightSettings.txt holds the settings for LimitlessLED/MiLight.
 * The first line is the IP Address (e.g: 10.0.0.65)
 * The second line is the PORT (e.g: 8899)
 * The third line is UDP or TCP (Protocol to use)
@@ -85,32 +86,26 @@ MiLightSettings.txt holds the settings for LimitlessLED/MiLight.
 * The next two bytes are the Remote ID
 * The final byte is the GroupID
 
-## Currently Supports: 
-### Currently Supported Light-Systems: 
+## Currently Supports:
+### Currently Supported Light-Systems:
 * Milight/LimitlessLED -Supports both UDP and TCP, and RF24 through an NRF2.4 module.
 
 ### Adding your own lighting system
-You may be interested in including your own lighting system with this program (Such as HUE). Essentially you would develop a class that overrides the "ProgrammableLight" class and implements each virtual function. 
-
-Then within the "GroupManager.cpp" class you will include this class, and add it to the "ListeningLights" vector. 
-
-For examples of this process, view both Consoleview.cpp and Milight.cpp as well as their assignment in GroupManager.cpp
-
-Side note: In this repository i'll happily accept additions
+TODO: This section needs to be rewritten.
 
 ### Currently supported File-Formats for light-shows
 * .lightshow (Custom lightshow file format)
 ### Currently supported Operating systems
 * Windows
 * Linux (Tested on Ubuntu and Raspbian)
-* Mac OSX (Haven't compiled and tested it myself, but in theory it should be compatible)
+* Mac OSX
 
 ### Currently support audio file formats
 * WAVE
 * MOD
 * MIDI
 * OGG
-* MP3 
+* MP3
 * FLAC
 
 ## Compiling
@@ -120,7 +115,7 @@ Side note: In this repository i'll happily accept additions
 
 * Use Cmake to compile and link libraries
 
-* You will get errors regarding openmilight and RF24 missing, this is fine. 
+* You will get errors regarding openmilight and RF24 missing, this is fine.
 
 * Upon compiling, drop in the DLLS necessary until no more errors occur at launch
 
@@ -133,6 +128,6 @@ Get the necessary libraries (libsdl2-dev, libsdl2-net-dev, libSDL2-Mixer-dev, li
 
 * You also need to use RF24_Config.txt in the build directory
 
-* If you do not intend to use these, you need to remove the macros from main.cpp (parts between #ifdef __arm__ and #endif) 
+* If you do not intend to use these, you need to remove the macros from main.cpp (parts between #ifdef __arm__ and #endif)
 
 * Other than that, compiling is the same as Linux
