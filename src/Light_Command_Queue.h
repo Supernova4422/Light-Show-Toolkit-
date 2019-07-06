@@ -2,7 +2,7 @@
 #include "Light_Command.h"
 #include <queue>
 #include <optional>
-
+#include <mutex>
 class Light_Command_Queue
 {
 public:
