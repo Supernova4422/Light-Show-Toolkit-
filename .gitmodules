@@ -7,3 +7,6 @@
 [submodule "esp8266_milight_hub"]
 	path = esp8266_milight_hub
 	url = https://github.com/Fantasmos/esp8266_milight_hub
+[submodule "rc-switch"]
+	path = rc-switch
+	url = https://github.com/sui77/rc-switch
