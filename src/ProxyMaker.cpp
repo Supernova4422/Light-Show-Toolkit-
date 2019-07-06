@@ -67,13 +67,13 @@ std::map<std::set<int>, int, cmpBySetSize> ProxyMaker::proxy_filereader(std::str
 }
 
 //TODO MAKE OPTIONAL
-Colour_Combiner ProxyMaker::get_from_data(int id, std::vector<std::pair<const int, Colour_Combiner> *> input)
+Colour_Combiner ProxyMaker::get_from_data(int id, std::map<int, Colour_Combiner> input)
 {
 	for (auto entry : input)
 	{
-		if (id == entry->first)
+		if (id == entry.first)
 		{
-			return entry->second;
+			return entry.second;
 		}
 	}
 	return Colour_Combiner();
@@ -95,17 +95,17 @@ bool ProxyMaker::colours_equal(const Colour_Combiner c1, const Colour_Combiner c
 	return true;
 }
 
-std::vector<std::pair<const int, Colour_Combiner> *> ProxyMaker::proxy_maker(std::vector<std::pair<const int, Colour_Combiner> *> input, std::map<std::set<int>, int, cmpBySetSize> proxies)
+std::map<int, Colour_Combiner> ProxyMaker::proxy_maker(std::map<int, Colour_Combiner> input, std::map<std::set<int>, int, cmpBySetSize> proxies)
 {
 
 	std::vector<int> Groups;
 
-	for (auto item : (input))
+	for (auto item : input)
 	{
-		Groups.push_back(item->first);
+		Groups.push_back(item.first);
 	}
 
-	std::vector<std::pair<const int, Colour_Combiner> *> output;
+	std::map<int, Colour_Combiner> output;
 
 	for (auto proxy : proxies)
 	{
@@ -175,8 +175,7 @@ std::vector<std::pair<const int, Colour_Combiner> *> ProxyMaker::proxy_maker(std
 			}
 			else if (verbose)
 			{
-				std::cout << '\n'
-						  << '\t' << "Proxy verified for: " << std::to_string(first_id) << '\n';
+				std::cout << '\n' << '\t' << "Proxy verified for: " << std::to_string(first_id) << '\n';
 			}
 
 			int ID;
@@ -193,16 +192,14 @@ std::vector<std::pair<const int, Colour_Combiner> *> ProxyMaker::proxy_maker(std
 
 			for (auto pair : input)
 			{
-				if (pair->first == ID)
+				if (pair.first == ID)
 				{
 					if (verbose)
 					{
 						std::cout << '\t' << "Proxy group is: " << std::to_string(proxy.second) << " Using data from: " << std::to_string(ID) << '\n'
 								  << '\n';
 					}
-					std::pair<const int, Colour_Combiner> *updated_pair =
-						new std::pair<const int, Colour_Combiner>(proxy.second, pair->second);
-					output.push_back(updated_pair);
+					output[proxy.second] = pair.second;
 					break;
 				}
 			}
@@ -221,9 +218,9 @@ std::vector<std::pair<const int, Colour_Combiner> *> ProxyMaker::proxy_maker(std
 		};
 		for (auto pair : input)
 		{
-			if (pair->first == remaining)
+			if (pair.first == remaining)
 			{
-				output.push_back(pair);
+				output[pair.first] = pair.second;
 			}
 		}
 	}
