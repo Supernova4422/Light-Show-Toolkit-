@@ -25,7 +25,6 @@ elseif(IS_DIRECTORY ${RF24})
 
 	target_link_libraries(RF24_proj "rf24-bcm")
 
-	find_path(OpenMilight NAME MiLightRadio.h)
 
 	if(NOT IS_DIRECTORY ${V6_Encoding})
 		message("V6_Encoding was not found. A modified version V6_Encoding can be downloaded at: https://github.com/Fantasmos/esp8266_milight_hub/ however if you are not compiling to RPI this can be ignored")
