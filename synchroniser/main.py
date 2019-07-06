@@ -57,6 +57,12 @@ print(ssh_stderr.read())
 print(ssh_stdout.read())
 print("")
 
+ssh_stdin, ssh_stdout, ssh_stderr = ssh.exec_command(
+    "cd Light-Show-Toolkit-/RF24;sudo ./configure;make all" + '\n')
+print(ssh_stderr.read())
+print(ssh_stdout.read())
+print("")
+
 ssh_stdin.close()
 
 

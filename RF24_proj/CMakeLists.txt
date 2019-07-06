@@ -8,7 +8,7 @@ if(NOT IS_DIRECTORY ${RF24})
 elseif(IS_DIRECTORY ${RF24})
 
 	find_path(V6_Encoding NAME V2RFEncoding.h HINTS "../esp8266_milight_hub/lib/Milight/")
-	find_path(OpenMilight NAME MiLightRadio.h HINTS "../esp8266_milight_hub/lib/Radio/")
+	find_path(OpenMilight NAME MiLightRadio.h HINTS "../openmili/host")
 
 
 	add_library(RF24_proj
@@ -40,7 +40,13 @@ elseif(IS_DIRECTORY ${RF24})
 	elseif(IS_DIRECTORY ${OpenMilight})
 		message("OpenMilight has been found")
 		INCLUDE_DIRECTORIES(RF24_proj ${OpenMilight} )
-		target_sources(RF24_proj PUBLIC ${OpenMilight}/PL1167_nRF24.cpp ${OpenMilight}/MiLightRadio.cpp ${OpenMilight}/MiLightRadio.h)
+
+		target_sources(
+			RF24_proj PUBLIC
+			${OpenMilight}/PL1167_nRF24.cpp
+			${OpenMilight}/MiLightRadio.cpp
+			${OpenMilight}/MiLightRadio.h
+		)
 	endif(NOT IS_DIRECTORY ${OpenMilight})
 
 endif(NOT IS_DIRECTORY ${RF24})
