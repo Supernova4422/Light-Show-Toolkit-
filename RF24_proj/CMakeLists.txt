@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.7)
 project(RF24_proj)
-find_path(RF24 NAME RF24.h)
+find_path(RF24 NAME RF24.h HINTS "../RF24")
 
 
 if(NOT IS_DIRECTORY ${RF24})
@@ -15,6 +15,7 @@ elseif(IS_DIRECTORY ${RF24})
 		RF24_Sender.cpp
 		RF24_Sender.h
 		)
+
 	target_include_directories(RF24_proj PUBLIC ${RF24})
 	target_include_directories(RF24_proj PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 	target_include_directories(RF24_proj PUBLIC ../src)
