@@ -38,9 +38,9 @@ struct ProxyMaker
 	static std::map<std::set<int>, int, cmpBySetSize> proxy_filereader(std::string filename);
 
 	//TODO MAKE OPTIONAL
-	static Colour_Combiner get_from_data(int id, std::vector<std::pair<const int, Colour_Combiner> *> input);
+	static Colour_Combiner get_from_data(int id, std::map<int, Colour_Combiner> input);
 	static bool colours_equal(Colour_Combiner c1, Colour_Combiner c2);
-	static std::vector<std::pair<const int, Colour_Combiner> *> proxy_maker(
-		std::vector<std::pair<const int, Colour_Combiner> *> input,
+	static std::map<int, Colour_Combiner> proxy_maker(
+		std::map<int, Colour_Combiner> input,
 		std::map<std::set<int>, int, cmpBySetSize> proxies);
 };

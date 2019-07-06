@@ -6,7 +6,7 @@
 class ConsoleLight : public ProgrammableLight
 {
 public:
-    ConsoleLight(std::string label = std::string("DEFAULT_") + std::to_string(ConsoleLight::count), const size_t delay = 0) : delay(delay), label(label)
+    ConsoleLight(std::string label = std::string("DEFAULT_") + std::to_string(ConsoleLight::count), const size_t wait = 0) : wait(wait), label(label)
     {
         count += 1;
         std::cout << "All commands will print to console" << std::endl;
@@ -32,7 +32,7 @@ public:
 
 private:
     bool PostedNewGroups = false;
-    size_t delay;
+    size_t wait;
     std::string label;
     static int count;
 };

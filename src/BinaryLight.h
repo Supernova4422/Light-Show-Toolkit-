@@ -26,7 +26,7 @@ public:
 		light.initialise();
 	};
 
-	void SpecificCommand(const Command command){};
+	void SpecificCommand(const Command command, const std::map<int, Colour_Combiner> current){};
 
 	void EmitColour(const Command CommandItem, const std::map<int, Colour_Combiner> ExpectedOutput)
 	{
@@ -39,15 +39,19 @@ public:
 
 			if (shouldturnon)
 			{
-				light->turnon(group);
+				light.turnon(group);
 			}
 			else
 			{
-				light->turnoff(group);
+				light.turnoff(group);
 			}
 		}
 		std::cout << std::endl;
 	}
+	void OnCurrentGroupsUpdate(const Command CommandItem, const std::map<int, Colour_Combiner> groups){}
+	
+	void OnStart(){};
+	void OnEnd(){};
 
 private:
 	std::map<std::set<int>, int, cmpBySetSize> proxies;

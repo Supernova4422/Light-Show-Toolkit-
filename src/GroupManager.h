@@ -20,7 +20,10 @@
 #endif
 
 #ifdef __arm__
-#include "BL_433.h"
+#define RPI
+#define RaspberryPi
+#include "BinaryLight.h"
+#include "../433/BL_433.h"
 #include "RF24_Sender.h"
 #endif
 
@@ -32,7 +35,7 @@ public:
 
 #ifdef __arm__
 #warning Injecting GPIO based lights into program, sudo will be needed to run
-    AddLight<BL_433>(14, 0);
+    AddLight<BinaryLight<BL_433>>(14, 0);
     AddLight<RF24_Sender>(MILIGHT_VERSION::V5);
 #endif
 
