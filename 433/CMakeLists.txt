@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.7)
 project(433)
-find_path(RC-Switch NAME RCSwitch.h)
+find_path(RC-Switch NAME RCSwitch.h HINTS "../rc-switch/")
 if(NOT IS_DIRECTORY ${RC-Switch})
 	message("RC-Switch was not found. RC-Switch can be downloaded at: https://github.com/sui77/rc-switch however if you are not compiling to RPI this can be ignored")
 elseif(IS_DIRECTORY ${RC-Switch})

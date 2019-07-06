@@ -40,13 +40,13 @@ print(ssh_stdout.read())
 print("")
 
 ssh_stdin, ssh_stdout, ssh_stderr = ssh.exec_command(
-    "git clone https://github.com/BKrajancic/Light-Show-Toolkit-.git " + '\n')
+    "git clone https://github.com/BKrajancic/Light-Show-Toolkit-.git;  " + '\n')
 print(ssh_stderr.read())
 print(ssh_stdout.read())
 print("")
 
 ssh_stdin, ssh_stdout, ssh_stderr = ssh.exec_command(
-    "cd Light-Show-Toolkit-/;git submodule update --init --recursive;git pull --recurse-submodules")
+    "cd Light-Show-Toolkit-/;git pull;git submodule update --init --recursive;git pull --recurse-submodules")
 print(ssh_stderr.read())
 print(ssh_stdout.read())
 print("")
