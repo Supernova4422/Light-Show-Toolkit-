@@ -4,11 +4,12 @@
 #include "utility/RPi/spi.h"
 #include "RF24.h"
 #include <map>
-#include "PL1167_nRF24.h"
-#include "MiLightRadio.h"
+
+#include "../openmili/PL1167_nRF24.h"
+
+#include "../openmili/MiLightRadio.h"
 #include "CommandDataTypes.cpp"
 #include "ProgrammableLight.h"
-#include "GroupManager.h"
 #include "Colour_Combiner.cpp"
 #include "ProxyMaker.h"
 #include <vector>
@@ -50,8 +51,8 @@ private:
     uint8_t seq_num = 0x00;
     const uint8_t threshold = 0x08;
     const uint8_t white_threshold = 10;
-    const uint8_t CHANNELS_V5[3] = {9, 40, 71}; //Make it possible to configure perhaps
-    const uint8_t CHANNELS_V6[3] = {70, 39, 8};
+    uint8_t CHANNELS_V5[3] = {9, 40, 71}; //Make it possible to configure perhaps
+    uint8_t CHANNELS_V6[3] = {70, 39, 8};
     std::map<std::pair<uint8_t, uint8_t>, uint8_t> last_group;
 
     int packet_size = 7;

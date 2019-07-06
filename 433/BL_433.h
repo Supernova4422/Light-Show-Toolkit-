@@ -8,13 +8,13 @@
 #include <iostream>
 #include <map>
 
-#include "RCSwitch.h"
+#include "../rc-switch/RCSwitch.h"
 class BL_433 : public BinaryLightController
 {
 public:
 	BL_433();
 
-	~BL_433();
+	~BL_433(){};
 	void initialise();
 	void turnon(int group);
 	void turnoff(int group);
