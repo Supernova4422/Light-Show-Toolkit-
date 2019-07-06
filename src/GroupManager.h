@@ -19,6 +19,10 @@
 #include "Milight.h"
 #endif
 
+#ifdef __arm__
+#include "BL_433.h"
+#include "RF24_Sender.h"
+#endif
 
 class GroupManager : public Tick_Listener
 {
