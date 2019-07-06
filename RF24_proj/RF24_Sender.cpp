@@ -67,7 +67,7 @@ void RF24_Sender::EmitColour(const Command CommandItem, const std::map<int, Colo
 
     for (auto entry : proxiedOutput)
     {
-        auto it = Groups.find(entry->first);
+        auto it = Groups.find(entry.first);
 
         if (it != Groups.end())
         {
@@ -85,9 +85,9 @@ void RF24_Sender::EmitColour(const Command CommandItem, const std::map<int, Colo
                         it->second.second[2],        //GroupID 65 is for all groups I find this best
                         0x00};
 
-                if (entry->second.brightness_changed())
+                if (entry.second.brightness_changed())
                 {
-                    if (entry->second.get_colour().Brightness < threshold)
+                    if (entry.second.get_colour().Brightness < threshold)
                     {
                         std::cout << "Turning off" << '\n';
                         msg[4] = 0x01;
@@ -97,17 +97,17 @@ void RF24_Sender::EmitColour(const Command CommandItem, const std::map<int, Colo
                         break;        //Break CURRENT loop, check this is proper later.
                     }
                 }
-                if (entry->second.hue_changed())
+                if (entry.second.hue_changed())
                 {
                     std::cout << "Hue being sent" << '\n';
                     msg[4] = 0x02;
-                    msg[5] = 0x5F + entry->second.get_colour().Hue;
+                    msg[5] = 0x5F + entry.second.get_colour().Hue;
                     msg[6] = ++seq_num;
                     send_v6(msg);
                 }
-                if (entry->second.brightness_changed())
+                if (entry.second.brightness_changed())
                 {
-                    if (entry->second.get_colour().Brightness < threshold)
+                    if (entry.second.get_colour().Brightness < threshold)
                     {
                         std::cout << "Turning off" << '\n';
                         msg[4] = 0x01;
@@ -119,16 +119,16 @@ void RF24_Sender::EmitColour(const Command CommandItem, const std::map<int, Colo
                     {
                         std::cout << "Brightness being sent" << '\n';
                         msg[4] = 0x04;                                                                   //Brightness Command
-                        msg[5] = 0x8F + (100 * (float(entry->second.get_colour().Brightness) / 255.0F)); //Brightness arg
+                        msg[5] = 0x8F + (100 * (float(entry.second.get_colour().Brightness) / 255.0F)); //Brightness arg
                         msg[6] = ++seq_num;
                         send_v6(msg);
                     }
                 }
-                if (entry->second.sat_changed())
+                if (entry.second.sat_changed())
                 {
                     std::cout << "Sat being sent" << '\n';
                     msg[4] = 0x04;
-                    msg[5] = 0x0D + (100 * (float(entry->second.get_colour().Saturation) / 255.0F));
+                    msg[5] = 0x0D + (100 * (float(entry.second.get_colour().Saturation) / 255.0F));
                     msg[6] = ++seq_num;
                     send_v6(msg);
                 }
@@ -147,21 +147,21 @@ void RF24_Sender::EmitColour(const Command CommandItem, const std::map<int, Colo
                 std::pair<uint8_t, uint8_t> remote_pair = {msg[1], msg[2]};
 
                 //Hue 0x1B is solid Red
-                msg[3] = ((0x1B + (entry->second.get_colour().Hue)));
+                msg[3] = ((0x1B + (entry.second.get_colour().Hue)));
 
                 uint8_t middle_point = 0x90;
                 uint8_t brightness = middle_point;
 
-                if (entry->second.brightness_changed())
+                if (entry.second.brightness_changed())
                 {
                     std::cout << "Brightness Changed" << '\n';
-                    if (entry->second.get_colour().Brightness > 144)
+                    if (entry.second.get_colour().Brightness > 144)
                     {
-                        brightness += (entry->second.get_colour().Brightness - middle_point);
+                        brightness += (entry.second.get_colour().Brightness - middle_point);
                     }
                     else
                     {
-                        brightness -= (entry->second.get_colour().Brightness);
+                        brightness -= (entry.second.get_colour().Brightness);
                     }
 
                     int br = ((brightness + 0x08 / 2) / 0x08) * 0x08; //Did you forget order of operations?
@@ -169,7 +169,7 @@ void RF24_Sender::EmitColour(const Command CommandItem, const std::map<int, Colo
 
                     //Redo logic here to turn on light
                     //Decide to make it white
-                    if (entry->second.get_colour().Brightness > threshold & entry->second.prev_colour().Brightness < threshold)
+                    if (entry.second.get_colour().Brightness > threshold & entry.second.prev_colour().Brightness < threshold)
                     {
                         std::cout << "Turning Light On" << '\n';
                         msg[5] = it->second.second[2];
@@ -178,7 +178,7 @@ void RF24_Sender::EmitColour(const Command CommandItem, const std::map<int, Colo
                     }
 
                     //Decide to make it white
-                    if (entry->second.get_colour().Brightness < threshold)
+                    if (entry.second.get_colour().Brightness < threshold)
                     {
                         std::cout << "Turning Light Off" << '\n';
                         msg[5] = it->second.second[2] + 1;
@@ -187,7 +187,7 @@ void RF24_Sender::EmitColour(const Command CommandItem, const std::map<int, Colo
                         break; //We need to stop running this chunk, light is now off!
                     }
                 }
-                if (entry->second.sat_changed() && entry->second.get_colour().Saturation < white_threshold)
+                if (entry.second.sat_changed() && entry.second.get_colour().Saturation < white_threshold)
                 {
 
                     if (last_group[remote_pair] != msg[5])
@@ -203,9 +203,9 @@ void RF24_Sender::EmitColour(const Command CommandItem, const std::map<int, Colo
                     msg[5] = it->second.second[2];
                 }
                 else if (
-                    entry->second.hue_changed() |
-                    (entry->second.prev_colour().Saturation < white_threshold &&
-                     entry->second.get_colour().Saturation > white_threshold))
+                    entry.second.hue_changed() |
+                    (entry.second.prev_colour().Saturation < white_threshold &&
+                     entry.second.get_colour().Saturation > white_threshold))
                 {
                     if (last_group[remote_pair] != msg[5])
                     {
@@ -218,7 +218,7 @@ void RF24_Sender::EmitColour(const Command CommandItem, const std::map<int, Colo
                     send_V5(msg);  //Send Hue
                 }
 
-                if (entry->second.brightness_changed())
+                if (entry.second.brightness_changed())
                 {
                     if (last_group[remote_pair] != msg[5])
                     {
@@ -228,8 +228,8 @@ void RF24_Sender::EmitColour(const Command CommandItem, const std::map<int, Colo
                     }
 
                     //We only send brightness if we have have a proper change
-                    if (entry->second.get_colour().Brightness > entry->second.prev_colour().Brightness + 16 |
-                        entry->second.get_colour().Brightness < entry->second.prev_colour().Brightness - 16)
+                    if (entry.second.get_colour().Brightness > entry.second.prev_colour().Brightness + 16 |
+                        entry.second.get_colour().Brightness < entry.second.prev_colour().Brightness - 16)
                     {
                         std::cout << "Send Brightness" << '\n';
                         msg[3] = 0x00;
@@ -245,11 +245,6 @@ void RF24_Sender::EmitColour(const Command CommandItem, const std::map<int, Colo
 void RF24_Sender::OnCurrentGroupsUpdate(const Command CommandItem, const std::map<int, Colour_Combiner> CurrentGroups)
 {
     PostedNewGroups = false;
-}
-
-void RF24_Sender::SpecificCommand(const Command command, const std::map<int, Colour_Combiner> CurrentGroups)
-{
-    std::cout << command.value << '\n';
 }
 
 void RF24_Sender::send_v6(uint8_t *message)
