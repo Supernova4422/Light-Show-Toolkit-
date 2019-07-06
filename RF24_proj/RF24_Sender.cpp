@@ -11,6 +11,7 @@
 #include <iomanip>
 #include "stddef.h"
 #include "V2RFEncoding.h"
+
 RF24_Sender::RF24_Sender(MILIGHT_VERSION version)
 {
     proxies = ProxyMaker::proxy_filereader("proxy_rf24.txt");
@@ -60,8 +61,7 @@ RF24_Sender::RF24_Sender(MILIGHT_VERSION version)
     std::cout << "Setting data rate was: " << radio.setDataRate(RF24_1MBPS) << '\n';
     radio.powerUp();
 }
-void RF24_Sender::EmitColour(const Command CommandItem,
-                             const std::vector<std::pair<const int, Colour_Combiner> *> ExpectedOutput)
+void RF24_Sender::EmitColour(const Command CommandItem, const std::map<int, Colour_Combiner> ExpectedOutput)
 {
     auto proxiedOutput = ProxyMaker::proxy_maker(ExpectedOutput, proxies);
 
@@ -242,58 +242,14 @@ void RF24_Sender::EmitColour(const Command CommandItem,
     }
 }
 
-void RF24_Sender::OnCurrentGroupsUpdate(
-    const Command CommandItem,
-    std::vector<std::pair<const int, Colour_Combiner> *> CurrentGroups)
+void RF24_Sender::OnCurrentGroupsUpdate(const Command CommandItem, const std::map<int, Colour_Combiner> CurrentGroups)
 {
-    std::cout << "Set for OCG called" << '\n';
     PostedNewGroups = false;
 }
 
-void RF24_Sender::SpecificCommand(const Command command)
+void RF24_Sender::SpecificCommand(const Command command, const std::map<int, Colour_Combiner> CurrentGroups)
 {
     std::cout << command.value << '\n';
-}
-
-void RF24_Sender::overkillSend(const char *message)
-{
-    static uint8_t outgoingPacket[7];
-    static uint8_t outgoingPacketPos = 0;
-    memset(outgoingPacket, 0, 7);
-    // convert input into bytes
-    int index = 0;
-    for (int counter = 0; *message; ++message)
-    {
-        int n = 0;
-        if (*message >= 'a' && *message <= 'f')
-        {
-            n = *message - 'a' + 10;
-        }
-        else if (*message >= 'A' && *message <= 'F')
-        {
-            n = *message - 'A' + 10;
-        }
-        else if (*message >= '0' && *message <= '9')
-        {
-            n = *message - '0';
-        }
-        else if (*message == ' ')
-        {
-            index++;
-        }
-        else
-        {
-            std::cout << "cannot decode" << '\n';
-            exit(1);
-        }
-        outgoingPacket[index] = outgoingPacket[index] * 16 + (unsigned long)n;
-        //mlr.write(outgoingPacket, sizeof(outgoingPacket),CHANNELS);
-        //mlr.write(outgoingPacket, sizeof(outgoingPacket),CHANNELS);
-        delay(0);
-        // mlr.resend(CHANNELS);
-        delay(0);
-        outgoingPacket[6] += 8;
-    }
 }
 
 void RF24_Sender::send_v6(uint8_t *message)
