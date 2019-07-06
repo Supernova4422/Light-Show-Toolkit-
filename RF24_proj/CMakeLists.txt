@@ -7,8 +7,8 @@ if(NOT IS_DIRECTORY ${RF24})
 	message("RF24 was not found. RC-Switch can be downloaded at: https://github.com/nRF24/RF24 however if you are not compiling to RPI this can be ignored")
 elseif(IS_DIRECTORY ${RF24})
 
-	find_path(V6_Encoding NAME V2RFEncoding.h HINTS "../esp8266_milight_hub/Milight/")
-	find_path(OpenMilight NAME MiLightRadio.h HINTS "../esp8266_milight_hub/Radio/")
+	find_path(V6_Encoding NAME V2RFEncoding.h HINTS "../esp8266_milight_hub/lib/Milight/")
+	find_path(OpenMilight NAME MiLightRadio.h HINTS "../esp8266_milight_hub/lib/Radio/")
 
 
 	add_library(RF24_proj
