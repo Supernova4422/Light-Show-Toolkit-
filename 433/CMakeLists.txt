@@ -1,9 +1,19 @@
 cmake_minimum_required(VERSION 3.7)
 project(433)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++17")
+set(CMAKE_BUILD_TYPE Debug)
+set (CMAKE_CXX_STANDARD 17)
+
 find_path(RC-Switch NAME RCSwitch.h HINTS "../rc-switch/")
 if(NOT IS_DIRECTORY ${RC-Switch})
 	message("RC-Switch was not found. RC-Switch can be downloaded at: https://github.com/sui77/rc-switch however if you are not compiling to RPI this can be ignored")
 elseif(IS_DIRECTORY ${RC-Switch})
+
+message("Make sure to download wiringpi with the following commands:
+ 'git clone git://git.drogon.net/wiringPi',
+ 'cd wiringPi',
+ './build'")
+
 	add_library(433 STATIC
 		${RC-Switch}/RCSwitch.cpp
 		BL_433.h

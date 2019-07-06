@@ -34,6 +34,8 @@ def prepare_pis(server):
 
     commands = [
         "sudo apt-get install cmake git libsdl2-dev libsdl2-net-dev libsdl2-mixer-dev libsdl2-2.0;",
+        "git clone git://git.drogon.net/wiringPi"
+        "cd wiringPi;./build"
         "git clone https://github.com/BKrajancic/Light-Show-Toolkit-.git;",
         "cd Light-Show-Toolkit-/;git pull;git pull --recurse-submodules;git submodule update --init --recursive;",
         "cd Light-Show-Toolkit-/;mkdir build;cd build;cmake ../",
