@@ -2,7 +2,7 @@
 #include <iostream>
 #include <algorithm>
 #include "CommandLineInterface.h"
-#include <filesystem>
+
 bool CommandLineInterface::RUNNING = true;
 
 CommandLineInterface::CommandLineInterface()
@@ -72,12 +72,8 @@ CommandLineInterface::CommandLineInterface()
                                        [&](std::string afterSpace) {
                                            CommandLineInterface::RUNNING = false;
                                        }));
-    userCommands.push_back(UserCommand("ls", "Lists all files in the directory",
+    userCommands.push_back(UserCommand("exit", "Exits the application",
                                        [&](std::string afterSpace) {
-                                           std::filesystem::path p();
-                                           std::foreach(p.begin(), p.end()[](auto i){
-                                               std::cout << i;
-                                           }
                                            CommandLineInterface::RUNNING = false;
                                        }));
 }
