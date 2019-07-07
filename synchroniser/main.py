@@ -5,9 +5,11 @@ import os
 import fileinput
 import paramiko
 import time
+from time import gmtime, strftime
 
 
 def upload_files(server):
+    print("Uploading Files")
     with pysftp.Connection(server[0], username=server[1], password=server[2]) as sftp:
         out_dir = 'Light-Show-Toolkit-/build/'
         with sftp.cd(out_dir):
@@ -26,7 +28,8 @@ def run_command(command, ssh):
 
 
 def prepare_pis(server):
-
+    print("-----------------")
+    print("Running Commands")
     ssh = paramiko.SSHClient()
     ssh.load_system_host_keys()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -47,6 +50,26 @@ def prepare_pis(server):
         print("-------")
         run_command(command, ssh)
         print("-------")
+    print("-----------------")
+
+
+def run_in_minute(server, lightshow_file, song_file):
+    hour = strftime("%H", gmtime())
+    minute = (strftime("%M", gmtime()))
+    seconds = strftime("%S", gmtime())
+    time = str(hour) + ":" + \
+        (str(int(minute) + 1).zfill(2)) + \
+        ":" + \
+        strftime("%S", gmtime())
+
+    print(time)
+    cmd = "cd Light-Show-Toolkit-/build/src;sudo ./LightShowProject loadmainfile " + \
+        lightshow_file + " startat " + time + " run " + song_file
+    ssh = paramiko.SSHClient()
+    ssh.load_system_host_keys()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh.connect(server[0], username=server[1], password=server[2])
+    run_command(cmd, ssh)
 
 
 if __name__ == "__main__":
@@ -56,12 +79,10 @@ if __name__ == "__main__":
     ]
 
     for server in servers:
+        run_in_minute(server, "Example.lightshow", "ClappingSounds.wav")
+
         print("====================================")
         print("Executing on server: " + str(server))
-        print("-----------------")
-        print("Running Commands")
-        prepare_pis(server)
-        print("-----------------")
-        print("Uploading Files")
-        upload_files(server)
+        # prepare_pis(server)
+        # upload_files(server)
         print("====================================")

@@ -31,6 +31,10 @@ int main(int argc, char *argv[])
 	{
 		for (auto i = 0; i < argc - 1; i += 2)
 		{
+			std::cout << std::endl;
+
+			std::cout << "Command: " << std::string(argv[i]) << ", parameter: " << std::string(argv[i + 1]) << std::endl;
+
 			cli->ParseLine(std::string(argv[i]) + std::string(" ") + std::string(argv[i + 1]));
 		}
 	}
