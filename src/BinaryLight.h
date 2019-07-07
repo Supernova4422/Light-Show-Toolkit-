@@ -48,14 +48,14 @@ public:
 		}
 		std::cout << std::endl;
 	}
-	void OnCurrentGroupsUpdate(const Command CommandItem, const std::map<int, Colour_Combiner> groups){}
-	
+	void OnCurrentGroupsUpdate(const Command CommandItem, const std::map<int, Colour_Combiner> groups) {}
+
 	void OnStart(){};
 	void OnEnd(){};
 
 private:
 	std::map<std::set<int>, int, cmpBySetSize> proxies;
+	unsigned int threshhold;
+	unsigned int group_offset;
 	T light;
-	unsigned int threshhold = 0;
-	int group_offset = 0;
 };

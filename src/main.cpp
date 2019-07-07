@@ -3,11 +3,6 @@
 
 #define HAVE_STRUCT_TIMESPEC
 #define STRUCT_TIMESPEC_HAS_TV_SEC
-#ifdef __arm__
-#warning Compiling for Raspberry PI, errors may occur on other platforms
-#define RaspberryPi
-#define RPI
-#endif
 
 #include "config.h"
 #include <stdint.h>
@@ -17,7 +12,6 @@
 #include <string>
 #include <iostream>
 #include <memory>
-#include "SongPlayer.h"
 #include "CommandLineInterface.h"
 
 void signalHandler(int signum)
