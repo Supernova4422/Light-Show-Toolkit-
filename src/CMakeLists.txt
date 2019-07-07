@@ -90,11 +90,12 @@ elseif()
 endif(${SDL_MIXER_FOUND})
 
 find_library(wiringPi_LIB wiringPi)
-if (NOT IS_DIRECTORY ${wiringPi_LIB})
-	message("Wiringpi was not found. Not going to attempt to link the 433mhz project")
-elseif (IS_DIRECTORY ${wiringPi_LIB})
+if (NOT wiringPi_LIB)
+	message("Wiringpi was not found. Not going to attempt to link the 433mhz project. 
+There may be compilation issues if you are on Raspberry Pi. Install wiringPi using sudo apt-get install wiringPi")
+elseif (wiringPi_LIB)
 	target_link_libraries(LightShowProject 433)
-endif(NOT IS_DIRECTORY ${wiringPi_LIB})
+endif(NOT wiringPi_LIB)
 
 find_path(RF24 NAME RF24.h HINTS "../RF24")
 if(NOT EXISTS ${RF24}/utility/includes.h)
