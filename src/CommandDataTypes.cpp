@@ -24,8 +24,8 @@ struct Command
   CommandType type;
   std::string value;
   CommandOperation Operation;
-  int TimesToExecute;
+  unsigned int TimesToExecute;
 
-  Command(CommandType type, std::string value, CommandOperation operation, int TimesToExecute) : type(type), value(value), Operation(operation), TimesToExecute(TimesToExecute) {}
+  Command(CommandType type, std::string value, CommandOperation operation, unsigned int TimesToExecute) : type(type), value(value), Operation(operation), TimesToExecute(TimesToExecute) {}
 };
 #endif

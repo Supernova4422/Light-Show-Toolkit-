@@ -23,7 +23,7 @@
 #define RPI
 #define RaspberryPi
 #include "BinaryLight.h"
-#include "../433/BL_433.h"
+#include "BL_433.h"
 #include "RF24_Sender.h"
 #endif
 

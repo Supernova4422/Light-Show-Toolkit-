@@ -7,7 +7,6 @@
 
 BL_433::BL_433()
 {
-
     std::cout << std::endl
               << "Loading the 433mhz Codes" << std::endl;
     std::ifstream myfile("BL_433_Codes.txt");

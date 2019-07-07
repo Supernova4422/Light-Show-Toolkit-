@@ -5,7 +5,6 @@
 #include <fstream>
 #include <cstdlib>
 #include <errno.h>
-#include "BinaryLightController.h"
 #include "Colour_Combiner.cpp"
 #include "ProxyMaker.h"
 #include <vector>
@@ -33,7 +32,7 @@ public:
 		auto proxiedOutput = ProxyMaker::proxy_maker(ExpectedOutput, proxies);
 		for (auto pair : proxiedOutput)
 		{
-			int group = pair.first + group_offset;
+			auto group = pair.first + group_offset;
 			bool shouldturnon = (pair.second.get_colour().Brightness > threshhold);
 			std::cout << "Group: " << group << " will be made " << shouldturnon << std::endl;
 
