@@ -89,6 +89,7 @@ elseif()
 	message(status "SDL2_MIXER NOT FOUND")
 endif(${SDL_MIXER_FOUND})
 
+find_library(wiringPi_LIB wiringPi)
 if (NOT IS_DIRECTORY ${wiringPi_LIB})
 	message("Wiringpi was not found. Not going to attempt to link the 433mhz project")
 elseif(IS_DIRECTORY ${RC-Switch})
