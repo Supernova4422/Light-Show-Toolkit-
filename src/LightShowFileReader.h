@@ -49,7 +49,7 @@ public:
             CurrentFunctionName = "";
             outsideFunction = true;
           }
-          else if (delimeters.find(CurrentChar) != delimeters.end() &&
+          else if (std::find(delimeters.begin(), delimeters.end(), CurrentChar) != delimeters.end() &&
                    (outsideFunction == false) &&
                    CurrentWord != "")
           {
