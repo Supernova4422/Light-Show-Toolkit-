@@ -4,14 +4,9 @@
 #define HAVE_STRUCT_TIMESPEC
 #define STRUCT_TIMESPEC_HAS_TV_SEC
 #ifdef __arm__
-<<<<<<< HEAD
-#define RaspberryPi
-#warning Compiling for Raspberry PI, errors may occur on other platforms
-=======
 #warning Compiling for Raspberry PI, errors may occur on other platforms
 #define RaspberryPi
 #define RPI
->>>>>>> 033ce288d9292d359845386dab6b2a99638b6832
 #endif
 
 #include "config.h"
