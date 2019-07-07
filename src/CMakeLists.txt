@@ -1,7 +1,7 @@
 
 cmake_minimum_required(VERSION 3.7)
 project(LightShowProject)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++17")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++17 -pthread")
 set(CMAKE_BUILD_TYPE Debug)
 set (CMAKE_CXX_STANDARD 17)
 
@@ -99,7 +99,9 @@ if(NOT IS_DIRECTORY ${RF24})
 	message("RF24 was not found. Not going to attempt to link projects")
 elseif(IS_DIRECTORY ${RF24})
 	target_link_libraries(LightShowProject RF24_proj)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRPI -lwiringPi")
+	if(EXISTS ${RF24}/utility/includes.h)
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRPI -lwiringPi")
+	endif(EXISTS ${RF24}/utility/includes.h)
 endif(NOT IS_DIRECTORY ${RF24})
 
 target_link_libraries(LightShowProject  ${SDL2_LIBRARIES} ${SDL_NET_LIBRARIES} ${SDL_MIXER_LIBRARIES})

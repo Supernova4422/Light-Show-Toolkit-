@@ -4,11 +4,12 @@
 #include "utility/RPi/spi.h"
 #include "RF24.h"
 #include <map>
-#include "PL1167_nRF24.h"
-#include "MiLightRadio.h"
+
+#include "../openmili/PL1167_nRF24.h"
+
+#include "../openmili/MiLightRadio.h"
 #include "CommandDataTypes.cpp"
 #include "ProgrammableLight.h"
-#include "GroupManager.h"
 #include "Colour_Combiner.cpp"
 #include "ProxyMaker.h"
 #include <vector>
