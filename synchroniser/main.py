@@ -39,7 +39,7 @@ def prepare_pis(server):
         "git clone https://github.com/BKrajancic/Light-Show-Toolkit-.git;",
         "cd Light-Show-Toolkit-/;git pull;git pull --recurse-submodules;git submodule update --init --recursive;",
         "cd Light-Show-Toolkit-/;mkdir build;cd build;cmake ../",
-        "cd Light-Show-Toolkit-/RF24;sudo ./configure;make all",
+        "cd Light-Show-Toolkit-/RF24;sudo ./configure;sudo make all install",
         "cd Light-Show-Toolkit-/build/src/;make all"
     ]
 

@@ -8,7 +8,7 @@
 #include <iostream>
 #include <map>
 
-#include "RCSwitch.h"
+#include "../rc-switch/RCSwitch.h"
 class BL_433 : public BinaryLightController
 {
 public:

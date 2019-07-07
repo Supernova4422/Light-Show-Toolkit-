@@ -39,7 +39,9 @@ struct ProxyMaker
 
 	//TODO MAKE OPTIONAL
 	static Colour_Combiner get_from_data(int id, std::vector<std::pair<const int, Colour_Combiner> *> input);
+
 	static bool colours_equal(Colour_Combiner c1, Colour_Combiner c2);
+
 	static std::vector<std::pair<const int, Colour_Combiner> *> proxy_maker(
 		std::vector<std::pair<const int, Colour_Combiner> *> input,
 		std::map<std::set<int>, int, cmpBySetSize> proxies);

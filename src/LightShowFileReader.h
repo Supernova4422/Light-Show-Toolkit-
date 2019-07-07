@@ -18,6 +18,7 @@ public:
       std::string CurrentLine;
       std::string CurrentFunctionName;
       std::vector<std::string> CurrentCommandList;
+      const std::vector<char> delimeters = {',', ' ', ':'};
       while (getline(myfile, CurrentLine))
       {
         char PreviousChar = 0;
@@ -48,10 +49,9 @@ public:
             CurrentFunctionName = "";
             outsideFunction = true;
           }
-          else if (
-              (CurrentChar == ':' | CurrentChar == ' ' | CurrentChar == ',') &&
-              (outsideFunction == false) &&
-              CurrentWord != "")
+          else if (delimeters.find(CurrentChar) != delimeters.end() &&
+                   (outsideFunction == false) &&
+                   CurrentWord != "")
           {
             CurrentCommandList.push_back(CurrentWord);
             CurrentWord = "";
