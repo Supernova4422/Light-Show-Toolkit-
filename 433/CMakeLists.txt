@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.7)
 
 find_library(wiringPi_LIB wiringPi)
-if (IS_DIRECTORY ${wiringPi_LIB})
+if (wiringPi_LIB)
 	project(433)
 	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++17")
 	set (CMAKE_BUILD_TYPE Debug)
@@ -30,6 +30,6 @@ if (IS_DIRECTORY ${wiringPi_LIB})
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRPI -lwiringPi -lwiringPiDev -lcrypt")
 
 	endif(NOT IS_DIRECTORY ${RC-Switch})
-elseif (NOT IS_DIRECTORY ${wiringPi_LIB})
+elseif (NOT wiringPi_LIB)
 	message("WiringPI has not been installed, therefore the 433 Transceiver will not be installed.")
-endif(IS_DIRECTORY ${wiringPi_LIB})
+endif(wiringPi_LIB)

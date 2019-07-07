@@ -26,7 +26,6 @@
 #include "BL_433.h"
 #include "RF24_Sender.h"
 #endif
-
 class GroupManager : public Tick_Listener
 {
 public:
@@ -34,7 +33,7 @@ public:
   {
 
 #ifdef __arm__
-#warning Injecting GPIO based lights into program, sudo will be needed to run
+#warning Injecting GPIO based lights into program, sudo will be needed to run	
     AddLight<BinaryLight<BL_433>>(14, 0);
     AddLight<RF24_Sender>(MILIGHT_VERSION::V5);
 #endif

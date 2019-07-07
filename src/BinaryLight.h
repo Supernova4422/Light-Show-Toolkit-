@@ -47,11 +47,9 @@ public:
 		}
 		std::cout << std::endl;
 	}
-	void OnCurrentGroupsUpdate(const Command CommandItem, const std::map<int, Colour_Combiner> groups) {}
-
+	void OnCurrentGroupsUpdate(const Command CommandItem, std::map<int, Colour_Combiner> groups) {}
 	void OnStart(){};
 	void OnEnd(){};
-
 private:
 	std::map<std::set<int>, int, cmpBySetSize> proxies;
 	unsigned int threshhold;
