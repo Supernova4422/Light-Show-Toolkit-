@@ -20,11 +20,6 @@
 #include "SongPlayer.h"
 #include "CommandLineInterface.h"
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 033ce288d9292d359845386dab6b2a99638b6832
-
 void signalHandler(int signum)
 {
 	std::cout << "Interrupt signal (" << signum << ") received.\n";
