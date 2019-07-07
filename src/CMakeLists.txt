@@ -96,6 +96,7 @@ elseif (IS_DIRECTORY ${wiringPi_LIB})
 	target_link_libraries(LightShowProject 433)
 endif(NOT IS_DIRECTORY ${wiringPi_LIB})
 
+find_path(RF24 NAME RF24.h HINTS "../RF24")
 if(NOT EXISTS ${RF24}/utility/includes.h)
 	message("RF24 was not found. Not going to attempt to link projects")
 elseif(EXISTS ${RF24}/utility/includes.h)
