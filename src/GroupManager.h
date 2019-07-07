@@ -20,15 +20,10 @@
 #endif
 
 #ifdef __arm__
-<<<<<<< HEAD
-#warning "INCLUDING"
-#include "BL_433.h"
-=======
 #define RPI
 #define RaspberryPi
 #include "BinaryLight.h"
 #include "../433/BL_433.h"
->>>>>>> 033ce288d9292d359845386dab6b2a99638b6832
 #include "RF24_Sender.h"
 #endif
 
