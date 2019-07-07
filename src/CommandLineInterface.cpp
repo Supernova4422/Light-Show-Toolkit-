@@ -1,6 +1,7 @@
 #include <string>
 #include <iostream>
 #include <algorithm>
+#include "CommandLineInterface.h"
 bool CommandLineInterface::RUNNING = true;
 
 CommandLineInterface::CommandLineInterface()

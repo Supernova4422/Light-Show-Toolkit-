@@ -44,10 +44,10 @@ void ConsoleLight::EmitColour(const Command CommandItem, const std::map<int, Col
         << " B: " << (int)NewColour.Brightness
         << std::endl;
 
-    if (delay > 0)
+    if (wait > 0)
     {
         std::cout << "Pausing Thread... " << label << std::endl;
-        std::this_thread::sleep_for(std::chrono::seconds((int)delay));
+        std::this_thread::sleep_for(std::chrono::seconds((int)wait));
         std::cout << " Finished waiting on thread: " << label << std::endl;
     }
 
