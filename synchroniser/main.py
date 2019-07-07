@@ -79,10 +79,11 @@ if __name__ == "__main__":
     ]
 
     for server in servers:
-        run_in_minute(server, "Example.lightshow", "ClappingSounds.wav")
+        run_in_minute(server, "../../src/Example.lightshow",
+                      "../../src/ClappingSounds.wav")
 
         print("====================================")
         print("Executing on server: " + str(server))
-        # prepare_pis(server)
-        # upload_files(server)
+        prepare_pis(server)
+        upload_files(server)
         print("====================================")

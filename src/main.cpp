@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 	std::unique_ptr<CommandLineInterface> cli = std::make_unique<CommandLineInterface>();
 	if (argc > 1)
 	{
-		for (auto i = 0; i < argc - 1; i += 2)
+		for (auto i = 1; i < argc - 1; i += 2)
 		{
 			std::cout << std::endl;
 
