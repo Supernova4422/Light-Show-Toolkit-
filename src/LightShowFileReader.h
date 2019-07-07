@@ -4,6 +4,7 @@
 #include <vector>
 #include <map>
 #include <utility>
+#include <algorithm>
 class LightShowFileReader
 {
 public:
@@ -50,7 +51,7 @@ public:
             outsideFunction = true;
           }
           else if (
-              std::find(delimeters.begin(), delimeters.end(), CurrentChar) != delimeters.end() &&
+              std::find(delimeters.cbegin(), delimeters.cend(), CurrentChar) != delimeters.end() &&
               (outsideFunction == false) &&
               CurrentWord != "")
           {
