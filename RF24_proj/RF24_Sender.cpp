@@ -14,19 +14,18 @@
 
 RF24_Sender::RF24_Sender(MILIGHT_VERSION version)
 {
+    //Configure versioning
+    this->version = version;
     proxies = ProxyMaker::proxy_filereader("proxy_rf24.txt");
+    std::cout << "Begin Reading" << '\n';
 
-    std::vector<uint8_t> byte_codes(3);
-
+    std::ifstream groups_file;
+    groups_file.open("config/RF24_GROUPS.txt");
     int groupID = 0;
     int read_value = 0x00;
     int counter = 0;
-    MILIGHT_VERSION ver = MILIGHT_VERSION::V5;
-    std::cout << "Begin Reading" << '\n';
-
-    std::ifstream input_file;
-    input_file.open("RF24_Config.txt");
-    while (input_file >> std::hex >> read_value)
+    std::vector<uint8_t> byte_codes(3);
+    while (groups_file >> std::hex >> read_value)
     {
         if (counter == 0)
         {
@@ -39,25 +38,30 @@ RF24_Sender::RF24_Sender(MILIGHT_VERSION version)
 
             if (counter == 4)
             {
-                std::pair<MILIGHT_VERSION, std::vector<uint8_t>> pairing = {
-                    ver, byte_codes};
+                std::pair<MILIGHT_VERSION, std::vector<uint8_t>> pairing = std::make_pair(version, byte_codes);
                 Groups[groupID] = pairing;
                 counter = 0;
             }
         }
     }
 
-    //Configure versioning
-    this->version = version;
+    std::ifstream config_file;
+    config_file.open("config/RF24_CONFIG.txt");
+    int read_value = 0;
+    while (groups_file >> std::hex >> read_value)
+    {
+    }
 
     if (version == MILIGHT_VERSION::V5)
     {
         mlr.begin(CHANNELS_V5);
     }
+
     if (version == MILIGHT_VERSION::V6)
     {
         mlr.begin(CHANNELS_V6, 0x7236, 0x1809, 10);
     }
+
     std::cout << "Setting data rate was: " << radio.setDataRate(RF24_1MBPS) << '\n';
     radio.powerUp();
 }
@@ -118,7 +122,7 @@ void RF24_Sender::EmitColour(const Command CommandItem, const std::map<int, Colo
                     else
                     {
                         std::cout << "Brightness being sent" << '\n';
-                        msg[4] = 0x04;                                                                   //Brightness Command
+                        msg[4] = 0x04;                                                                  //Brightness Command
                         msg[5] = 0x8F + (100 * (float(entry.second.get_colour().Brightness) / 255.0F)); //Brightness arg
                         msg[6] = ++seq_num;
                         send_v6(msg);
@@ -280,6 +284,6 @@ void RF24_Sender::send(const uint8_t *message, uint8_t *CHANNELS)
     for (int i = 0; i < 15; i++)
     {
         delay(10);
-        mlr.resend(CHANNELS);
+        mlr.resend(CHANNELS, 3);
     }
 };

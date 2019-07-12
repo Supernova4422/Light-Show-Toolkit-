@@ -98,38 +98,37 @@ void SongPlayer::RunCommand(const Command item)
         double timetowait = std::atof(item.value.c_str());
         WaitMilliseconds((int)(timetowait * 1000));
     }
-    else
+
+    if (item.type == CommandType::SpecificCommand)
     {
-        if (item.type == CommandType::SpecificCommand)
-        {
-            groupManager.SpecificCommand(item);
-        }
+        groupManager.SpecificCommand(item);
+    }
 
-        if (item.type == CommandType::Group)
-        {
-            groupManager.SetGroups(atoi(item.value.c_str()), item);
-        }
+    if (item.type == CommandType::Group)
+    {
+        groupManager.SetGroups(atoi(item.value.c_str()), item);
+    }
 
-        if (item.type == CommandType::FunctionName)
+    if (item.type == CommandType::FunctionName)
+    {
+        for (size_t i = 0; i < item.TimesToExecute; i++)
         {
-            for (size_t i = 0; i < item.TimesToExecute; i++)
-            {
-                RunFunction(item.value, item.Operation);
-            }
-        }
-
-        if (item.type == CommandType::ColourChange_RGB)
-        {
-            Colour Newcolour(item.value, true);
-            groupManager.UpdateColour(Newcolour, item);
-        }
-
-        if (item.type == CommandType::ColourChange_HSV)
-        {
-            Colour Newcolour(item.value, false);
-            groupManager.UpdateColour(Newcolour, item);
+            RunFunction(item.value, item.Operation);
         }
     }
+
+    if (item.type == CommandType::ColourChange_RGB)
+    {
+        Colour Newcolour(item.value, true);
+        groupManager.UpdateColour(Newcolour, item);
+    }
+
+    if (item.type == CommandType::ColourChange_HSV)
+    {
+        Colour Newcolour(item.value, false);
+        groupManager.UpdateColour(Newcolour, item);
+    }
+
     On_Tick();
 }
 
@@ -192,4 +191,8 @@ void SongPlayer::On_Tick()
 
     groupManager.On_Tick();
 #endif
+}
+
+void SongPlayer::Flatten_Song()
+{
 }

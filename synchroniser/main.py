@@ -36,7 +36,7 @@ def prepare_pis(server):
     ssh.connect(server[0], username=server[1], password=server[2])
 
     commands = [
-        "sudo apt-get install cmake git libsdl2-dev libsdl2-net-dev libsdl2-mixer-dev libsdl2-2.0;",
+        "sudo apt-get install cmake git libsdl2-dev libsdl2-net-dev libsdl2-mixer-dev libsdl2-2.0 wiringPi;",
         "git clone git://git.drogon.net/wiringPi"
         "cd wiringPi;./build"
         "git clone https://github.com/BKrajancic/Light-Show-Toolkit-.git;",
@@ -79,11 +79,11 @@ if __name__ == "__main__":
     ]
 
     for server in servers:
-        run_in_minute(server, "../../src/Example.lightshow",
-                      "../../src/ClappingSounds.wav")
+        # run_in_minute(server, "../../src/Example.lightshow",
+        #              "../../src/ClappingSounds.wav")
 
         print("====================================")
         print("Executing on server: " + str(server))
         prepare_pis(server)
-        upload_files(server)
+        # upload_files(server)
         print("====================================")

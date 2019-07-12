@@ -26,21 +26,28 @@
 #include "BL_433.h"
 #include "RF24_Sender.h"
 #endif
+namespace LIGHT_TYPES
+{
+enum LIGHT_TYPES
+{
+  MILIGHT_L,
+  RF24_SENDER,
+  BINARY_LIGHT,
+  CONSOLE
+};
+}
+
 class GroupManager : public Tick_Listener
 {
 public:
   GroupManager()
   {
-
 #ifdef __arm__
-#warning Injecting GPIO based lights into program, sudo will be needed to run	
+#warning Injecting GPIO based lights into program, sudo will be needed to run
     AddLight<BinaryLight<BL_433>>(14, 0);
     AddLight<RF24_Sender>(MILIGHT_VERSION::V5);
 #endif
 
-#if MILIGHT_ENABLED == 1
-    AddLight<Milight>(10); //10 is arbitrarily chosen
-#endif
     AddLight<ConsoleLight>("First", 1);
     AddLight<ConsoleLight>("Second", 2);
 

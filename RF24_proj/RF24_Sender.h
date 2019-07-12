@@ -47,10 +47,12 @@ private:
     void send_V5(uint8_t *message);
     bool PostedNewGroups = false;
     MILIGHT_VERSION version = MILIGHT_VERSION::V5;
+
     uint8_t end_byte = 0x00;
     uint8_t seq_num = 0x00;
     const uint8_t threshold = 0x08;
     const uint8_t white_threshold = 10;
+
     uint8_t CHANNELS_V5[3] = {9, 40, 71}; //Make it possible to configure perhaps
     uint8_t CHANNELS_V6[3] = {70, 39, 8};
     std::map<std::pair<uint8_t, uint8_t>, uint8_t> last_group;
