@@ -1,4 +1,4 @@
-#include "CommandDataTypes.cpp"
+#include "Command.h"
 #include <map>
 #include "Colour.h"
 #include "LIGHT_COMMAND_TYPE.h"

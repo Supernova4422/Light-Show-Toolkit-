@@ -8,7 +8,7 @@
 #include "../openmili/PL1167_nRF24.h"
 
 #include "../openmili/MiLightRadio.h"
-#include "CommandDataTypes.cpp"
+#include "Command.h"
 #include "ProgrammableLight.h"
 #include "Colour_Combiner.cpp"
 #include "ProxyMaker.h"

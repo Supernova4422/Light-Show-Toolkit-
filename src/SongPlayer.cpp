@@ -1,5 +1,5 @@
 
-#include "CommandDataTypes.cpp"
+#include "Command.h"
 #include "ProgrammableLight.h"
 #include "SongPlayer.h"
 #include <string>
@@ -151,6 +151,7 @@ void SongPlayer::SetSongStart(const unsigned int startAt_Seconds)
 {
     SongStartTime = std::chrono::system_clock::now() - std::chrono::seconds(startAt_Seconds);
 }
+
 void SongPlayer::StartPlaying(const std::string FunctionToPlay)
 {
     bool SongIsPlaying = audioPlayer.playSong(songFilename, songStartAt);
@@ -191,8 +192,4 @@ void SongPlayer::On_Tick()
 
     groupManager.On_Tick();
 #endif
-}
-
-void SongPlayer::Flatten_Song()
-{
 }

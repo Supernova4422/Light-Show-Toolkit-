@@ -1,4 +1,4 @@
-#include "CommandDataTypes.cpp"
+#include "Command.h"
 #include "Milight.h"
 
 #include <ctime>

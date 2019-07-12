@@ -1,24 +1,7 @@
-#ifndef LightShowCommands
-#define LightShowCommands
+#pragma once
+#include "CommandType.h"
+#include "CommandOperation.h"
 #include <string>
-
-enum CommandType
-{
-  ColourChange_RGB,
-  ColourChange_HSV,
-  Wait,
-  Group,
-  FunctionName,
-  SpecificCommand
-};
-
-enum CommandOperation
-{
-  set,
-  add,
-  Remove
-};
-
 struct Command
 {
   CommandType type;
@@ -28,4 +11,3 @@ struct Command
 
   Command(CommandType type, std::string value, CommandOperation operation, unsigned int TimesToExecute) : type(type), value(value), Operation(operation), TimesToExecute(TimesToExecute) {}
 };
-#endif

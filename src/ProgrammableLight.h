@@ -5,7 +5,7 @@
 #include <vector>
 #include <utility>
 #include <map>
-#include "CommandDataTypes.cpp"
+#include "Command.h"
 #include "Colour.h"
 #include "Colour_Combiner.cpp"
 class ProgrammableLight

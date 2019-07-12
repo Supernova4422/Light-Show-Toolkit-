@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CommandDataTypes.cpp"
+#include "Command.h"
 #include "ProgrammableLight.h"
 
 class Fileout_Light : public ProgrammableLight

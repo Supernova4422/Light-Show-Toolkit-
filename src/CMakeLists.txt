@@ -56,7 +56,9 @@ ProxyMaker.cpp
 main.cpp
 Colour.cpp
 Colour_Combiner.cpp
-CommandDataTypes.cpp
+Command.h
+CommandOperation.h
+CommandType.h
 CommandLineInterface.cpp
 ConsoleLight.cpp
 GroupManager.cpp
@@ -91,7 +93,7 @@ endif(${SDL_MIXER_FOUND})
 
 find_library(wiringPi_LIB wiringPi)
 if (NOT wiringPi_LIB)
-	message("Wiringpi was not found. Not going to attempt to link the 433mhz project. 
+	message("Wiringpi was not found. Not going to attempt to link the 433mhz project.
 There may be compilation issues if you are on Raspberry Pi. Install wiringPi using sudo apt-get install wiringPi")
 elseif (wiringPi_LIB)
 	target_link_libraries(LightShowProject 433)

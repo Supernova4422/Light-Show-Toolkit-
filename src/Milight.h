@@ -1,5 +1,5 @@
 #pragma once
-#include "CommandDataTypes.cpp"
+#include "Command.h"
 #include "ProgrammableLight.h"
 #include <vector>
 #include "NetworkPacketSender.h"

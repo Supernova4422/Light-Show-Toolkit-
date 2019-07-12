@@ -6,7 +6,7 @@
 #include <utility>
 #include <memory>
 #include <map>
-#include "CommandDataTypes.cpp"
+#include "Command.h"
 #include "Colour.h"
 #include "ProgrammableLight.h"
 #include "Colour_Combiner.cpp"

@@ -1,6 +1,6 @@
 #ifndef SONGPLAYER
 #define SONGPLAYER
-#include "CommandDataTypes.cpp"
+#include "Command.h"
 #include "ProgrammableLight.h"
 #include "FileParser.h"
 #include <string>

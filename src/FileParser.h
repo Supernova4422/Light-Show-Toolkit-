@@ -3,7 +3,7 @@
 #include <utility>
 #include <map>
 
-#include "CommandDataTypes.cpp"
+#include "Command.h"
 #include "LightShowFileReader.h"
 
 class FileParser

@@ -1,7 +1,7 @@
 #ifndef Colour_Combiner_H
 #define Colour_Combiner_H
 #include "Colour.h"
-#include "CommandDataTypes.cpp"
+#include "Command.h"
 class Colour_Combiner
 {
 public:

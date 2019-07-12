@@ -10,8 +10,10 @@ BL_433::BL_433()
     std::ifstream myConfig("BL_433_CONFIG.txt");
     myConfig >> repeats;
 
+    std::cout << "433 Config";
+    std::cout << "    Repeats: ";
+    std::cout << std::to_string(repeats);
     std::cout << std::endl;
-    std::cout << "Loading the 433mhz Codes" << std::endl;
 
     std::ifstream myfile("BL_433_GROUPS.txt");
     for (int read_value = 0x00; myfile >> read_value;)
@@ -23,7 +25,7 @@ BL_433::BL_433()
 
         on_cmds[read_value] = on_val;
         off_cmds[read_value] = off_val;
-        std::cout << read_value << ":" << on_val << "," << off_val << std::endl;
+        std::cout << "    " << std::to_string(read_value) << ":" << on_val << "," << off_val << std::endl;
     }
 
     if (wiringPiSetup() != -1)

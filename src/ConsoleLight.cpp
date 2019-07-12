@@ -1,4 +1,4 @@
-#include "CommandDataTypes.cpp"
+#include "Command.h"
 #include "ConsoleLight.h"
 #include <iostream>
 #include "GroupManager.h"

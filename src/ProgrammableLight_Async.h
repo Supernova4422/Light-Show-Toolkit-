@@ -9,7 +9,7 @@
 #include <utility>
 #include <map>
 #include <memory>
-#include "CommandDataTypes.cpp"
+#include "Command.h"
 #include "Colour.h"
 #include "Colour_Combiner.cpp"
 #include "ProgrammableLight.h"
