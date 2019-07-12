@@ -62,7 +62,7 @@ void SongPlayer::SetTime(unsigned int hours, unsigned int minutes)
 
     SongStartTime = std::chrono::system_clock::from_time_t(std::mktime(&tm));
 }
-void SongPlayer::RunFunction(const std::string FunctionToPlay, const CommandOperation Operation)
+void SongPlayer::RunFunction(const std::string FunctionToPlay, const CommandOperation::CommandOperation Operation)
 {
     auto search = MainFile.find(FunctionToPlay);
 

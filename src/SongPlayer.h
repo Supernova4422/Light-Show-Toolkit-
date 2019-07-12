@@ -51,7 +51,7 @@ public:
     void SetTime(unsigned int hours, unsigned int minutes);
 
 private:
-    void RunFunction(const std::string FunctionToPlay, const CommandOperation Operation = CommandOperation::set);
+    void RunFunction(const std::string FunctionToPlay, const CommandOperation::CommandOperation Operation = CommandOperation::set);
     std::map<std::string, std::vector<Command>> SupportFile;
     std::map<std::string, std::vector<Command>> MainFile;
     std::string songFilename;

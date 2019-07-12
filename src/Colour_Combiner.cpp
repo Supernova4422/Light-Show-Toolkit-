@@ -50,14 +50,14 @@ public:
 		Colour result = currentColour;
 		switch (command)
 		{
-		case set:
+		case CommandOperation::set:
 			return colour_change;
 			break;
-		case add:
+		case CommandOperation::add:
 			result += colour_change;
 			return result;
 			break;
-		case Remove:
+		case CommandOperation::Remove:
 			result -= colour_change;
 			return result;
 			break;
@@ -65,7 +65,7 @@ public:
 		return result;
 	}
 
-	void set_new(const Colour colour_change, const CommandOperation cmd)
+	void set_new(const Colour colour_change, const CommandOperation::CommandOperation cmd)
 	{
 		currentColour = get_colour();
 		command = cmd;
@@ -79,7 +79,7 @@ public:
 private:
 	Colour currentColour;
 	Colour colour_change;
-	CommandOperation command;
+	CommandOperation::CommandOperation command;
 };
 
 #endif

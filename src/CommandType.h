@@ -1,4 +1,6 @@
 #pragma once
+namespace CommandType
+{
 enum CommandType
 {
 	ColourChange_RGB,
@@ -8,3 +10,4 @@ enum CommandType
 	FunctionName,
 	SpecificCommand
 };
+}

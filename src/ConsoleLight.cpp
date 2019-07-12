@@ -21,17 +21,17 @@ void ConsoleLight::EmitColour(const Command CommandItem, const std::map<int, Col
         PostedNewGroups = true;
     }
 
-    Colour NewColour(CommandItem.value, CommandItem.type == ColourChange_RGB);
+    Colour NewColour(CommandItem.value, CommandItem.type == CommandType::ColourChange_RGB);
 
     switch (CommandItem.Operation)
     {
-    case set:
+    case CommandOperation::set:
         std::cout << "Set: ";
         break;
-    case add:
+    case CommandOperation::add:
         std::cout << "Add: ";
         break;
-    case Remove:
+    case CommandOperation::Remove:
         std::cout << "Remove: ";
         break;
     }

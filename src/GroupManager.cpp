@@ -25,14 +25,14 @@ void GroupManager::SetGroups(const int Group, const Command CommandItem)
 {
     switch (CommandItem.Operation)
     {
-    case set:
+    case CommandOperation::set:
         CurrentlySelectedGroups.clear();
         CurrentlySelectedGroups.insert(Group);
         break;
-    case add:
+    case CommandOperation::add:
         CurrentlySelectedGroups.insert(Group);
         break;
-    case Remove:
+    case CommandOperation::Remove:
         CurrentlySelectedGroups.erase(Group);
         break;
     }
