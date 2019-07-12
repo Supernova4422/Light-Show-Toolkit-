@@ -68,6 +68,7 @@ private:
     uint8_t *CHANNELS_V6[3] = nullptr;
     // new uint8_t[]{70, 39, 8};
     size_t V6_Size = 3;
+    size_t repeats = 15;
 
     std::map<std::pair<uint8_t, uint8_t>, uint8_t> last_group;
 

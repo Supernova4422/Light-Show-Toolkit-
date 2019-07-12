@@ -7,35 +7,33 @@
 
 BL_433::BL_433()
 {
-    std::cout << std::endl
-              << "Loading the 433mhz Codes" << std::endl;
-    std::ifstream myfile("BL_433_Codes.txt");
+    std::ifstream myConfig("BL_433_CONFIG.txt");
+    myConfig >> repeats;
 
-    int read_value = 0x00;
-    std::cout << "Begin Reading" << std::endl;
-    while (myfile >> read_value)
+    std::cout << std::endl;
+    std::cout << "Loading the 433mhz Codes" << std::endl;
+
+    std::ifstream myfile("BL_433_GROUPS.txt");
+    for (int read_value = 0x00; myfile >> read_value;)
     {
-        std::cout << std::dec << read_value << std::endl;
-        int val = 0;
+        int on_val = 0;
+        int off_val = 0;
         myfile >> val;
-        std::cout << val << std::endl;
-        on_cmds[read_value] = val;
         myfile >> val;
-        std::cout << val << std::endl;
-        off_cmds[read_value] = val;
+
+        on_cmds[read_value] = on_val;
+        off_cmds[read_value] = off_val;
+        std::cout << read_value << ":" << on_val << "," << off_val << std::endl;
     }
-    std::cout << "Finished Reading" << std::endl;
 
     if (wiringPiSetup() != -1)
     {
         mySwitch.enableTransmit(0);
         std::cout << "Initialised WiringPi, 433 Transmitter as well" << std::endl;
-        turnon(5);
-        turnoff(5);
     }
 
     mySwitch.disableReceive();
-    mySwitch.setRepeatTransmit(3);
+    mySwitch.setRepeatTransmit(repeats);
 }
 
 void BL_433::initialise()

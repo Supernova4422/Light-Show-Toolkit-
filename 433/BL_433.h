@@ -7,8 +7,8 @@
 #include "BinaryLightController.h"
 #include <iostream>
 #include <map>
-
 #include "../rc-switch/RCSwitch.h"
+
 class BL_433
 {
 public:
@@ -21,5 +21,6 @@ public:
 private:
 	std::map<int, int> on_cmds;
 	std::map<int, int> off_cmds;
+	unsigned int repeats;
 	RCSwitch mySwitch;
 };

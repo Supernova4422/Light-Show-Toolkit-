@@ -34,6 +34,10 @@ void RF24_Sender::ReadConfig()
 {
     std::ifstream input("config/RF24_CONFIG.txt");
     bool FirstLine = true;
+    std::string repeats;
+    getline(input, repeats);
+    this.repeats = std::stoi(repeats);
+
     for (std::string line; getline(input, line);)
     {
         istringstream iss(line);
@@ -303,7 +307,7 @@ void RF24_Sender::send(const uint8_t *message, uint8_t *CHANNELS, const size_t s
     std::cout << '\n';
     mlr.write(outgoingPacket, sizeof(outgoingPacket), CHANNELS, size);
 
-    for (int i = 0; i < 15; i++)
+    for (int i = 0; i < repeats; i++)
     {
         delay(10);
         mlr.resend(CHANNELS, size);
