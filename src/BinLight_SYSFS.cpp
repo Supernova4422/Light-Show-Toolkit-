@@ -8,7 +8,7 @@ BinLight_SYSFS::BinLight_SYSFS()
 {
 	std::cout << std::endl
 			  << "Loading the file_editor binary light" << std::endl;
-	std::ifstream myfile("FileSettings.txt");
+	std::ifstream myfile("config/FILEOUT_CONFIG.txt.txt");
 	if (myfile.is_open())
 	{
 		std::cout << "Opened config for BinLight, loading the directory, export_append, val_append and dir_append" << std::endl;

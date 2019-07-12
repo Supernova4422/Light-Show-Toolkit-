@@ -11,7 +11,7 @@ struct Command
 
   Command(CommandType::CommandType type, std::string value, CommandOperation::CommandOperation operation, unsigned int TimesToExecute) : type(type), value(value), Operation(operation), TimesToExecute(TimesToExecute) {}
 
-  Command(const std::string CommandInput) : TimesToExecute(1), Operation(CommandOperation::set), type(CommandType::FunctionName), value(CommandInput)
+  Command(const std::string CommandInput) : type(CommandType::FunctionName), value(CommandInput), Operation(CommandOperation::set), TimesToExecute(1)
   {
     std::string GroupIdentifier = "Group";
 

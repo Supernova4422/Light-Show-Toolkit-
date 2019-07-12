@@ -13,7 +13,7 @@ def upload_files(server):
     with pysftp.Connection(server[0], username=server[1], password=server[2]) as sftp:
         out_dir = 'Light-Show-Toolkit-/build/'
         with sftp.cd(out_dir):
-            in_dir = 'build/src/songs/'
+            in_dir = server[3]
             for filename in os.listdir(in_dir):
                 filepath = os.path.join(in_dir, filename)
                 print("Uploading: " + filepath)
@@ -74,8 +74,9 @@ def run_in_minute(server, lightshow_file, song_file):
 
 if __name__ == "__main__":
     servers = [
-        ("10.0.0.50", "pi", "raspberry"),
-        ("10.0.0.18", "pi", "raspberry")
+        ("10.0.0.50", "pi", "raspberry", "synchroniser/Server_One"),
+        ("10.0.0.18", "pi", "raspberry", "synchroniser/Server_Two")
+        # Alternate Directory'build/src/songs/'
     ]
 
     for server in servers:

@@ -15,7 +15,7 @@ Milight::Milight(const int BrightnessThreshhold)
 {
     this->BrightnessThreshhold = BrightnessThreshhold;
     std::cout << "MiLight" << std::endl;
-    std::ifstream myfile("MiLightSettings.txt");
+    std::ifstream myfile("config/MILIGHT_CONFIG.txt");
 
     std::string IPAddress = "255.255.255.255";
     unsigned short Port = 8899;

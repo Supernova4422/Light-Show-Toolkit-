@@ -15,7 +15,7 @@ SDL_Light::SDL_Light()
 {
 	atexit(SDL_Quit);
 	atexit(Destroy_SDL);
-	proxies = ProxyMaker::proxy_filereader("proxy.txt");
+	proxies = ProxyMaker::proxy_filereader("groups/SDL_LIGHT_PROXY.txt");
 	ProxyMaker::print_proxies(proxies);
 	if (renderer == nullptr)
 	{

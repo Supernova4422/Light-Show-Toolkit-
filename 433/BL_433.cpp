@@ -7,7 +7,7 @@
 
 BL_433::BL_433()
 {
-    std::ifstream myConfig("BL_433_CONFIG.txt");
+    std::ifstream myConfig("config/BL_433_CONFIG.txt");
     myConfig >> repeats;
 
     std::cout << "433 Config";
@@ -15,7 +15,7 @@ BL_433::BL_433()
     std::cout << std::to_string(repeats);
     std::cout << std::endl;
 
-    std::ifstream myfile("BL_433_GROUPS.txt");
+    std::ifstream myfile("groups/BL_433_GROUPS.txt");
     for (int read_value = 0x00; myfile >> read_value;)
     {
         int on_val = 0;
