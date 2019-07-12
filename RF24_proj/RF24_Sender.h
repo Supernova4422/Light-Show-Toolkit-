@@ -25,6 +25,11 @@ class RF24_Sender : public ProgrammableLight
 {
 public:
     RF24_Sender(MILIGHT_VERSION version);
+    ~RF24_Sender()
+    {
+        delete[] CHANNELS_V5;
+        delete[] CHANNELS_V6;
+    }
 
     void EmitColour(const Command CommandItem, const std::map<int, Colour_Combiner> ExpectedOutput);
 
@@ -35,6 +40,10 @@ public:
     void OnStart() override{}; //TODO
 
     void OnEnd() override{}; //TODO
+
+    void ReadGroups();
+    void ReadConfig();
+
 private:
     std::map<std::set<int>, int, cmpBySetSize> proxies;
 
@@ -42,7 +51,7 @@ private:
     PL1167_nRF24 prf = PL1167_nRF24(radio);
     MiLightRadio mlr = MiLightRadio(prf);
 
-    void send(const uint8_t *message, uint8_t *CHANNELS);
+    void send(const uint8_t *message, uint8_t *CHANNELS, const size_t size);
     void send_v6(uint8_t *message);
     void send_V5(uint8_t *message);
     bool PostedNewGroups = false;
@@ -53,8 +62,13 @@ private:
     const uint8_t threshold = 0x08;
     const uint8_t white_threshold = 10;
 
-    uint8_t CHANNELS_V5[3] = {9, 40, 71}; //Make it possible to configure perhaps
-    uint8_t CHANNELS_V6[3] = {70, 39, 8};
+    uint8_t *CHANNELS_V5 = nullptr;
+    // new uint8_t[]{9, 40, 71}; //Make it possible to configure perhaps
+    size_t V5_Size = 3;
+    uint8_t *CHANNELS_V6[3] = nullptr;
+    // new uint8_t[]{70, 39, 8};
+    size_t V6_Size = 3;
+
     std::map<std::pair<uint8_t, uint8_t>, uint8_t> last_group;
 
     int packet_size = 7;

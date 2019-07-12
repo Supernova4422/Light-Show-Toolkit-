@@ -2,9 +2,6 @@
 
 #include "RF24_Sender.h"
 #include "utility/RPi/spi.h"
-#include "RF24.h"
-#include "MiLightRadio.h"
-#include "PL1167_nRF24.h"
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -14,11 +11,56 @@
 
 RF24_Sender::RF24_Sender(MILIGHT_VERSION version)
 {
-    //Configure versioning
     this->version = version;
     proxies = ProxyMaker::proxy_filereader("proxy_rf24.txt");
-    std::cout << "Begin Reading" << '\n';
 
+    ReadConfig();
+    ReadGroups();
+
+    if (version == MILIGHT_VERSION::V5)
+    {
+        mlr.begin(CHANNELS_V5);
+    }
+
+    if (version == MILIGHT_VERSION::V6)
+    {
+        mlr.begin(CHANNELS_V6, 0x7236, 0x1809, 10);
+    }
+
+    std::cout << "Setting data rate was: " << radio.setDataRate(RF24_1MBPS) << '\n';
+    radio.powerUp();
+}
+void RF24_Sender::ReadConfig()
+{
+    std::ifstream input("config/RF24_CONFIG.txt");
+    bool FirstLine = true;
+    for (std::string line; getline(input, line);)
+    {
+        istringstream iss(line);
+        iss.seekg(0, ios::end);
+        auto size = iss.tellg();
+        iss.seekg(0, ios::beg);
+        if (FirstLine)
+        {
+            CHANNELS_V5 = new uint8_t[size]();
+            uint8_t *CHANNELS = CHANNELS_V5;
+        }
+        else
+        {
+            CHANNELS_V6 = new uint8_t[size]();
+            uint8_t *CHANNELS = CHANNELS_V6;
+        }
+
+        for (auto i = 0; iss; ++i)
+        {
+            string tok;
+            iss >> tok;
+            CHANNELS[i] = static_cast<uint8_t>(std::stoi(tok));
+        }
+    }
+}
+void RF24_Sender::ReadGroups()
+{
     std::ifstream groups_file;
     groups_file.open("config/RF24_GROUPS.txt");
     int groupID = 0;
@@ -44,26 +86,6 @@ RF24_Sender::RF24_Sender(MILIGHT_VERSION version)
             }
         }
     }
-
-    std::ifstream config_file;
-    config_file.open("config/RF24_CONFIG.txt");
-    int read_value = 0;
-    while (groups_file >> std::hex >> read_value)
-    {
-    }
-
-    if (version == MILIGHT_VERSION::V5)
-    {
-        mlr.begin(CHANNELS_V5);
-    }
-
-    if (version == MILIGHT_VERSION::V6)
-    {
-        mlr.begin(CHANNELS_V6, 0x7236, 0x1809, 10);
-    }
-
-    std::cout << "Setting data rate was: " << radio.setDataRate(RF24_1MBPS) << '\n';
-    radio.powerUp();
 }
 void RF24_Sender::EmitColour(const Command CommandItem, const std::map<int, Colour_Combiner> ExpectedOutput)
 {
@@ -267,7 +289,7 @@ void RF24_Sender::send_V5(uint8_t *message)
     send(message, CHANNELS_V5);
 }
 
-void RF24_Sender::send(const uint8_t *message, uint8_t *CHANNELS)
+void RF24_Sender::send(const uint8_t *message, uint8_t *CHANNELS, const size_t size)
 {
     uint8_t outgoingPacket[packet_size];
     uint8_t outgoingPacketPos = 0;
@@ -279,11 +301,11 @@ void RF24_Sender::send(const uint8_t *message, uint8_t *CHANNELS)
         std::cout << (int)(message[i]) << " ";
     }
     std::cout << '\n';
-    mlr.write(outgoingPacket, sizeof(outgoingPacket), CHANNELS);
+    mlr.write(outgoingPacket, sizeof(outgoingPacket), CHANNELS, size);
 
     for (int i = 0; i < 15; i++)
     {
         delay(10);
-        mlr.resend(CHANNELS, 3);
+        mlr.resend(CHANNELS, size);
     }
 };
