@@ -283,14 +283,14 @@ void RF24_Sender::send_v6(uint8_t *message)
     prf.setSyncword(0x7236, 0x1809);
     prf.setMaxPacketLength(10);
 
-    send(message, CHANNELS_V6);
+    send(message, CHANNELS_V6, V6_Size);
 }
 
 void RF24_Sender::send_V5(uint8_t *message)
 {
     prf.setSyncword(0x147A, 0x258B);
     prf.setMaxPacketLength(8);
-    send(message, CHANNELS_V5);
+    send(message, CHANNELS_V5, V5_Size);
 }
 
 void RF24_Sender::send(const uint8_t *message, uint8_t *CHANNELS, const size_t size)
