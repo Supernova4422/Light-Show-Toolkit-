@@ -65,7 +65,7 @@ private:
     uint8_t *CHANNELS_V5 = nullptr;
     // new uint8_t[]{9, 40, 71}; //Make it possible to configure perhaps
     size_t V5_Size = 3;
-    uint8_t *CHANNELS_V6[3] = nullptr;
+    uint8_t *CHANNELS_V6 = nullptr;
     // new uint8_t[]{70, 39, 8};
     size_t V6_Size = 3;
     size_t repeats = 15;
