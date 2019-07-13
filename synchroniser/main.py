@@ -36,11 +36,11 @@ def prepare_pis(server):
     ssh.connect(server[0], username=server[1], password=server[2])
 
     commands = [
-        "sudo apt-get install cmake git libsdl2-dev libsdl2-net-dev libsdl2-mixer-dev libsdl2-2.0 wiringPi;",
-        "git clone git://git.drogon.net/wiringPi"
-        "cd wiringPi;./build"
+        "sudo apt-get install cmake git libsdl2-dev libsdl2-net-dev libsdl2-mixer-dev libsdl2-2.0;",
+        "git clone git://git.drogon.net/wiringPi",
+        "cd wiringPi;./build;",
         "git clone https://github.com/BKrajancic/Light-Show-Toolkit-.git;",
-        "cd Light-Show-Toolkit-/;git pull;git pull --recurse-submodules;git submodule update --init --recursive;",
+        "cd Light-Show-Toolkit-;git pull;git pull --recurse-submodules;git submodule update --init --recursive;",
         "cd Light-Show-Toolkit-/;mkdir build;cd build;cmake ../",
         "cd Light-Show-Toolkit-/RF24;sudo ./configure;sudo make all install",
         "cd Light-Show-Toolkit-/build/src/;make all"
@@ -74,7 +74,7 @@ def run_in_minute(server, lightshow_file, song_file):
 
 if __name__ == "__main__":
     servers = [
-        ("10.0.0.50", "pi", "raspberry", "synchroniser/Server_One"),
+        #("10.0.0.50", "pi", "raspberry", "synchroniser/Server_One"),
         ("10.0.0.18", "pi", "raspberry", "synchroniser/Server_Two")
         # Alternate Directory'build/src/songs/'
     ]

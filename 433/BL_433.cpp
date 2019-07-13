@@ -20,8 +20,8 @@ BL_433::BL_433()
     {
         int on_val = 0;
         int off_val = 0;
-        myfile >> val;
-        myfile >> val;
+        myfile >> on_val;
+        myfile >> off_val;
 
         on_cmds[read_value] = on_val;
         off_cmds[read_value] = off_val;
