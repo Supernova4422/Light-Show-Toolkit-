@@ -44,15 +44,16 @@ void RF24_Sender::ReadConfig()
         iss.seekg(0, ios::end);
         auto size = iss.tellg();
         iss.seekg(0, ios::beg);
+        uint8_t *CHANNELS = nullptr;
         if (FirstLine)
         {
             CHANNELS_V5 = new uint8_t[size]();
-            uint8_t *CHANNELS = CHANNELS_V5;
+            CHANNELS = CHANNELS_V5;
         }
         else
         {
             CHANNELS_V6 = new uint8_t[size]();
-            uint8_t *CHANNELS = CHANNELS_V6;
+            CHANNELS = CHANNELS_V6;
         }
 
         for (auto i = 0; iss; ++i)
