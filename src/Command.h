@@ -55,24 +55,27 @@ struct Command
     else if (isdigit(value[0]))
     {
       bool ParsedAmountOfTimesToExecute = false;
-      value = "";
-      for (char c : value)
+      std::string temp_value = "";
+      for (auto c : value)
       {
         if (ParsedAmountOfTimesToExecute)
         {
-          value += c;
+          temp_value += c;
         }
         else if (isalpha(c))
         {
-          TimesToExecute = std::stoi(value);
-          value = c;
+          TimesToExecute = std::stoi(temp_value);
           ParsedAmountOfTimesToExecute = true;
+          temp_value = c;
         }
         else
         {
-          value += c;
+          temp_value += c;
         }
       }
+
+      value = temp_value;
+
       if (ParsedAmountOfTimesToExecute)
       {
         type = CommandType::FunctionName;
