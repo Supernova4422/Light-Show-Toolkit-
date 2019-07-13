@@ -99,7 +99,6 @@ bool ProxyMaker::colours_equal(const Colour_Combiner c1, const Colour_Combiner c
 
 std::map<int, Colour_Combiner> ProxyMaker::proxy_maker(std::map<int, Colour_Combiner> input, std::map<std::set<int>, int, cmpBySetSize> proxies)
 {
-
 	std::vector<int> Groups;
 
 	for (auto item : input)

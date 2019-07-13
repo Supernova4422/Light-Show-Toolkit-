@@ -100,6 +100,7 @@ void RF24_Sender::ReadGroups()
 }
 void RF24_Sender::EmitColour(const Command CommandItem, const std::map<int, Colour_Combiner> ExpectedOutput)
 {
+    std::cout << "RF24 Emitting" << '\n';
     auto proxiedOutput = ProxyMaker::proxy_maker(ExpectedOutput, proxies);
 
     for (auto entry : proxiedOutput)
@@ -174,6 +175,7 @@ void RF24_Sender::EmitColour(const Command CommandItem, const std::map<int, Colo
             }
             if (version == MILIGHT_VERSION::V5)
             {
+                std::cout << "    RF24 is sending V5" << '\n';
                 uint8_t msg[7] = {
                     0xB0,
                     it->second.second[0],
