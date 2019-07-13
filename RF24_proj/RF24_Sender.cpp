@@ -58,12 +58,14 @@ void RF24_Sender::ReadConfig()
             CHANNELS = CHANNELS_V6;
         }
 
-        for (auto i = 0; i < size - 1; ++i)
+        while (iss >> tok && i <= size)
         {
-            std::string tok;
-            std::cout << tok << std::endl;
-            iss >> tok;
+            if (tok == "")
+            {
+                continue;
+            }
             CHANNELS[i] = static_cast<uint8_t>(std::stoi(tok));
+            ++i;
         }
     }
 }
