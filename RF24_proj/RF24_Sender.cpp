@@ -36,15 +36,16 @@ void RF24_Sender::ReadConfig()
     std::ifstream input("config/RF24_CONFIG.txt");
     bool FirstLine = true;
     std::string repeats_string;
-    getline(input, repeats);
+    std::getline(input, repeats);
     repeats = std::stoi(repeats_string);
 
-    for (std::string line; getline(input, line);)
+    for (std::string line; std::getline(input, line);)
     {
         std::istringstream iss(line);
-        iss.seekg(0, ios::end);
+
+        iss.seekg(0, std::ios::end);
         auto size = iss.tellg();
-        iss.seekg(0, ios::beg);
+        iss.seekg(0, std::ios::beg);
         uint8_t *CHANNELS = nullptr;
         if (FirstLine)
         {
