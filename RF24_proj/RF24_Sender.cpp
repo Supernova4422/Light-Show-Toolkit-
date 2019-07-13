@@ -105,9 +105,9 @@ void RF24_Sender::EmitColour(const Command CommandItem, const std::map<int, Colo
 {
     std::cout << "RF24 Emitting" << '\n';
     //Skip proxying, its broken as of right now.
-    //auto proxiedOutput = ProxyMaker::proxy_maker(ExpectedOutput, proxies);
+    auto proxiedOutput = ProxyMaker::proxy_maker(ExpectedOutput, proxies);
 
-    for (auto entry : ExpectedOutput)
+    for (auto entry : proxiedOutput)
     {
         std::cout << "    RF24 searching proxy" << '\n';
         auto it = Groups.find(entry.first);
