@@ -39,7 +39,8 @@ void RF24_Sender::ReadConfig()
     std::getline(input, repeats_string);
     repeats = std::stoi(repeats_string);
 
-    for (std::string line; std::getline(input, line);)
+    std::getline(input, line);
+    for (std::string line; line != ""; std::getline(input, line))
     {
         std::istringstream iss(line);
 
