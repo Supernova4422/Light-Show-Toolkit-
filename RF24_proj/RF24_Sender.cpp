@@ -57,7 +57,7 @@ void RF24_Sender::ReadConfig()
             CHANNELS_V6 = new uint8_t[size]();
             CHANNELS = CHANNELS_V6;
         }
-
+        size_t i = 0;
         while (iss >> tok && i <= size)
         {
             if (tok == "")
