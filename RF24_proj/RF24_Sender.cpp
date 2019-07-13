@@ -83,10 +83,11 @@ void RF24_Sender::ReadGroups()
         if (counter == 0)
         {
             groupID = read_value;
-            counter++;
+            ++counter;
         }
         else
         {
+            ++counter;
             byte_codes[counter - 1] = read_value; //Conversion needed
 
             if (counter == 4)

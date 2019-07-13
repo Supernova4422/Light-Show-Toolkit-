@@ -40,6 +40,7 @@ std::map<std::set<int>, int, cmpBySetSize> ProxyMaker::proxy_filereader(std::str
 				std::cout << line << '\n';
 			}
 			std::istringstream iss = std::istringstream(line);
+
 			std::string word;
 			iss >> word;
 			int converted_id = std::stoi(word);
@@ -47,6 +48,7 @@ std::map<std::set<int>, int, cmpBySetSize> ProxyMaker::proxy_filereader(std::str
 			{
 				std::cout << std::to_string(converted_id) + " Proxies: ";
 			}
+
 			std::set<int> input_ids;
 			while (iss >> word)
 			{
@@ -175,7 +177,8 @@ std::map<int, Colour_Combiner> ProxyMaker::proxy_maker(std::map<int, Colour_Comb
 			}
 			else if (verbose)
 			{
-				std::cout << '\n' << '\t' << "Proxy verified for: " << std::to_string(first_id) << '\n';
+				std::cout << '\n'
+						  << '\t' << "Proxy verified for: " << std::to_string(first_id) << '\n';
 			}
 
 			int ID;
