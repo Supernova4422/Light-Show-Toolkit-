@@ -36,7 +36,7 @@ void RF24_Sender::ReadConfig()
     std::ifstream input("config/RF24_CONFIG.txt");
     bool FirstLine = true;
     std::string repeats_string;
-    std::getline(input, repeats);
+    std::getline(input, repeats_string);
     repeats = std::stoi(repeats_string);
 
     for (std::string line; std::getline(input, line);)
