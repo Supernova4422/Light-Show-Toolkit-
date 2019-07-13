@@ -73,7 +73,7 @@ void RF24_Sender::ReadConfig()
 void RF24_Sender::ReadGroups()
 {
     std::ifstream groups_file;
-    groups_file.open("config/RF24_GROUPS.txt");
+    groups_file.open("groups/RF24_GROUPS.txt");
     int groupID = 0;
     int read_value = 0x00;
     int counter = 0;
