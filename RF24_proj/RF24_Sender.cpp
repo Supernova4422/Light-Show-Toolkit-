@@ -13,7 +13,7 @@
 RF24_Sender::RF24_Sender(MILIGHT_VERSION version)
 {
     this->version = version;
-    proxies = ProxyMaker::proxy_filereader("proxy_rf24.txt");
+    proxies = ProxyMaker::proxy_filereader("groups/RF24_PROXY_GROUPS.txt");
 
     ReadConfig();
     ReadGroups();
@@ -35,7 +35,7 @@ void RF24_Sender::ReadConfig()
 {
     std::ifstream input("config/RF24_CONFIG.txt");
     bool FirstLine = true;
-    std::string repeats_string;
+    std::string repeats_string = "15";
     std::getline(input, repeats_string);
     repeats = std::stoi(repeats_string);
 
@@ -58,7 +58,7 @@ void RF24_Sender::ReadConfig()
             CHANNELS = CHANNELS_V6;
         }
 
-        for (auto i = 0; iss; ++i)
+        for (auto i = 0; i < size - 1; ++i)
         {
             std::string tok;
             iss >> tok;
