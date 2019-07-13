@@ -97,7 +97,9 @@ bool ProxyMaker::colours_equal(const Colour_Combiner c1, const Colour_Combiner c
 	return true;
 }
 
-std::map<int, Colour_Combiner> ProxyMaker::proxy_maker(std::map<int, Colour_Combiner> input, std::map<std::set<int>, int, cmpBySetSize> proxies)
+std::map<int, Colour_Combiner> ProxyMaker::proxy_maker(
+	std::map<int, Colour_Combiner> input,
+	std::map<std::set<int>, int, cmpBySetSize> proxies)
 {
 	std::vector<int> Groups;
 
@@ -110,7 +112,7 @@ std::map<int, Colour_Combiner> ProxyMaker::proxy_maker(std::map<int, Colour_Comb
 
 	for (auto proxy : proxies)
 	{
-		bool found_all = proxy.first.size() > 0;
+		bool found_all = true;
 
 		if (verbose)
 		{
@@ -118,7 +120,6 @@ std::map<int, Colour_Combiner> ProxyMaker::proxy_maker(std::map<int, Colour_Comb
 		}
 		for (auto group : proxy.first)
 		{
-
 			if (verbose)
 			{
 				std::cout << '\t' << "Searching for: " << std::to_string(group) << '\n';
@@ -132,6 +133,11 @@ std::map<int, Colour_Combiner> ProxyMaker::proxy_maker(std::map<int, Colour_Comb
 							  << "\n";
 				}
 				break;
+			}
+			else if (verbose)
+			{
+				std::cout << '\t' << "Didn't find it, terminating."
+						  << "\n";
 			}
 		}
 		if (verbose)
@@ -212,6 +218,7 @@ std::map<int, Colour_Combiner> ProxyMaker::proxy_maker(std::map<int, Colour_Comb
 	{
 		std::cout << "Ensuring non-proxied groups are kept: " << '\n';
 	}
+
 	for (auto remaining : Groups)
 	{
 		if (verbose)

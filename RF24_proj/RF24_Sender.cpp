@@ -101,10 +101,12 @@ void RF24_Sender::ReadGroups()
 void RF24_Sender::EmitColour(const Command CommandItem, const std::map<int, Colour_Combiner> ExpectedOutput)
 {
     std::cout << "RF24 Emitting" << '\n';
-    auto proxiedOutput = ProxyMaker::proxy_maker(ExpectedOutput, proxies);
+    //Skip proxying, its broken as of right now.
+    //auto proxiedOutput = ProxyMaker::proxy_maker(ExpectedOutput, proxies);
 
-    for (auto entry : proxiedOutput)
+    for (auto entry : ExpectedOutput)
     {
+        std::cout << "    RF24 searching proxy" << '\n';
         auto it = Groups.find(entry.first);
 
         if (it != Groups.end())
