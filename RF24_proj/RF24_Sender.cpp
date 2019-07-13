@@ -51,11 +51,14 @@ void RF24_Sender::ReadConfig()
         {
             CHANNELS_V5 = new uint8_t[size]();
             CHANNELS = CHANNELS_V5;
+            FirstLine = false;
+            V5_Size = size;
         }
         else
         {
             CHANNELS_V6 = new uint8_t[size]();
             CHANNELS = CHANNELS_V6;
+            V6_Size = size;
         }
         size_t i = 0;
         std::string tok;
