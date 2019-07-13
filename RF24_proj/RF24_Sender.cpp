@@ -8,6 +8,7 @@
 #include <iomanip>
 #include "stddef.h"
 #include "V2RFEncoding.h"
+#include <sstream>
 
 RF24_Sender::RF24_Sender(MILIGHT_VERSION version)
 {
@@ -34,13 +35,13 @@ void RF24_Sender::ReadConfig()
 {
     std::ifstream input("config/RF24_CONFIG.txt");
     bool FirstLine = true;
-    std::string repeats;
+    std::string repeats_string;
     getline(input, repeats);
-    this.repeats = std::stoi(repeats);
+    repeats = std::stoi(repeats_string);
 
     for (std::string line; getline(input, line);)
     {
-        istringstream iss(line);
+        std::istringstream iss(line);
         iss.seekg(0, ios::end);
         auto size = iss.tellg();
         iss.seekg(0, ios::beg);
