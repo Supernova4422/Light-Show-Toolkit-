@@ -49,8 +49,6 @@ public:
 #endif
 
     AddLight<ConsoleLight>("First", 1);
-    AddLight<ConsoleLight>("Second", 2);
-
     //AddLight<SDL_Light>();
     //AddTickListener(sdl_window);
     //AddTickListener<SDL_Light>(); //Used to be shared with the light listener.

@@ -87,12 +87,11 @@ void RF24_Sender::ReadGroups()
         }
         else
         {
-            ++counter;
             byte_codes[counter - 1] = read_value; //Conversion needed
-
-            if (counter == 4)
+            ++counter;
+            if (counter == 3)
             {
-                std::pair<MILIGHT_VERSION, std::vector<uint8_t>> pairing = std::make_pair(version, byte_codes);
+                auto pairing = std::make_pair(version, byte_codes);
                 Groups[groupID] = pairing;
                 counter = 0;
             }
@@ -176,8 +175,13 @@ void RF24_Sender::EmitColour(const Command CommandItem, const std::map<int, Colo
             if (version == MILIGHT_VERSION::V5)
             {
                 uint8_t msg[7] = {
-                    0xB0, it->second.second[0], it->second.second[1],
-                    0x00, 0x00, 0x00, ++seq_num};
+                    0xB0,
+                    it->second.second[0],
+                    it->second.second[1],
+                    0x00,
+                    0x00,
+                    0x00,
+                    ++seq_num};
 
                 //Should msg[0] be b0 or b8
                 //msg[5] = it->second.second[2]; //Why NOT do it now?

@@ -38,16 +38,16 @@ def prepare_pis(server):
 
     prepare_commands = [
         "git clone https://github.com/BKrajancic/Light-Show-Toolkit-.git;",
-        "cd Light-Show-Toolkit-;git pull;git pull --recurse-submodules;git submodule update --init --recursive;",
+        "cd Light-Show-Toolkit-;git pull;git pull --recurse-submodules;git submodule update --init --recursive",
         "cd Light-Show-Toolkit-/;mkdir build;cd build;cmake ../",
         "cd Light-Show-Toolkit-/RF24;sudo ./configure;sudo make all install",
         "cd Light-Show-Toolkit-/build/src/;make all"
     ]
 
-    for command in initialise_commands:
-        print("-------")
-        run_command(command, ssh)
-        print("-------")
+    # for command in initialise_commands:
+    # print("-------")
+    #run_command(command, ssh)
+    # print("-------")
 
     for command in prepare_commands:
         print("-------")
@@ -90,6 +90,7 @@ if __name__ == "__main__":
 
         print("====================================")
         print("Executing on server: " + str(server))
-        prepare_pis(server)
         upload_files(server)
+        prepare_pis(server)
+
         print("====================================")
