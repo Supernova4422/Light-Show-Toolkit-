@@ -1,4 +1,7 @@
 #pragma once
+#include "string"
+const std::string GROUP_IDENTIFIER = "Group";
+#define STRICT_GRAMMAR 1;
 
 /*
  * Should Milight commands be sent over wifi?

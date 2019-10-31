@@ -38,18 +38,18 @@ void GroupManager::SetGroups(const int Group, const Command CommandItem)
     }
 
     std::map<int, Colour_Combiner> current_groups;
-    for (auto entry : CurrentlySelectedGroups)
+    for (const auto entry : CurrentlySelectedGroups)
     {
         current_groups[entry] = AllGroups[entry];
     }
 
-    for (auto &light : ListeningLights)
+    for (const auto &light : ListeningLights)
     {
         light->OnCurrentGroupsUpdate(CommandItem, current_groups);
     }
 
     std::cout << "Current Groups are now: ";
-    for (auto group : current_groups)
+    for (const auto group : current_groups)
     {
         std::cout << group.first << ", ";
     }
@@ -58,18 +58,18 @@ void GroupManager::SetGroups(const int Group, const Command CommandItem)
 
 void GroupManager::UpdateColour(const Colour OutputColour, const Command item)
 {
-    for (auto group : CurrentlySelectedGroups)
+    for (const auto group : CurrentlySelectedGroups)
     {
         AllGroups[group].set_new(OutputColour, item.Operation);
     }
 
     std::map<int, Colour_Combiner> current_groups;
-    for (auto entry : CurrentlySelectedGroups)
+    for (const auto entry : CurrentlySelectedGroups)
     {
         current_groups[entry] = AllGroups[entry];
     }
 
-    for (auto &light : ListeningLights)
+    for (const auto &light : ListeningLights)
     {
         light->EmitColour(item, current_groups);
     }
@@ -78,12 +78,12 @@ void GroupManager::UpdateColour(const Colour OutputColour, const Command item)
 void GroupManager::SpecificCommand(const Command command)
 {
     std::map<int, Colour_Combiner> current_groups;
-    for (auto entry : CurrentlySelectedGroups)
+    for (const auto entry : CurrentlySelectedGroups)
     {
         current_groups[entry] = AllGroups[entry];
     }
 
-    for (auto &light : ListeningLights)
+    for (const auto &light : ListeningLights)
     {
         light->SpecificCommand(command, current_groups);
     }

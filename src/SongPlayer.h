@@ -25,9 +25,8 @@ typedef AudioPlayer_Dummy AudioPlayer;
 class SongPlayer
 {
 public:
-    SongPlayer() : groupManager()
+    SongPlayer() : groupManager(), audioPlayer(), Parser(), songStartAt(0), WaitTimeTotalInMilli(0), songFilename("")
     {
-        audioPlayer = AudioPlayer();
     }
 
     void RunCommand(const Command item);
@@ -56,10 +55,13 @@ private:
     std::map<std::string, std::vector<Command>> MainFile;
     std::string songFilename;
     unsigned int songStartAt = 0;
+
     FileParser Parser;
     GroupManager groupManager;
+
     std::chrono::system_clock::time_point SongStartTime;
     unsigned int WaitTimeTotalInMilli;
+
     AudioPlayer audioPlayer;
 };
 #endif

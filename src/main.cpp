@@ -16,35 +16,35 @@
 
 void signalHandler(int signum)
 {
-	std::cout << "Interrupt signal (" << signum << ") received.\n";
-	CommandLineInterface::RUNNING = false;
+    std::cout << "Interrupt signal (" << signum << ") received.\n";
+    CommandLineInterface::RUNNING = false;
 #if USING_SDL == 1
-	SDL_Quit();
+    SDL_Quit();
 #endif
-	exit(signum);
+    exit(signum);
 }
 
 int main(int argc, char *argv[])
 {
-	std::unique_ptr<CommandLineInterface> cli = std::make_unique<CommandLineInterface>();
-	if (argc > 1)
-	{
-		for (auto i = 1; i < argc - 1; i += 2)
-		{
-			std::cout << std::endl;
+    std::unique_ptr<CommandLineInterface> cli = std::make_unique<CommandLineInterface>();
+    if (argc > 1)
+    {
+        for (auto i = 1; i < argc - 1; i += 2)
+        {
+            std::cout << std::endl;
 
-			std::cout << "Command: " << std::string(argv[i]) << ", parameter: " << std::string(argv[i + 1]) << std::endl;
+            std::cout << "Command: " << std::string(argv[i]) << ", parameter: " << std::string(argv[i + 1]) << std::endl;
 
-			cli->ParseLine(std::string(argv[i]) + std::string(" ") + std::string(argv[i + 1]));
-		}
-	}
-	else
-	{
-		cli->Run();
-	}
+            cli->ParseLine(std::string(argv[i]) + std::string(" ") + std::string(argv[i + 1]));
+        }
+    }
+    else
+    {
+        cli->Run();
+    }
 
 #if USING_SDL == 1
-	SDL_Quit();
+    SDL_Quit();
 #endif
-	return 0;
+    return 0;
 }

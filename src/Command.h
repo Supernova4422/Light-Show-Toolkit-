@@ -2,6 +2,7 @@
 #include "CommandType.h"
 #include "CommandOperation.h"
 #include <string>
+
 struct Command
 {
   CommandType::CommandType type;
@@ -13,7 +14,6 @@ struct Command
 
   Command(const std::string CommandInput) : type(CommandType::FunctionName), value(CommandInput), Operation(CommandOperation::set), TimesToExecute(1)
   {
-    std::string GroupIdentifier = "Group";
 
     if (value[0] == '+')
     {
@@ -29,6 +29,14 @@ struct Command
     {
       Operation = CommandOperation::set;
       value = value.erase(0, 1);
+    }
+    else if (STRICT_GRAMMAR)
+    {
+      throw;
+    }
+    else if (STRICT_GRAMMAR == false)
+    {
+      Operation = CommandOperation::set;
     }
 
     if ((value[0] == '[') && (value.back() == ']'))
@@ -47,16 +55,16 @@ struct Command
       value = value.erase(0, 1);
       type = CommandType::ColourChange_HSV;
     }
-    else if (value.compare(0, GroupIdentifier.size(), GroupIdentifier) == 0)
+    else if (value.compare(0, GROUP_IDENTIFIER.size(), GROUP_IDENTIFIER) == 0)
     {
-      value = value.erase(0, GroupIdentifier.size());
+      value = value.erase(0, GROUP_IDENTIFIER.size());
       type = CommandType::Group;
     }
     else if (isdigit(value[0]))
     {
       bool ParsedAmountOfTimesToExecute = false;
       std::string temp_value = "";
-      for (auto c : value)
+      for (const char c : value)
       {
         if (ParsedAmountOfTimesToExecute)
         {
